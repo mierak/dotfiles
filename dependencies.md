@@ -1,3 +1,5 @@
+Dependencies assume a clean Arch install
+
 # Awesome WM
 awesome-git
 lcpz/lain
@@ -21,3 +23,4 @@ lf
 rofi
 sxiv
 nvim
+pass

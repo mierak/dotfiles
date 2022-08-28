@@ -15,12 +15,14 @@ unsetopt beep
 #         Autocomplete           #    
 #                                #    
 ################################## 
-autoload -U compinit 
+autoload -U compinit bashcompinit
 zstyle ':completion:*' menu select
 # Autocomplete commands prefixedd by "sudo" with elevated privileges
 zstyle ':completion::complete:*' gain-privileges 1
 zmodload zsh/complist
 compinit
+# Enable support for bash-style autocomplete scripts
+bashcompinit
 # Include hidden files
 _comp_options+=(globdots)
 
@@ -66,6 +68,12 @@ zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
+# Edit terminal command in vim with ctrl-e
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^e' edit-command-line
+bindkey -M vicmd '^[[P' vi-delete-char
+bindkey -M vicmd '^e' edit-command-line
+bindkey -M visual '^[[P' vi-delete
 
 ##################################
 #                                #
