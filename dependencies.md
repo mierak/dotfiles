@@ -20,9 +20,10 @@ zathura
 batcat
 feh
 lf
+ctpv
 rofi
 sxiv
 nvim
 pass
 st
-
+libxft-bgra

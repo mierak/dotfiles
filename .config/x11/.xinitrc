@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ -f ~/desktop.* ]; then
-	feh --no-fehbg --bg-fill ~/desktop.*
+	feh --no-fehbg --bg-fill "${XDG_DATA_HOME:-$HOME/.local/share}/wallpaper/reimu.jpg"
 fi
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/x11/.Xresources" ] && xrdb -merge "${XDG_CONFIG_HOME:-$HOME/.config}/x11/.Xresources" 
 picom -b
