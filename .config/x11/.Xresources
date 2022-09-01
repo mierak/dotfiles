@@ -2,7 +2,7 @@
 
 ! special
 *.foreground:   #c5c8c6
-*.background:   #1d1f21
+*.background:   #1a1a1a
 *.cursorColor:  #c5c8c6
 
 ! black
@@ -40,7 +40,7 @@
 !! URxvt Appearance
 !URxvt.font: xft:Inconsolata:size=8
 !URxvt.font: xft:Mono:pixelsize=14:antialias=true
-URxvt.font: xft:JetBrainsMono Nerd Font:pixelsize=14:antialias=true
+URxvt.font:	xft:JetBrainsMono Nerd Font:pixelsize=14:antialias=true,xft:Noto Color Emoji:style=regular:pixelsize=14
 URxvt.boldFont: xft:JetBrainsMono Nerd Font:style=Bold:pixelsize=14:antialias=true
 URxvt.italicFont: xft:JetBrainsMono Nerd Font:style=Italic:pixelsize=14:antialias=true
 URxvt.boldItalicFont: xft:JetBrainsMono Nerd Font:pixelsize=14:antialias=true

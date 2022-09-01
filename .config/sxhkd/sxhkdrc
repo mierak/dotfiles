@@ -1,0 +1,13 @@
+# DPMS
+# Turn off display after a short delay
+control + alt + shift + p
+	sleep 0.5 && xset dpms force suspend
+
+# Screenshots
+# Screenshot area and copy to clipboard
+super + shift + s
+	maim -s -m 10 | xclip -selection clipboard -t image/png && notify-send 'Area copied to clipboard'
+
+# Screenshot active window and copy to clipboard
+alt + shift + 2
+	maim -m 10 -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png && notify-send 'Active window copied to clipboard'

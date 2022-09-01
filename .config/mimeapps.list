@@ -4,8 +4,6 @@
 # These .desktop entries can also be seen and changed in ~/.local/share/applications/
 
 text/x-shellscript=text.desktop;
-x-scheme-handler/magnet=torrent.desktop;
-application/x-bittorrent=torrent.desktop;
 x-scheme-handler/mailto=mail.desktop;
 text/plain=text.desktop;
 application/postscript=pdf.desktop;
@@ -17,3 +15,7 @@ application/rss+xml=rss.desktop
 video/x-matroska=video.desktop
 x-scheme-handler/lbry=lbry.desktop
 inode/directory=file.desktop
+x-scheme-handler/msteams=teams.desktop
+x-scheme-handler/http=browser.desktop
+x-scheme-handler/https=browser.desktop
+x-scheme-handler/magnet=magnet.desktop

@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Vampire Survivors
-Comment=Play this game on Steam
-Exec=steam steam://rungameid/1794680
-Icon=steam_icon_1794680
-Terminal=false
-Type=Application
-Categories=Game;

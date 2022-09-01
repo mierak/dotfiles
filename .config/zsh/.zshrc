@@ -20,9 +20,9 @@ zstyle ':completion:*' menu select
 # Autocomplete commands prefixedd by "sudo" with elevated privileges
 zstyle ':completion::complete:*' gain-privileges 1
 zmodload zsh/complist
-compinit
+compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 # Enable support for bash-style autocomplete scripts
-bashcompinit
+bashcompinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 # Include hidden files
 _comp_options+=(globdots)
 
@@ -89,5 +89,4 @@ bindkey -M visual '^[[P' vi-delete
 ##################################
 # Syntax highlight plugin
 source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
-
 

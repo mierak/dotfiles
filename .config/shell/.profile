@@ -4,7 +4,7 @@
 export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
 
 export EDITOR="vim"
-export TERMINAL="urxvt"
+export TERMINAL="st"
 export BROWSER="vivaldi-stable"
 
 # ~/ Cleanup of home directory

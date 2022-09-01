@@ -21,7 +21,7 @@ alias \
 
 # Colorize commands
 alias \
-	ls="ls -lahN --color=auto --group-directories-first" \
+	ls="ls -lhN --color=auto --group-directories-first" \
 	grep="grep --color=auto" \
 	diff="diff --color=auto" \
 	ip="ip -color=auto"

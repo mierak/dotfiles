@@ -24,3 +24,5 @@ rofi
 sxiv
 nvim
 pass
+st
+

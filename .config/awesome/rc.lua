@@ -3,6 +3,9 @@
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
+-- Disable naughty notifications to use other notification servers
+package.loaded["naughty.dbus"] = {}
+
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
@@ -20,6 +23,7 @@ require("snippets/rounded_corners")
 require("snippets/keybinds")
 require("snippets/window_swallow")
 
+modkey = "Mod4"
 
 local chosen_theme = "powerarrow-dark"
 local theme_root_path = string.format("%s/.config/awesome/themes/%s", os.getenv("HOME"), chosen_theme)
@@ -44,7 +48,7 @@ beautiful.useless_gap = 10
 beautiful.gap_single_client = false
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
+terminal = "st"
 editor = "nvim" or os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 awful.util.terminal = terminal
@@ -143,7 +147,7 @@ ruled.client.connect_signal("request::rules", function()
         rule_any = {
             instance = { "copyq", "pinentry" },
             class    = {
-                "Arandr", "Blueman-manager", "Gpick", "Kruler", "Sxiv",
+                "Arandr", "Blueman-manager", "Gpick", "Kruler",
                 "Tor Browser", "Wpa_gui", "veromix", "xtightvncviewer"
             },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
