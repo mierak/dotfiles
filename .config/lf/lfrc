@@ -4,6 +4,7 @@ set shellopts '-eu'
 set ifs "\n"
 
 set icons
+set wrapscroll
 
 # Set image previews
 set previewer ctpv
