@@ -1,4 +1,4 @@
 [Desktop Entry]
 Type=Application
 Name=Vivaldi
-Exec=/usr/local/bin/st -e linkopen %u
+Exec=/usr/local/bin/st -e lo %u

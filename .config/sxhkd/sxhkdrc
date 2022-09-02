@@ -11,3 +11,7 @@ super + shift + s
 # Screenshot active window and copy to clipboard
 alt + shift + 2
 	maim -m 10 -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png && notify-send 'Active window copied to clipboard'
+
+# Open rofi run
+super + d
+	rofi -show combi

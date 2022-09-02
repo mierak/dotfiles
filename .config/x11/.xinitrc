@@ -1,7 +1,8 @@
 #!/bin/sh
 
-if [ -f ~/desktop.* ]; then
-	feh --no-fehbg --bg-fill "${XDG_DATA_HOME:-$HOME/.local/share}/wallpaper/reimu.jpg"
+bg="/home/mrk/.local/share/wallpaper/reimu.jpg"
+if [ -f "$bg" ]; then
+	feh --no-fehbg --bg-fill ~/desktop.*
 fi
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/x11/.Xresources" ] && xrdb -merge "${XDG_CONFIG_HOME:-$HOME/.config}/x11/.Xresources" 
 picom -b
@@ -10,3 +11,4 @@ redshift &
 sxhkd &
 dunst &
 exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
+
