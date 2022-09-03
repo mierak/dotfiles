@@ -1,5 +1,7 @@
 set number relativenumber
 
+" Disable auto comment
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Restart sxhkd when it changes
 autocmd BufWritePost ~/.config/sxhkd/sxhkdrc !killall sxhkd && sxhkd &
