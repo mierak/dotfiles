@@ -27,3 +27,4 @@ nvim
 pass
 st
 libxft-bgra
+libmtp # required by mtpmount
