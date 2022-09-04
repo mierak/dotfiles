@@ -10,5 +10,6 @@ xinput --set-prop 9 'libinput Accel Profile Enabled' 0, 1
 redshift &
 sxhkd &
 dunst &
-exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
-
+dwmblocks &
+#exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
+exec ~/.config/x11/dwmauto
