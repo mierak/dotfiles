@@ -22,9 +22,13 @@ feh
 lf
 ctpv
 rofi
+rofi-emoji
 sxiv
 nvim
 pass
 st
+dwm
+dwmblocks-async
+dunst
 libxft-bgra
 libmtp # required by mtpmount

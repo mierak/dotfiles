@@ -12,6 +12,14 @@ super + shift + s
 alt + shift + 2
 	maim -m 10 -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png && notify-send 'Active window copied to clipboard'
 
+# Open lf
+super + r
+	st -e lf
+
 # Open rofi run
 super + d
 	rofi -show combi
+
+# Open rofi emoji picker
+super + control + e
+	rofi -modi emoji -show emoji
