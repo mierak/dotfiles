@@ -1,6 +1,5 @@
-# Set up prompt, prints green checkmark when exit code is 0, red cross otherwise
-PROMPT="%B%F{red}[%f%b%B%F{yellow}%n%f%b%B%F{green}@%f%b%B%F{blue}%m%f%b %F{magenta}%~%f%B%F{red}]%f%b%B$%b "
-
+autoload -U colors && colors
+PROMPT="%{$fg[blue]%}%{$bg[white]%}  %{$fg[black]%}%B%n %b%{$fg[white]%}%{$bg[blue]%}%{$fg[black]%}%{$bg[blue]%}%B %~ %b%{$reset_color%}%{$fg[blue]%}%{$reset_color%} "
 
 # Lines configured by zsh-newuser-install
 HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/histfile"
@@ -26,6 +25,8 @@ bashcompinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 # Include hidden files
 _comp_options+=(globdots)
 
+bindkey -v
+export KEYTIMEOUT=1
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
@@ -49,8 +50,6 @@ bindkey -v '^?' backward-delete-char
 #         Vi modes caret         #
 #                                #
 ##################################
-bindkey -v
-export KEYTIMEOUT=1
 
 # Change cursor shape for different vi modes.
 function zle-keymap-select () {
@@ -81,6 +80,23 @@ bindkey -M visual '^[[P' vi-delete
 #                                #
 ##################################
 
+lfcd () {
+    tmp="$(mktemp)"
+    lf -last-dir-path="$tmp" "$@"
+    if [ -f "$tmp" ]; then
+        dir="$(cat "$tmp")"
+        rm -f "$tmp"
+        if [ -d "$dir" ]; then
+            if [ "$dir" != "$(pwd)" ]; then
+                cd "$dir"
+            fi
+        fi
+    fi
+}
+bindkey -s '^o' '^ulfcd\n'
+
+# Bind sxiv thumbnail mode in cwd
+bindkey -s '^t' 'sxiv -t .^M'
 
 ##################################
 #                                #
@@ -89,4 +105,4 @@ bindkey -M visual '^[[P' vi-delete
 ##################################
 # Syntax highlight plugin
 source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
-
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null

@@ -10,15 +10,13 @@ fi
 
 case "$(printf "mount\nunmount" | rofi -dmenu -l 2 -p "What do do? Address: $mtp_address")" in
 	"mount")
-		message=$(gio mount "$mtp_address" 2>&1)
-		if [ "$?" -eq 0 ]; then
+		if message=$(gio mount "$mtp_address" 2>&1); then
 			notify-send "MTP device mounted successfuly"
 		else
 			notify-send -u critical "MTP device could not be mounted" "Reason: \"$message\""
 		fi ;;
 	"unmount")
-		message=$(gio mount -u "$mtp_address" 2>&1)
-		if [ "$?" -eq 0 ]; then                        
+		if message=$(gio mount -u "$mtp_address" 2>&1); then
 			notify-send "MTP device unmounted successfuly"
   		else
   			notify-send -u critical "MTP device could not be unmounted" "Reason: \"$message\""

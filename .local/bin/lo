@@ -7,7 +7,7 @@ else
 fi
 
 case $url in
-	*youtube.com/watch*|*youtube.com/playlist*|*youtu.be*|*pornhub.com*)
+	*youtube.com/watch*|*youtube.com/shorts*|*youtube.com/playlist*|*youtu.be*|*pornhub.com*)
 		setsid -f mpv -quiet "$url" > /dev/null 2>&1 ;;
 	*twitch.tv*)
 		setsid -f mpv -quiet --demuxer-readahead-secs=20 --demuxer-max-bytes=200MiB "$url" > /dev/null 2>&1 ;;

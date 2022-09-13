@@ -1,6 +1,6 @@
 
-*.alpha: 0.9
-*.alphaUnfocused: 0.75
+*.alpha: 0.8
+*.alphaUnfocused: 0.5
 
 *.blinktimeout: 500
 
@@ -9,40 +9,105 @@
 !! Colorscheme
 
 
-! special
-*.foreground:   #c5c8c6
-*.background:   #080808
-*.cursorColor:  #c5c8c6
+!! special
+!*.foreground:   #c5c8c6
+!*.background:   #080808
+!*.cursorColor:  #c5c8c6
+!
+!! black
+!*.color0:       #1d1f21
+!*.color8:       #969896
+!
+!! red
+!*.color1:       #cc342b
+!*.color9:       #cc342b
+!
+!! green
+!*.color2:       #198844
+!*.color10:      #198844
+!
+!! yellow
+!*.color3:       #fba922
+!*.color11:      #fba922
+!
+!! blue
+!*.color4:       #3971ed
+!*.color12:      #3971ed
+!
+!! magenta
+!*.color5:       #a36ac7
+!*.color13:      #a36ac7
+!
+!! cyan
+!*.color6:       #3971ed
+!*.color14:      #3971ed
+!
+!! white
+!*.color7:       #c5c8c6
+!*.color15:      #ffffff
+
+
+! NORD
+!*.foreground:   #D8DEE9
+!*.background:   #2E3440
+!*.cursorColor:  #D8DEE9
+!*fading: 35
+!*fadeColor: #4C566A
+!
+!*.color0: #3B4252
+!*.color1: #BF616A
+!*.color2: #A3BE8C
+!*.color3: #EBCB8B
+!*.color4: #81A1C1
+!*.color5: #B48EAD
+!*.color6: #88C0D0
+!*.color7: #E5E9F0
+!*.color8: #4C566A
+!*.color9: #BF616A
+!*.color10: #A3BE8C
+!*.color11: #EBCB8B
+!*.color12: #81A1C1
+!*.color13: #B48EAD
+!*.color14: #8FBCBB
+!*.color15: #ECEFF4
+
+! Catpucin macchiato
+
+*background: #24273A
+*backgroundsecondary: #363a4f
+*backgroundclean: #000000
+*foreground: #CAD3F5
+*borderselected: #b7bdf8
+*borderinactive: #6e738d
 
 ! black
-*.color0:       #1d1f21
-*.color8:       #969896
+*color0: #494D64
+*color8: #5B6078
 
 ! red
-*.color1:       #cc342b
-*.color9:       #cc342b
+*color1: #ED8796
+*color9: #ED8796
 
 ! green
-*.color2:       #198844
-*.color10:      #198844
+*color2: #A6DA95
+*color10: #A6DA95
 
 ! yellow
-*.color3:       #fba922
-*.color11:      #fba922
+*color3: #EED49F
+*color11: #EED49F
 
 ! blue
-*.color4:       #3971ed
-*.color12:      #3971ed
+*color4: #8AADF4
+*color12: #8AADF4
 
 ! magenta
-*.color5:       #a36ac7
-*.color13:      #a36ac7
+*color5: #F5BDE6
+*color13: #F5BDE6
 
 ! cyan
-*.color6:       #3971ed
-*.color14:      #3971ed
+*color6: #8BD5CA
+*color14: #8BD5CA
 
 ! white
-*.color7:       #c5c8c6
-*.color15:      #ffffff
-
+*color7: #B8C0E0
+*color15: #A5ADCB

@@ -1,7 +1,7 @@
 # DPMS
 # Turn off display after a short delay
 control + alt + shift + p
-	sleep 0.5 && xset dpms force suspend
+	sleep 1 && xset dpms force suspend
 
 # Screenshots
 # Screenshot area and copy to clipboard
@@ -12,14 +12,40 @@ super + shift + s
 alt + shift + 2
 	maim -m 10 -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png && notify-send 'Active window copied to clipboard'
 
-# Open lf
-super + r
-	st -e lf
+# Color picker to clipboard
+alt + shift + c
+	xcolor -s && notify-send "Color picked" "<span background='$(xclip -selection clipboard -o)'>	$(xclip -selection clipboard -o)		</span>"
 
-# Open rofi run
+# Open notes file in $EDITOR
+super + n
+	"$TERMINAL" -e "$EDITOR" ~/notes.md > /dev/null 2>&1
+
+# Open lf
+super + control + f
+	"$TERMINAL" -e lf
+
+# Open rofi drun
 super + d
-	rofi -show combi
+	rofi -show drun
+# Open rofi run
+super + r
+	rofi -show run
+# Open rofi window
+super + Tab
+	rofi -show window
 
 # Open rofi emoji picker
 super + control + e
 	rofi -modi emoji -show emoji
+
+# Volume control
+XF86Audio{Lower,Raise}Volume
+	pamixer --allow-boost -{d,i} 3 && kill -35 $(pidof dwmblocks)
+XF86AudioMute
+	pamixer -t && kill -35 $(pidof dwmblocks)
+
+# Mic volume control
+control + {F10,F11}
+	pamixer --source 3 --allow-boost -{d,i} 3 && kill -35 $(pidof dwmblocks)
+control + F9
+	pamixer --source 3 -t && kill -35 $(pidof dwmblocks)

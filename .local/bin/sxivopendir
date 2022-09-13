@@ -1,0 +1,17 @@
+#!/bin/sh
+
+file=$(basename "$1")
+list=$(for f in "$PWD"/*; do printf "%s\n" "$(basename "$f")"; done | grep -i '\.\(png\|jpg\|jpeg\|gif\|webp\|ico\)$')
+
+counter=1
+result=-1
+for f in $list; do
+	if [ "$f" != "$file" ] && [ "$result" = -1 ]; then
+		counter=$(("$counter + 1"))
+	elif [ "$result" = -1 ]; then
+		result="$counter"
+	fi
+	result_list="${result_list}$f\n"
+done
+
+printf "%s" "$list" | sxiv -ai -n "$result"

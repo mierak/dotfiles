@@ -37,7 +37,7 @@ cmd open ${{
     test -L $f && f=$(readlink -f $f)
     case $(file --mime-type $f -b) in
         text/*) $EDITOR $fx;;
-	image*) sxiv -a $fx;;
+	image*) sxivopendir $fx ; sleep 0.01;; # sleep as workaround for lf crash when closing an image
 	video*) mpv $fx;;
         *) for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done;;
     esac
@@ -98,3 +98,8 @@ cmd zip ${{
     zip -r $1.zip $1
     rm -rf $1
 }}
+
+cmd upload ${{
+    setsid -f puush $f
+}}
+map u upload

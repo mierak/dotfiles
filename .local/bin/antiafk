@@ -1,0 +1,10 @@
+#!/bin/sh
+# Periodically moves mouse back and forth to prevent afk timers from firin
+
+[ -n "$1" ] && delay="$1" || delay=5
+lastmove=100
+while true; do
+	xdotool mousemove_relative --polar 90 "$lastmove"
+	lastmove=$((-lastmove))
+	sleep "$delay"
+done

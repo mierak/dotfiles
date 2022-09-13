@@ -1,0 +1,63 @@
+#!/bin/sh
+
+choice=$(printf " Area| Screen| Stop" | rofi -sep "|" -dmenu -p "What to record?" -l 3)
+framerate=60
+output_dir="$HOME"/video
+encoding="h264_nvenc"
+record_icon=⏺️
+
+update_icon() {
+	echo "$1" > /tmp/recordingicon
+	kill -40 "$(pidof dwmblocks)"
+}
+
+record_area() {
+	dimension_args=$(slop -f "-s %wx%h -i :0.0+%x,%y")
+	size=$(echo "$dimension_args" | grep -Po '(?<=\-s\ ).+?(?=\ )')
+	display=$(echo "$dimension_args" | grep -Po '(?<=\-i\ ).+?$')
+	ffmpeg -f x11grab \
+		-framerate "$framerate" \
+		-s "$size" \
+		-i "$display" \
+		-c:v "$encoding" \
+		-qp 0 \
+		"$output_dir"/vid-area-"$(date '+%y%m%d-%H%M-%S')".mkv > /dev/null 2>&1 & 
+			echo $! > /tmp/recordingpid
+	update_icon "$record_icon"
+}
+
+record_screen() {
+	ffmpeg -f x11grab \
+		-framerate "$framerate" \
+		-s "$1" \
+		-i ":0.0+$2" \
+		-c:v "$encoding" \
+		-qp 0 \
+		"$output_dir"/vid-area-"$(date '+%y%m%d-%H%M-%S')".mkv > /dev/null 2>&1 & 
+			echo $! > /tmp/recordingpid
+	update_icon "$record_icon"
+	
+}
+
+stop_recording() {
+	recordingpid="$(cat /tmp/recordingpid)"
+	rm -f /tmp/recordingpid
+	kill -15 "$recordingpid"
+	update_icon ""
+	sleep 5
+	kill -9 "$recordingpid"
+	exit
+}
+
+select_screen() {
+	screen=$(xrandr | grep -Po '(?<= )\d+x\d+\+\d+\+\d+' | tr '\n' '|' | rofi -dmenu -sep "|" -p "Choose a screen" -l 3)
+	size="${screen%%+*}"
+	display="${screen#*+}"
+	record_screen "$size" "$display"
+}
+
+case "$choice" in
+	Area) record_area;;
+	Screen) select_screen;;
+	Stop) stop_recording;;
+esac
