@@ -1,0 +1,5 @@
+#!/bin/sh
+
+icon=$(cat /tmp/recordingicon)
+
+echo "$icon"

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+location=${1:-/}
+
+case "$BLOCK_BUTTON" in
+	1) notify-send "Disk space" "$(df -h --output=used,size,target)" ;;
+	3) pkill kill 37 "$(pidof dwmblocks)" ;;
+	2) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+printf "^C4^^B4^^C1^  %sb" "$(df -h --output=used,size "$location" | awk '/[0-9]/ {sub(/G/,"",$1); print $1 "/" $2}')"
