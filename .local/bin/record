@@ -57,7 +57,7 @@ select_screen() {
 }
 
 case "$choice" in
-	Area) record_area;;
-	Screen) select_screen;;
-	Stop) stop_recording;;
+	" Area") record_area;;
+	" Screen") select_screen;;
+	" Stop") stop_recording;;
 esac
