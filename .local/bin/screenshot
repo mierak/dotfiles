@@ -1,0 +1,38 @@
+#!/bin/sh
+
+choice=$(printf " Area| Screen| Window| Area and Upload| Screen and Upload| Window and Upload" | rofi -sep "|" -dmenu -p "What to screenshot?" -l 4)
+
+area() {
+	maim -s -m 10 | xclip -selection clipboard -t image/png && notify-send "Area copied to clipboard"
+}
+
+area_upload() {
+	maim -s -m 10 /tmp/screenshot.png && puush /tmp/screenshot.png && rm -f /tmp/screenshot.png
+}
+
+screen() {
+	sel=$(xrandr | grep -Po '(?<= )\d+x\d+\+\d+\+\d+' | tr '\n' '|' | rofi -dmenu -sep "|" -p "Choose a screen" -l 3)
+	maim -g "$sel" | xclip -selection clipboard -t image/png && notify-send "Screen copied to clipboard"
+}
+
+screen_upload() {
+	sel=$(xrandr | grep -Po '(?<= )\d+x\d+\+\d+\+\d+' | tr '\n' '|' | rofi -dmenu -sep "|" -p "Choose a screen" -l 3)
+	maim -g "$sel" /tmp/screenshot.png && puush /tmp/screenshot.png && rm -f /tmp/screenshot.png
+}
+
+window() {
+	maim -m 10 -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png && notify-send "Active window copied to clipboard"
+}
+
+window_upload() {
+	maim -m 10 -i "$(xdotool getactivewindow)" /tmp/screenshot.png && puush /tmp/screenshot.png && rm -f /tmp/screenshot.png
+}
+
+case "$choice" in
+	" Area") area;;
+	" Screen") screen;;
+	" Window") window;;
+	" Area and Upload") area_upload;;
+	" Screen and Upload") screen_upload;;
+	" Window and Upload") window_upload;;
+esac

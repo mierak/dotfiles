@@ -3,7 +3,7 @@
 if [ -f /tmp/recordingpid ]; then
 	choice=$(printf " Stop| Stop and Upload" | rofi -sep "|" -dmenu -p "What to do?" -l 2)
 else
-	choice=$(printf " Area| Screen" | rofi -sep "|" -dmenu -p "What to record?" -l 2)
+	choice=$(printf " Area| Screen" | rofi -sep "|" -dmenu -p "What to record?" -l 2)
 fi
 framerate=60
 output_dir="$HOME"/video
@@ -72,8 +72,8 @@ select_screen() {
 }
 
 case "$choice" in
-	" Area") record_area;;
-	" Screen") select_screen;;
+	" Area") record_area;;
+	" Screen") select_screen;;
 	" Stop") stop_recording;;
 	" Stop and Upload") stop_recording 1;;
 esac
