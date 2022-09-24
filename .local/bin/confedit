@@ -1,0 +1,7 @@
+#!/bin/sh
+
+alias gitcmd='git --git-dir=$HOME/.dots/ --work-tree=$HOME'
+
+chosen_config="$(gitcmd ls-files | grep -Pio '(?<=\.config\/).*' | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}' | rofi -dmenu -i -sep "|")"
+
+setsid -f "$TERMINAL" -e "$EDITOR" "${XDG_CONFIG_HOME:-$HOME/.config}/$chosen_config"
