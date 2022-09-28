@@ -103,3 +103,4 @@ cmd upload ${{
     setsid -f puush $f
 }}
 map u upload
+map w $setbg "$f"

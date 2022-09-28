@@ -1,0 +1,9 @@
+#!/bin/sh
+
+wallpaper="${XDG_DATA_HOME:-$HOME/.local/share}/wallpaper/current"
+
+if [ -n "$1" ]; then
+	ln -sf "$(realpath "$1")" -T "$wallpaper"
+fi
+
+feh --no-fehbg --bg-fill "$wallpaper"

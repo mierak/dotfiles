@@ -23,7 +23,7 @@ record_area() {
 	dimension_args=$(slop -f "-s %wx%h -i :0.0+%x,%y")
 	size=$(echo "$dimension_args" | grep -Po '(?<=\-s\ ).+?(?=\ )')
 	display=$(echo "$dimension_args" | grep -Po '(?<=\-i\ ).+?$')
-	filename="$output_dir"/vid-area-"$(date '+%y%m%d-%H%M-%S')".mkv
+	filename="$output_dir"/vid-area-"$(date '+%y%m%d-%H%M-%S')".mp4
 	cache_filename "$filename"
 	ffmpeg -f x11grab \
 		-framerate "$framerate" \
@@ -37,7 +37,7 @@ record_area() {
 }
 
 record_screen() {
-	filename="$output_dir"/vid-area-"$(date '+%y%m%d-%H%M-%S')".mkv
+	filename="$output_dir"/vid-screen-"$(date '+%y%m%d-%H%M-%S')".mp4
 	cache_filename "$filename"
 	ffmpeg -f x11grab \
 		-framerate "$framerate" \

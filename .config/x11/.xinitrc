@@ -1,8 +1,8 @@
 #!/bin/sh
 
-bg="/home/mrk/.local/share/wallpaper/reimu.jpg"
+bg="/home/mrk/.local/share/wallpaper/current"
 if [ -f "$bg" ]; then
-	feh --no-fehbg --bg-fill ~/desktop.*
+	setbg
 fi
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/x11/.Xresources" ] && xrdb -merge "${XDG_CONFIG_HOME:-$HOME/.config}/x11/.Xresources" 
 picom -b

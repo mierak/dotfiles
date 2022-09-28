@@ -1,0 +1,22 @@
+#!/bin/sh
+
+case $BLOCK_BUTTON in
+	2) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+update() {
+    sum=0
+    for arg; do
+        read -r i < "$arg"
+        sum=$(( sum + i ))
+    done
+    cache=/tmp/${1##*/}
+    [ -f "$cache" ] && read -r old < "$cache" || old=0
+    printf %d\\n "$sum" > "$cache"
+    printf %d\\n $(( sum - old ))
+}
+
+rx=$(($(update /sys/class/net/[ew]*/statistics/rx_bytes) * 8))
+tx=$(($(update /sys/class/net/[ew]*/statistics/tx_bytes) * 8))
+
+printf "^C1^^B0^   %4sbps   %4sbps\\n" $(numfmt --to=iec "$rx" "$tx")

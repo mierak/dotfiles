@@ -19,4 +19,4 @@ if [ "$is_muted" = "true" ]; then
 	volumeicon=婢
 fi
 
-printf "^C4^^B4^^C1^ %s %s%% ^B4^^C0^^B0^^C1^ %s %s%%" "$micvolumeicon" "$micvolume" "$volumeicon" "$volume"
+printf "^B0^^C4^%s %s%% %s %s%%" "$micvolumeicon" "$micvolume" "$volumeicon" "$volume"

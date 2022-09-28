@@ -9,9 +9,9 @@ alignment = left
     width = (100,350)
     height = 350
     offset = 10x28
-    padding = 10
-    horizontal_padding = 10
-    transparency = 0
+    padding = 15
+    horizontal_padding = 15
+    transparency = 5
     font = Monospace 12
     format = "<b>%s</b>\n%b"
     enable_recursive_icon_lookup = true
@@ -19,6 +19,7 @@ alignment = left
     icon_theme = Adwaita
     separator_height = 3
     dmenu = "rofi -dmenu -p dunst"
+    corner_radius = 10
 
 [urgency_low]
     background = "#24273A"

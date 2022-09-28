@@ -4,4 +4,4 @@ case $BLOCK_BUTTON in
 	2) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-free --mebi | sed -n '2{p;q}' | awk '{printf ("^C0^^B4^^B0^^C1^  %2.2f/%2.2fGiB", ( $3 / 1024), ($2 / 1024))}'
+free --mebi | sed -n '2{p;q}' | awk '{printf ("^B0^^C6^  %2.2f/%2.2fGiB", ( $3 / 1024), ($2 / 1024))}'

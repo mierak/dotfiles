@@ -97,7 +97,7 @@ bindkey -s '^o' '^ulfcd\n'
 
 # Bind sxiv thumbnail mode in cwd
 bindkey -s '^t' 'sxiv -t .^M'
-
+bindkey '^R' history-incremental-search-backward
 ##################################
 #                                #
 #            Plugins             #

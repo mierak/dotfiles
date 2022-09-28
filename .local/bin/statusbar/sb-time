@@ -1,8 +1,9 @@
 #!/bin/sh
 
 case $BLOCK_BUTTON in
-	1) notify-send "This Month" "$(cal --color=always | sed "s/..7m/<b><span color=\"red\">/;s|..27m|</span></b>|")" ;;
+	1) notify-send "This Month" "$(cal --color=always -m | sed "s/..7m/<b><span color=\"red\">/;s|..27m|</span></b>|")" ;;
 	2) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-printf " ^C0^^B0^^C1^  %s" "$(date "+%H:%M:%S ^C4^^C1^^B4^  %d.%m.%Y ^B4^^C0^")"
+#printf " ^C0^^B0^^C1^  %s" "$(date "+%H:%M:%S ^C4^^C1^^B4^  %d.%m.%Y ^B4^^C0^")"
+printf "^B0^ ^C0^^B4^   ^B0^^C4^ %s" "$(date "+%H:%M:%S ^B6^^C0^   ^B0^^C6^ %d.%m.%Y ^B0^")"
