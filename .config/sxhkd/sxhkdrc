@@ -33,14 +33,26 @@ super + Tab
 super + control + e
 	rofi -modi emoji -show emoji
 
-# Volume control
-XF86Audio{Lower,Raise}Volume
-	pamixer --allow-boost -{d,i} 3 && kill -35 $(pidof dwmblocks)
-XF86AudioMute
-	pamixer -t && kill -35 $(pidof dwmblocks)
+# Volume control - dwmblocks
+#XF86Audio{Lower,Raise}Volume
+#	pamixer --allow-boost -{d,i} 3 && kill -35 $(pidof dwmblocks)
+#XF86AudioMute
+#	pamixer -t && kill -35 $(pidof dwmblocks)
+# Volume control - polybar
 
-# Mic volume control
+XF86Audio{Lower,Raise}Volume
+	pamixer --allow-boost -{d,i} 3 && polybar-msg action volume hook 0 > /dev/null
+XF86AudioMute
+	pamixer -t && polybar-msg action volume-icon hook 0 > /dev/null
+
+# Mic volume control - dwmblocks
+#control + {F10,F11}
+#	pamixer --source 3 --allow-boost -{d,i} 3 && kill -35 $(pidof dwmblocks)
+#control + F9
+#	pamixer --source 3 -t && kill -35 $(pidof dwmblocks)
+
+# Mic volume control - polybar
 control + {F10,F11}
-	pamixer --source 3 --allow-boost -{d,i} 3 && kill -35 $(pidof dwmblocks)
+	pamixer --source 3 --allow-boost -{d,i} 3 && polybar-msg action mic-volume hook 0 > /dev/null
 control + F9
-	pamixer --source 3 -t && kill -35 $(pidof dwmblocks)
+	pamixer --source 3 -t && polybar-msg action mic-volume-icon hook 0 > /dev/null
