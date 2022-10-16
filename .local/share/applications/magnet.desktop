@@ -2,3 +2,4 @@
 Type=Application
 Name=Torrent magnet link
 Exec=/usr/bin/transmission-remote -a %u
+Hidden=true

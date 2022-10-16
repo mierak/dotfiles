@@ -2,3 +2,4 @@
 Type=Application
 Name=Link handler
 Exec=lo %u
+Hidden=true

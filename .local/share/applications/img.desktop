@@ -2,3 +2,4 @@
 Type=Application
 Name=Image viewer
 Exec=/usr/bin/sxiv -a %f
+Hidden=true

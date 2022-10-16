@@ -2,3 +2,4 @@
 Type=Application
 Name=Text editor
 Exec=/usr/bin/st -e nvim %u
+Hidden=true
