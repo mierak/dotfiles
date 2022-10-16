@@ -14,4 +14,4 @@ for f in $list; do
 	result_list="${result_list}$f\n"
 done
 
-printf "%s" "$list" | sxiv -ai -n "$result"
+printf "%s" "$list" | nsxiv -ai -n "$result"

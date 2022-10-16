@@ -1,7 +1,7 @@
 #!/bin/sh
 
 xclip -o -selection clipboard | wget -i - -q --show-progress --progress=bar -P /tmp/downloadedimages
-sxiv -t /tmp/downloadedimages
+nsxiv -t /tmp/downloadedimages
 
 printf "Do you wish to clean up temporary files? (y/n) "
 read -r yn

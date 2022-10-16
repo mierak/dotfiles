@@ -48,7 +48,6 @@ record_screen() {
 		"$filename" > /dev/null 2>&1 & 
 			echo $! > /tmp/recordingpid
 	update_icon "$record_icon"
-	
 }
 
 stop_recording() {
