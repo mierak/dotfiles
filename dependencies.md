@@ -33,3 +33,4 @@ dunst
 libxft-bgra
 libmtp # required by mtpmount
 ripgrep
+yad
