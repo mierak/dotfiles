@@ -76,19 +76,19 @@ myLayoutHook = lessBorders Screen
              $ onWorkspace "1_1" (bigMasterStack ||| secondaryLayouts)
              $ masterStack ||| secondaryLayouts
              where
-                 secondaryLayouts = dwindle ||| tabs ||| bottomStack ||| monocle ||| centeredMaster
-                 masterStack      = renamed [Replace "[]="]     $ spacing $ smartBorders $ Tall nmaster delta ratio
-                 bottomStack      = renamed [Replace "TTT"]                              $ Mirror masterStack
-                 bigMasterStack   = renamed [Replace "[]|"]     $ spacing $ smartBorders $ Tall nmaster delta 0.8
-                 dwindle          = renamed [Replace "[@]"]     $ spacing $ smartBorders $ Dwindle R Dwindle.CW 1 1.1
-                 centeredMaster   = renamed [Replace "|M|"]     $ spacing $ smartBorders $ ThreeColMid nmaster delta ratio
-                 tabs             = renamed [Replace "[T]"]                              $ tabbed shrinkText myTabTheme
-                 monocle          = renamed [Replace "[M]"]               $ noBorders    $ Full
-                 spacing          = spacingRaw True (Border gap 0 gap 0) True (Border 0 gap 0 gap) True
-                 gap              = 10    -- Default gap size between windows
-                 nmaster          = 1     -- Default number of windows in master
-                 ratio            = 1/2   -- Default proportion of master/stack
-                 delta            = 3/100 -- Percent of screen to increment by when resizing panes
+                 secondaryLayouts   = dwindle ||| tabs ||| bottomStack ||| monocle ||| centeredMaster
+                 masterStack        = renamed [Replace "[]="] $ spacing $ smartBorders $ Tall nmaster delta ratio
+                 bottomStack        = renamed [Replace "TTT"]                          $ Mirror masterStack
+                 bigMasterStack     = renamed [Replace "[]|"] $ spacing $ smartBorders $ Tall nmaster delta 0.8
+                 dwindle            = renamed [Replace "[@]"] $ spacing $ smartBorders $ Dwindle R Dwindle.CW 1 1.1
+                 centeredMaster     = renamed [Replace "|M|"] $ spacing $ smartBorders $ ThreeColMid nmaster delta ratio
+                 tabs               = renamed [Replace "[T]"]                          $ tabbed shrinkText myTabTheme
+                 monocle            = renamed [Replace "[M]"]           $ noBorders    $ Full
+                 spacing            = spacingRaw True (Border gap 0 gap 0) True (Border 0 gap 0 gap) True
+                 gap                = 10    -- Default gap size between windows
+                 nmaster            = 1     -- Default number of windows in master
+                 ratio              = 1/2   -- Default proportion of master/stack
+                 delta              = 3/100 -- Percent of screen to increment by when resizing panes
 
 myTabTheme = def 
              { decoHeight           = 16
@@ -124,21 +124,20 @@ myKeys :: XConfig l0 -> [((KeyMask, KeySym), NamedAction)]
 myKeys c =
     let subKeys str ks = subtitle' str : mkNamedKeymap c ks in
     subKeys "Core"
-    [ -- Core keybinds
-      ("M-S-q",        addName "Quit XMonad"                     $ io (exitWith ExitSuccess))
+    [ ("M-S-q",        addName "Quit XMonad"                     $ io (exitWith ExitSuccess))
     , ("M-S-r",        addName "Restart XMonad"                  $ spawn "xmonad --restart")
     , ("M-C-r",        addName "Recompile XMonad"                $ spawn "xmonad --recompile")
     , ("M-<Return>",   addName "Spawn Terminal"                  $ spawn "st")
     , ("M-q",          addName "Kill Focused Window"             $ kill)
-      -- Focus
-    , ("M-S-<Return>", addName "Swap Active Window to Master"    $ windows W.swapMaster)
     ]
-    ^++^ subKeys "Layout"
-    [
-      ("M-<Space>",    addName "Next Layout"                     $ nextLayout)
-    , ("M-f",          addName "Fullscreen Active Window"        $ withFocused toggleFullscreenFloat)
+    ^++^ subKeys "Focus"
+    [ ("M-S-<Return>", addName "Swap Active Window to Master"    $ windows W.swapMaster)
     , ("M-j",          addName "Focus Down"                      $ windows W.focusDown)
     , ("M-k",          addName "Focus Up"                        $ windows W.focusUp)
+    ]
+    ^++^ subKeys "Layout"
+    [ ("M-<Space>",    addName "Next Layout"                     $ nextLayout)
+    , ("M-f",          addName "Fullscreen Active Window"        $ withFocused toggleFullscreenFloat)
     , ("M-l",          addName "Expand Master Area"              $ sendMessage Expand)
     , ("M-h",          addName "Shrink Master Area"              $ sendMessage Shrink)
     , ("M-S-o",        addName "Decrease Spacing"                $ decScreenWindowSpacing 2)
@@ -146,40 +145,37 @@ myKeys c =
     , ("M-t",          addName "Sink Floating Window to Tiled"   $ withFocused $ windows . W.sink)
     ]
     ^++^ subKeys "Workspace Switching"
-    [
-      ("M-1",         addName "Switch to Workspace 1"            $ viewWorkspace 1)
-    , ("M-2",         addName "Switch to Workspace 2"            $ viewWorkspace 2)
-    , ("M-3",         addName "Switch to Workspace 3"            $ viewWorkspace 3)
-    , ("M-4",         addName "Switch to Workspace 4"            $ viewWorkspace 4)
-    , ("M-5",         addName "Switch to Workspace 5"            $ viewWorkspace 5)
-    , ("M-6",         addName "Switch to Workspace 6"            $ viewWorkspace 6)
-    , ("M-7",         addName "Switch to Workspace 7"            $ viewWorkspace 7)
-    , ("M-8",         addName "Switch to Workspace 8"            $ viewWorkspace 8)
-    , ("M-9",         addName "Switch to Workspace 9"            $ viewWorkspace 9)
+    [ ("M-1",          addName "Switch to Workspace 1"            $ viewWorkspace 1)
+    , ("M-2",          addName "Switch to Workspace 2"            $ viewWorkspace 2)
+    , ("M-3",          addName "Switch to Workspace 3"            $ viewWorkspace 3)
+    , ("M-4",          addName "Switch to Workspace 4"            $ viewWorkspace 4)
+    , ("M-5",          addName "Switch to Workspace 5"            $ viewWorkspace 5)
+    , ("M-6",          addName "Switch to Workspace 6"            $ viewWorkspace 6)
+    , ("M-7",          addName "Switch to Workspace 7"            $ viewWorkspace 7)
+    , ("M-8",          addName "Switch to Workspace 8"            $ viewWorkspace 8)
+    , ("M-9",          addName "Switch to Workspace 9"            $ viewWorkspace 9)
     ]
     ^++^ subKeys "Move and Switch to Workspace"
-    [
-      ("M-S-1",       addName "Move and Switch To Workspace 1"   $ shiftAndView  1)
-    , ("M-S-2",       addName "Move and Switch To Workspace 2"   $ shiftAndView  2)
-    , ("M-S-3",       addName "Move and Switch To Workspace 3"   $ shiftAndView  3)
-    , ("M-S-4",       addName "Move and Switch To Workspace 4"   $ shiftAndView  4)
-    , ("M-S-5",       addName "Move and Switch To Workspace 5"   $ shiftAndView  5)
-    , ("M-S-6",       addName "Move and Switch To Workspace 6"   $ shiftAndView  6)
-    , ("M-S-7",       addName "Move and Switch To Workspace 7"   $ shiftAndView  7)
-    , ("M-S-8",       addName "Move and Switch To Workspace 8"   $ shiftAndView  8)
-    , ("M-S-9",       addName "Move and Switch To Workspace 9"   $ shiftAndView  9)
+    [ ("M-S-1",        addName "Move and Switch To Workspace 1"   $ shiftAndView  1)
+    , ("M-S-2",        addName "Move and Switch To Workspace 2"   $ shiftAndView  2)
+    , ("M-S-3",        addName "Move and Switch To Workspace 3"   $ shiftAndView  3)
+    , ("M-S-4",        addName "Move and Switch To Workspace 4"   $ shiftAndView  4)
+    , ("M-S-5",        addName "Move and Switch To Workspace 5"   $ shiftAndView  5)
+    , ("M-S-6",        addName "Move and Switch To Workspace 6"   $ shiftAndView  6)
+    , ("M-S-7",        addName "Move and Switch To Workspace 7"   $ shiftAndView  7)
+    , ("M-S-8",        addName "Move and Switch To Workspace 8"   $ shiftAndView  8)
+    , ("M-S-9",        addName "Move and Switch To Workspace 9"   $ shiftAndView  9)
     ]
     ^++^ subKeys "Switch to Screen"
-    [
-      ("M-,",         addName "Switch to Left Screen"            $ screenWorkspace 2 >>= flip whenJust (windows . W.view))
-    , ("M-.",         addName "Switch to Middle Screen"          $ screenWorkspace 0 >>= flip whenJust (windows . W.view))
-    , ("M-/",         addName "Switch to Right Screen "          $ screenWorkspace 1 >>= flip whenJust (windows . W.view))
+    [ ("M-,",          addName "Switch to Left Screen"            $ screenWorkspace 2 >>= flip whenJust (windows . W.view))
+    , ("M-.",          addName "Switch to Middle Screen"          $ screenWorkspace 0 >>= flip whenJust (windows . W.view))
+    , ("M-/",          addName "Switch to Right Screen "          $ screenWorkspace 1 >>= flip whenJust (windows . W.view))
     ]
     ^++^ subKeys "Move Window to Screen and Focus"
     [
-      ("M-S-,",       addName "Move and Switch to Left Screen"   $ screenWorkspace 2 >>= flip whenJust (windows . shiftScreenAndView))
-    , ("M-S-.",       addName "Move and Switch to Middle Screen" $ screenWorkspace 0 >>= flip whenJust (windows . shiftScreenAndView))
-    , ("M-S-/",       addName "Move and Switch to Right Screen"  $ screenWorkspace 1 >>= flip whenJust (windows . shiftScreenAndView))
+      ("M-S-,",        addName "Move and Switch to Left Screen"   $ screenWorkspace 2 >>= flip whenJust (windows . shiftScreenAndView))
+    , ("M-S-.",        addName "Move and Switch to Middle Screen" $ screenWorkspace 0 >>= flip whenJust (windows . shiftScreenAndView))
+    , ("M-S-/",        addName "Move and Switch to Right Screen"  $ screenWorkspace 1 >>= flip whenJust (windows . shiftScreenAndView))
     ]
 
 -- Workspaces config
