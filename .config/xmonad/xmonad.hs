@@ -5,6 +5,7 @@ import XMonad.Actions.OnScreen
 import XMonad.Actions.UpdatePointer
 
 -- import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageHelpers
@@ -15,6 +16,7 @@ import XMonad.Hooks.WindowSwallowing
 
 import XMonad.Layout.Dwindle as Dwindle
 import XMonad.Layout.IndependentScreens
+import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.Renamed
@@ -76,10 +78,10 @@ myLayoutHook = lessBorders Screen
              $ onWorkspace "1_1" (bigMasterStack ||| secondaryLayouts)
              $ masterStack ||| secondaryLayouts
              where
-                 secondaryLayouts   = dwindle ||| tabs ||| bottomStack ||| monocle ||| centeredMaster
-                 masterStack        = renamed [Replace "[]="] $ spacing $ smartBorders $ Tall nmaster delta ratio
-                 bottomStack        = renamed [Replace "TTT"]                          $ Mirror masterStack
-                 bigMasterStack     = renamed [Replace "[]|"] $ spacing $ smartBorders $ Tall nmaster delta 0.8
+                 secondaryLayouts   = dwindle ||| tabs ||| bottomStack ||| monocle ||| centeredMaster 
+                 masterStack        = renamed [Replace "[]="] $ spacing                $ mouseResizableTile { draggerType = FixedDragger 0 20, slaveFrac = ratio, nmaster = nmaster, masterFrac = ratio, fracIncrement = delta }
+                 bottomStack        = renamed [Replace "TTT"] $ spacing                $ mouseResizableTile { draggerType = FixedDragger 0 20, slaveFrac = ratio, nmaster = nmaster, masterFrac = ratio, fracIncrement = delta, isMirrored = True }
+                 bigMasterStack     = renamed [Replace "[]|"] $ spacing $ smartBorders $ mouseResizableTile { draggerType = FixedDragger 0 20, slaveFrac = ratio, nmaster = nmaster, masterFrac = 0.8, fracIncrement = delta }
                  dwindle            = renamed [Replace "[@]"] $ spacing $ smartBorders $ Dwindle R Dwindle.CW 1 1.1
                  centeredMaster     = renamed [Replace "|M|"] $ spacing $ smartBorders $ ThreeColMid nmaster delta ratio
                  tabs               = renamed [Replace "[T]"]                          $ tabbed shrinkText myTabTheme
@@ -100,12 +102,16 @@ myTabTheme = def
 
 -- Shift active window to workspace on current screen and switch to it
 shiftAndView :: Int -> X ()
-shiftAndView n = windows $ onCurrentScreen W.greedyView (workspaces' myConfig !! (n - 1))
+shiftAndView n = do
+                 windows $ onCurrentScreen W.greedyView (workspaces' myConfig !! (n - 1))
                          . onCurrentScreen W.shift      (workspaces' myConfig !! (n - 1))
+                 logScreenLayouts
 
 -- View workspace on current screen
 viewWorkspace :: Int -> X ()
-viewWorkspace n = windows $ onCurrentScreen W.greedyView (workspaces' myConfig !! (n - 1))
+viewWorkspace n = do 
+                  windows $ onCurrentScreen W.greedyView (workspaces' myConfig !! (n - 1))
+                  logScreenLayouts
 
 shiftScreenAndView i = W.view i . W.shift i
 
@@ -134,6 +140,8 @@ myKeys c =
     [ ("M-S-<Return>", addName "Swap Active Window to Master"    $ windows W.swapMaster)
     , ("M-j",          addName "Focus Down"                      $ windows W.focusDown)
     , ("M-k",          addName "Focus Up"                        $ windows W.focusUp)
+    , ("M-S-j",        addName "Swap Down"                       $ windows W.swapDown)
+    , ("M-S-k",        addName "Swap Up"                         $ windows W.swapUp)
     ]
     ^++^ subKeys "Layout"
     [ ("M-<Space>",    addName "Next Layout"                     $ nextLayout)
@@ -182,8 +190,9 @@ myKeys c =
 myWorkspaces = withScreens 3 ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 -- Swallowing
-myHandleEventHook  = swallowEventHook (className =? "St") (return True) 
-                  <> fixNetWmViewport
+myHandleEventHook  = swallowEventHook (className =? "St") (return True)
+                  <+> fixNetWmViewport
+                  <+> dynamicTitle (title ~? "Vivaldi Settings"    --> doCenterFloat)
 
 
 myConfig = def
@@ -203,7 +212,7 @@ myConfig = def
       -- Borders
     , normalBorderColor  = inactive
     , focusedBorderColor = active
-    } 
+    }
 
 -- Rename EWMH workspaces. Strip screen prefix
 renameWs s _ = [last s]
