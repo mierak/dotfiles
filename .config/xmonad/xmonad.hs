@@ -50,9 +50,9 @@ myTerminal = "st"
 -- Colors
 foreground            = xProp "*foreground"
 background            = xProp "*background"
-backgroundSecondary   = xProp "*backgroundsecondary"
-active                = xProp "*borderselected"
-inactive              = xProp "*borderinactive"
+backgroundSecondary   = xProp "*background-alt"
+active                = xProp "*active"
+inactive              = xProp "*inactive"
 
 -- Window Rules
 myManageHook = composeAll

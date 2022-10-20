@@ -34,3 +34,8 @@ libxft-bgra
 libmtp # required by mtpmount
 ripgrep
 yad
+fzf
+xoxide
+xmonad
+polybar
+pywal-16-colors
