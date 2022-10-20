@@ -1,5 +1,6 @@
 import XMonad
 import System.Exit
+import System.Environment ( lookupEnv )
 
 import XMonad.Actions.OnScreen
 import XMonad.Actions.UpdatePointer
@@ -45,7 +46,7 @@ import PolybarHelpers ( fixNetWmViewport, createPolybar, logScreenLayouts )
 
 -- Vars
 myTerminal :: String
-myTerminal = "st"
+myTerminal = "alacritty"
 
 -- Colors
 foreground            = xProp "*foreground"
@@ -64,6 +65,7 @@ myManageHook = composeAll
              , className =? "discord"                                    --> insertPosition Master Newer <+> doShift "1_1"
              , className =? "Steam" <&&> title =? "Friends List"         --> insertPosition End    Newer <+> doShift "1_1"
              , className =? "Steam" <&&> title =? "Steam - Self Updater" --> doFloat <+> doShift "1_1"
+             , className =? "steam_app_1794680"                          --> doFullFloat
              ]
              where
                   doCenterRectFloat = doRectFloat (W.RationalRect (1 / 4) (1 / 4) (1 / 2) (1 / 2))
@@ -94,19 +96,19 @@ myLayoutHook = lessBorders Screen
                  centeredMaster     = renamed [Replace "|M|"] $ spacing $ smartBorders $ ThreeColMid nmaster delta ratio
                  tabs               = renamed [Replace "[T]"]                          $ tabbed shrinkText myTabTheme
                  monocle            = renamed [Replace "[M]"]           $ noBorders    $ Full
-                 spacing            = spacingRaw True (Border gap 0 gap 0) True (Border 0 gap 0 gap) True
-                 gap                = 10    -- Default gap size between windows
+                 spacing            = spacingRaw False (Border gap 0 gap 0) True (Border 0 gap 0 gap) True
+                 gap                = 20    -- Default gap size between windows
                  nmaster            = 1     -- Default number of windows in master
                  ratio              = 1/2   -- Default proportion of master/stack
                  delta              = 3/100 -- Percent of screen to increment by when resizing panes
 
 myTabTheme = def 
-             { decoHeight           = 16
-             , activeColor          = backgroundSecondary
-             , inactiveColor        = background
-             , activeBorderColor    = active
-             , inactiveBorderColor  = inactive
-             }
+           { decoHeight           = 16
+           , activeColor          = backgroundSecondary
+           , inactiveColor        = background
+           , activeBorderColor    = active
+           , inactiveBorderColor  = inactive
+           }
 
 -- Shift active window to workspace on current screen and switch to it
 shiftAndView :: Int -> X ()
@@ -158,6 +160,7 @@ myKeys c =
     , ("M-h",          addName "Shrink Master Area"              $ sendMessage Shrink)
     , ("M-S-o",        addName "Decrease Spacing"                $ decScreenWindowSpacing 2)
     , ("M-S-p",        addName "Increase Spacing"                $ incScreenWindowSpacing 2)
+	, ("M-p",          addName "Toggle Smart Spacing"            $ toggleSmartSpacing)
     , ("M-t",          addName "Sink Floating Window to Tiled"   $ withFocused $ windows . W.sink)
     ]
     ^++^ subKeys "Workspace Switching"
@@ -206,10 +209,10 @@ myHandleEventHook  = swallowEventHook (className =? "St" <||> className =? "Alac
 
 
 myConfig = def
-    { terminal           = "st"
+    { terminal           = myTerminal
     , modMask            = mod4Mask
     , workspaces         = myWorkspaces
-    , borderWidth        = 4
+    , borderWidth        = 3
     , focusFollowsMouse  = True
     , clickJustFocuses   = False
       -- Hooks

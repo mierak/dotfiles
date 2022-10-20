@@ -18,7 +18,20 @@ Plug 'folke/which-key.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
+Plug 'olimorris/onedarkpro.nvim'
 call plug#end()
+
+
+lua << EOF
+require("onedarkpro").setup {
+  colors = {
+    onedark = {
+      bg = "#1e222a"
+	}
+  }
+}
+EOF
+colorscheme onedarkpro
 
 lua << EOF
   require("which-key").setup {
@@ -35,7 +48,7 @@ require'nvim-web-devicons'.setup {
 EOF
 
 lua require("nvimtree")
-lua require("catppuccin_theme")
+" lua require("catppuccin_theme")
 lua require("lsp")
 
 set tabstop=4

@@ -1,5 +1,5 @@
 autoload -U colors && colors
-PROMPT="%{$fg[blue]%}%{$bg[white]%}  %{$fg[black]%}%B%n %b%{$fg[white]%}%{$bg[blue]%}%{$fg[black]%}%{$bg[blue]%}%B %~ %b%{$reset_color%}%{$fg[blue]%}%{$reset_color%} "
+PROMPT="%{$fg[blue]%}%{$bg[gray]%}  %{$fg[white]%}%B%n %b%{$fg[gray]%}%{$bg[white]%}%{$fg[gray]%}%{$bg[white]%}%B %~ %b%{$reset_color%}%{$fg[white]%}%{$reset_color%} "
 
 # Lines configured by zsh-newuser-install
 HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/histfile"
@@ -79,6 +79,8 @@ bindkey -M visual '^[[P' vi-delete
 #             Misc               #
 #                                #
 ##################################
+
+eval "$(zoxide init zsh)"
 
 lfcd () {
     tmp="$(mktemp)"
