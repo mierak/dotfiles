@@ -24,6 +24,7 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
 
+import XMonad.Util.Cursor
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.EZConfig
 import XMonad.Util.Font
@@ -42,6 +43,10 @@ import XProp ( xProp )
 import NamedActionsHelpers ( subtitle', showKeybindings )
 import PolybarHelpers ( fixNetWmViewport, createPolybar, logScreenLayouts )
 
+-- Vars
+myTerminal :: String
+myTerminal = "st"
+
 -- Colors
 foreground            = xProp "*foreground"
 background            = xProp "*background"
@@ -51,14 +56,17 @@ inactive              = xProp "*borderinactive"
 
 -- Window Rules
 myManageHook = composeAll
-             [ className =? "Gimp"                               --> doFloat
-             , className =? "Xmessage"                           --> doRectFloat (W.RationalRect (1 / 4) (1 / 4) (1 / 2) (1 / 2))
-             , className =? "Yad"                                --> doCenterFloat
-             , title     =? "Microsoft Teams Notification"       --> doFloat
-             , className =? "Microsoft Teams - Preview"          --> doShift "2_2"
-             , className =? "discord"                            --> insertPosition Master Newer <+> doShift "1_1"
-             , className =? "Steam" <&&> title =? "Friends List" --> insertPosition End    Newer <+> doShift "1_1"
+             [ className =? "Gimp"                                       --> doFloat
+             , className =? "Xmessage"                                   --> doCenterRectFloat
+             , className =? "Yad"                                        --> doCenterRectFloat
+             , title     =? "Microsoft Teams Notification"               --> doFloat
+             , className =? "Microsoft Teams - Preview"                  --> doShift "2_2"
+             , className =? "discord"                                    --> insertPosition Master Newer <+> doShift "1_1"
+             , className =? "Steam" <&&> title =? "Friends List"         --> insertPosition End    Newer <+> doShift "1_1"
+             , className =? "Steam" <&&> title =? "Steam - Self Updater" --> doFloat <+> doShift "1_1"
              ]
+             where
+                  doCenterRectFloat = doRectFloat (W.RationalRect (1 / 4) (1 / 4) (1 / 2) (1 / 2))
 
 -- Do on Startup
 myStartupHook :: X ()
@@ -133,7 +141,7 @@ myKeys c =
     [ ("M-S-q",        addName "Quit XMonad"                     $ io (exitWith ExitSuccess))
     , ("M-S-r",        addName "Restart XMonad"                  $ spawn "xmonad --restart")
     , ("M-C-r",        addName "Recompile XMonad"                $ spawn "xmonad --recompile")
-    , ("M-<Return>",   addName "Spawn Terminal"                  $ spawn "st")
+    , ("M-<Return>",   addName "Spawn Terminal"                  $ spawn myTerminal)
     , ("M-q",          addName "Kill Focused Window"             $ kill)
     ]
     ^++^ subKeys "Focus"
@@ -190,9 +198,11 @@ myKeys c =
 myWorkspaces = withScreens 3 ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 -- Swallowing
-myHandleEventHook  = swallowEventHook (className =? "St") (return True)
-                  <+> fixNetWmViewport
-                  <+> dynamicTitle (title ~? "Vivaldi Settings"    --> doCenterFloat)
+myHandleEventHook  = swallowEventHook (className =? "St" <||> className =? "Alacritty") (return True)
+                 <+> fixNetWmViewport
+                 <+> dynamicTitle (title ~? "Vivaldi Settings"    --> doCenterRectFloat)
+                 where
+                      doCenterRectFloat = doRectFloat (W.RationalRect (1 / 4) (1 / 6) (1 / 2) (2 / 3))
 
 
 myConfig = def
