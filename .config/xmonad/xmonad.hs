@@ -130,6 +130,11 @@ toggleFullscreenFloat w = windows $ \s -> if M.member w (W.floating s)
                                               then W.sink w s
                                               else (W.float w (W.RationalRect 0 0 1 1) s)
 
+toggleFloat :: Window -> X ()
+toggleFloat w = windows $ \s -> if M.member w $ W.floating s
+                                    then W.sink w s
+                                    else (W.float w (W.RationalRect (1 / 6) (1 / 6) (2 / 3) (2 / 3)) s)
+
 nextLayout :: X ()
 nextLayout = do
              sendMessage NextLayout
@@ -160,8 +165,8 @@ myKeys c =
     , ("M-h",          addName "Shrink Master Area"              $ sendMessage Shrink)
     , ("M-S-o",        addName "Decrease Spacing"                $ decScreenWindowSpacing 2)
     , ("M-S-p",        addName "Increase Spacing"                $ incScreenWindowSpacing 2)
-	, ("M-p",          addName "Toggle Smart Spacing"            $ toggleSmartSpacing)
-    , ("M-t",          addName "Sink Floating Window to Tiled"   $ withFocused $ windows . W.sink)
+    , ("M-p",          addName "Toggle Smart Spacing"            $ toggleSmartSpacing)
+    , ("M-t",          addName "Sink Floating Window to Tiled"   $ withFocused toggleFloat)
     ]
     ^++^ subKeys "Workspace Switching"
     [ ("M-1",          addName "Switch to Workspace 1"            $ viewWorkspace 1)
