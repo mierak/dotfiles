@@ -1,0 +1,34 @@
+configuration {
+//	modes: "window,drun,run,combi,calc";
+	modi: "run,drun,window,calc";
+	show-icons: true;
+	terminal: "st";
+	drun-display-format: "{icon} {name}";
+	window-format: "{icon} {title}";
+	location: 0;
+	display-drun: "   Apps ";
+    	display-run: "   Run ";
+	display-window: "﩯  Window";
+	display-calc: "  Calc";
+	display-Network: " 󰤨  Network";
+        sidebar-mode: true;
+
+	kb-accept-entry: "Control+m,Return,KP_Enter";
+	kb-remove-to-eol: "";
+	kb-mode-next: "Control+k";
+	kb-mode-previous: "Control+j";
+	kb-delete-entry: "Control+Delete";
+  timeout {
+      action: "kb-cancel";
+      delay:  0;
+  }
+  filebrowser {
+      directories-first: true;
+      sorting-method:    "name";
+  }
+  icon {
+      theme: "hicolor";
+  }
+}
+
+@theme "catppuccin-macchiato"
