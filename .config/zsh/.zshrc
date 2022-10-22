@@ -14,6 +14,7 @@ unsetopt beep
 #         Autocomplete           #    
 #                                #    
 ################################## 
+fpath+="${XDG_DATA_HOME:-$HOME/.local/share}/zsh"
 autoload -U compinit bashcompinit
 zstyle ':completion:*' menu select
 # Autocomplete commands prefixedd by "sudo" with elevated privileges
@@ -98,7 +99,7 @@ lfcd () {
 bindkey -s '^o' '^ulfcd\n'
 
 # Bind sxiv thumbnail mode in cwd
-bindkey -s '^t' 'sxiv -t .^M'
+bindkey -s '^t' 'nsxiv -t .^M'
 bindkey '^R' history-incremental-search-backward
 ##################################
 #                                #
