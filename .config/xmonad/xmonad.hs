@@ -1,6 +1,5 @@
 import XMonad
 import System.Exit
-import System.Environment ( lookupEnv )
 
 import XMonad.Actions.OnScreen
 import XMonad.Actions.UpdatePointer
@@ -9,6 +8,7 @@ import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.InsertPosition
+import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
@@ -44,11 +44,21 @@ import XProp ( xProp )
 import NamedActionsHelpers ( subtitle', showKeybindings )
 import PolybarHelpers ( fixNetWmViewport, createPolybar, logScreenLayouts )
 
--- Vars
+-- Quick Config
 myTerminal :: String
 myTerminal = "alacritty"
 
--- Colors
+spawnOnceOnStart :: [String]
+spawnOnceOnStart =  [ "discord"
+                    , "vivaldi-stable"
+                    ]
+
+spawnOnStart :: [String]
+spawnOnStart =  [ "xsetroot -cursor_name left_ptr"
+                , "xmodmap -e 'add mod4 = Menu'"
+                ]
+
+-- XResources Colors
 foreground            = xProp "*foreground"
 background            = xProp "*background"
 backgroundSecondary   = xProp "*background-alt"
@@ -78,10 +88,8 @@ myStartupHook = do
                 windows $ greedyViewOnScreen 2 "2_1"
                 windows $ greedyViewOnScreen 0 "0_1"
                 windows $ W.view "0_1"
-                spawn     "xsetroot -cursor_name left_ptr"
-                spawn     "xmodmap -e 'add mod4 = Menu'"
-                spawnOnce "discord"
-                spawnOnce "vivaldi-stable"
+                mapM_ spawn     spawnOnStart
+                mapM_ spawnOnce spawnOnceOnStart
 
 -- Layouts config
 myLayoutHook = lessBorders Screen
@@ -166,7 +174,8 @@ myKeys c =
     , ("M-S-o",        addName "Decrease Spacing"                $ decScreenWindowSpacing 2)
     , ("M-S-p",        addName "Increase Spacing"                $ incScreenWindowSpacing 2)
     , ("M-p",          addName "Toggle Smart Spacing"            $ toggleSmartSpacing)
-    , ("M-t",          addName "Sink Floating Window to Tiled"   $ withFocused toggleFloat)
+    , ("M-t",          addName "Toggle Floating"                 $ withFocused toggleFloat)
+    , ("M-b",          addName "Toggle Statusbar"                $ sendMessage ToggleStruts)
     ]
     ^++^ subKeys "Workspace Switching"
     [ ("M-1",          addName "Switch to Workspace 1"            $ viewWorkspace 1)
@@ -232,19 +241,15 @@ myConfig = def
     , focusedBorderColor = active
     }
 
--- Rename EWMH workspaces. Strip screen prefix
-renameWs s _ = [last s]
-
 main :: IO ()
 main = do
      xmonad
      . ewmhFullscreen
      . ewmh
      . setEwmhActivateHook doAskUrgent
-     . addEwmhWorkspaceRename (pure renameWs)
-     -- . withEasySB (createXMobar 0 <> createXMobar 1 <> createXMobar 2) defToggleStrutsKey
-     . withEasySB (createPolybar "left" <> createPolybar "middle" <> createPolybar "right") defToggleStrutsKey
+     . addEwmhWorkspaceRename (pure $ \s _ -> [last s])
      . addDescrKeys' ((mod4Mask, xK_F1), showKeybindings) myKeys
+     . withEasySB (createPolybar "left" <> createPolybar "middle" <> createPolybar "right") defToggleStrutsKey
      $ myConfig
 
 -- XMobar config
