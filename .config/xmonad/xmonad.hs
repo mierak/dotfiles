@@ -16,6 +16,7 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.WindowSwallowing
 
 import XMonad.Layout.Dwindle as Dwindle
+import XMonad.Layout.Grid
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.NoBorders
@@ -73,6 +74,7 @@ myManageHook = composeAll
              , title     =? "Microsoft Teams Notification"               --> doFloat
              , className =? "Microsoft Teams - Preview"                  --> doShift "2_2"
              , className =? "discord"                                    --> insertPosition Master Newer <+> doShift "1_1"
+             , className =? "Steam" <&&> title /=? "Friends List"        --> doShift "0_5"
              , className =? "Steam" <&&> title =? "Friends List"         --> insertPosition End    Newer <+> doShift "1_1"
              , className =? "Steam" <&&> title =? "Steam - Self Updater" --> doFloat <+> doShift "1_1"
              , className =? "steam_app_1794680"                          --> doFullFloat
@@ -96,7 +98,7 @@ myLayoutHook = lessBorders Screen
              $ onWorkspace "1_1" (bigMasterStack ||| secondaryLayouts)
              $ masterStack ||| secondaryLayouts
              where
-                 secondaryLayouts   = dwindle ||| tabs ||| bottomStack ||| monocle ||| centeredMaster 
+                 secondaryLayouts   = grid ||| dwindle ||| tabs ||| bottomStack ||| monocle ||| centeredMaster 
                  masterStack        = renamed [Replace "[]="] $ spacing                $ mouseResizableTile { draggerType = FixedDragger 0 20, slaveFrac = ratio, nmaster = nmaster, masterFrac = ratio, fracIncrement = delta }
                  bottomStack        = renamed [Replace "TTT"] $ spacing                $ mouseResizableTile { draggerType = FixedDragger 0 20, slaveFrac = ratio, nmaster = nmaster, masterFrac = ratio, fracIncrement = delta, isMirrored = True }
                  bigMasterStack     = renamed [Replace "[]|"] $ spacing $ smartBorders $ mouseResizableTile { draggerType = FixedDragger 0 20, slaveFrac = ratio, nmaster = nmaster, masterFrac = 0.8, fracIncrement = delta }
@@ -104,6 +106,7 @@ myLayoutHook = lessBorders Screen
                  centeredMaster     = renamed [Replace "|M|"] $ spacing $ smartBorders $ ThreeColMid nmaster delta ratio
                  tabs               = renamed [Replace "[T]"]                          $ tabbed shrinkText myTabTheme
                  monocle            = renamed [Replace "[M]"]           $ noBorders    $ Full
+                 grid               = renamed [Replace "HHH"] $ spacing $ smartBorders $ Grid
                  spacing            = spacingRaw False (Border gap 0 gap 0) True (Border 0 gap 0 gap) True
                  gap                = 20    -- Default gap size between windows
                  nmaster            = 1     -- Default number of windows in master
@@ -148,6 +151,11 @@ nextLayout = do
              sendMessage NextLayout
              logScreenLayouts
 
+toggleAllSpacing :: X ()
+toggleAllSpacing = do
+                   toggleSmartSpacing
+                   toggleWindowSpacingEnabled
+                   toggleScreenSpacingEnabled
 
 myKeys :: XConfig l0 -> [((KeyMask, KeySym), NamedAction)]
 myKeys c =
@@ -173,7 +181,7 @@ myKeys c =
     , ("M-h",          addName "Shrink Master Area"              $ sendMessage Shrink)
     , ("M-S-o",        addName "Decrease Spacing"                $ decScreenWindowSpacing 2)
     , ("M-S-p",        addName "Increase Spacing"                $ incScreenWindowSpacing 2)
-    , ("M-p",          addName "Toggle Smart Spacing"            $ toggleSmartSpacing)
+    , ("M-p",          addName "Toggle Spacing"                 $ toggleAllSpacing)
     , ("M-t",          addName "Toggle Floating"                 $ withFocused toggleFloat)
     , ("M-b",          addName "Toggle Statusbar"                $ sendMessage ToggleStruts)
     ]
