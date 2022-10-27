@@ -3,6 +3,9 @@
 control + alt + shift + p
     powermenu
 
+super + shift + c
+    confedit
+
 # Screenshots
 super + shift + s
 	screenshot
