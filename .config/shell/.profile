@@ -23,6 +23,7 @@ export CUDA_CACHE_PATH="${XDG_CACHE_HOME:-$HOME/.cache}/nv"
 export STACK_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/stack"
 export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+export XAUTHORITY="${XDG_RUNTIME_DIR:-$HOME}/Xauthority"
 
 export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 
