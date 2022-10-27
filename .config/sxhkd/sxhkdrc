@@ -1,7 +1,7 @@
 # DPMS
 # Turn off display after a short delay
 control + alt + shift + p
-	sleep 1 && xset dpms force suspend && slock
+    powermenu
 
 # Screenshots
 super + shift + s

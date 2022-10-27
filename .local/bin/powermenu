@@ -1,0 +1,8 @@
+#!/bin/sh
+
+case "$(printf "⏻ Shutdown| Restart| Lock| Logout" | rofi -sep "|" -dmenu -l 4 -p "ﮣ Power" )" in
+    "⏻ Shutdown") exec loginctl poweroff ;;
+    " Restart") exec loginctl reboot ;;
+    " Lock") sleep 1 && xset dpms force suspend && slock ;;
+    " Logout") exec loginctl kill-user "$USER" ;;
+esac
