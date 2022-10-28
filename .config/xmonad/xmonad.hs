@@ -67,17 +67,19 @@ active                = xProp "*active"
 inactive              = xProp "*inactive"
 
 -- Window Rules
-myManageHook = composeAll
+myManageHook = composeOne
+             [ transience
+             , className =? "Yad" <&&> title  =? "Calendar"              -?> doFocus <+> doFloatAt 0.87 0.025
+             , className =? "Yad"                                        -?> doCenterRectFloat
+             , title     =? "Microsoft Teams Notification"               -?> doFloat
+             , className =? "Microsoft Teams - Preview"                  -?> doShift "2_2"
+             , className =? "Steam" <&&> title =? "Friends List"         -?> insertPosition End    Newer <+> doShift "1_1"
+             , className =? "Steam" <&&> title ^? "Steam"                -?> doShift "0_5"
+             , className =? "discord"                                    -?> insertPosition Master Newer <+> doShift "1_1"
+             , className =? "Vampire_Survivors"                          -?> doFullFloat
+             ] <+> composeAll
              [ className =? "Gimp"                                       --> doFloat
              , className =? "Xmessage"                                   --> doCenterRectFloat
-             , className =? "Yad"                                        --> doCenterRectFloat
-             , title     =? "Microsoft Teams Notification"               --> doFloat
-             , className =? "Microsoft Teams - Preview"                  --> doShift "2_2"
-             , className =? "discord"                                    --> insertPosition Master Newer <+> doShift "1_1"
-             , className =? "Steam" <&&> title /=? "Friends List"        --> doShift "0_5"
-             , className =? "Steam" <&&> title =? "Friends List"         --> insertPosition End    Newer <+> doShift "1_1"
-             , className =? "Steam" <&&> title =? "Steam - Self Updater" --> doFloat <+> doShift "1_1"
-             , className =? "steam_app_1794680"                          --> doFullFloat
              ]
              where
                   doCenterRectFloat = doRectFloat (W.RationalRect (1 / 4) (1 / 4) (1 / 2) (1 / 2))
@@ -181,7 +183,7 @@ myKeys c =
     , ("M-h",          addName "Shrink Master Area"              $ sendMessage Shrink)
     , ("M-S-o",        addName "Decrease Spacing"                $ decScreenWindowSpacing 2)
     , ("M-S-p",        addName "Increase Spacing"                $ incScreenWindowSpacing 2)
-    , ("M-p",          addName "Toggle Spacing"                 $ toggleAllSpacing)
+    , ("M-p",          addName "Toggle Spacing"                  $ toggleAllSpacing)
     , ("M-t",          addName "Toggle Floating"                 $ withFocused toggleFloat)
     , ("M-b",          addName "Toggle Statusbar"                $ sendMessage ToggleStruts)
     ]
