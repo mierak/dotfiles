@@ -1,5 +1,4 @@
 call plug#begin('~/.local/share/nvim/plugged')
-Plug 'ap/vim-css-color'
 Plug 'jreybert/vimagit'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -19,8 +18,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'olimorris/onedarkpro.nvim'
+Plug 'airblade/vim-gitgutter'
+Plug 'norcalli/nvim-colorizer.lua'
 call plug#end()
-
 
 lua << EOF
 require("onedarkpro").setup {
@@ -48,7 +48,6 @@ require'nvim-web-devicons'.setup {
 EOF
 
 lua require("nvimtree")
-" lua require("catppuccin_theme")
 lua require("lsp")
 
 set tabstop=4
@@ -56,10 +55,16 @@ set timeoutlen=500
 set number relativenumber
 set title
 
+" Setup GitGutters for dotfiles in home dir
+augroup GitGutterDotsGroup
+    autocmd!
+    autocmd BufWinEnter * if @% =~# '.config\|.local/bin\|.local/share' | let g:gitgutter_git_args = '--git-dir=$HOME/.dots/ --work-tree=$HOME' | else | let g:gitgutter_git_args = ''
+augroup END
 let g:airline_powerline_fonts = 1
 let g:airline_theme='bubblegum'
 " Rainbow brackets
 let g:rainbow_active = 1
+lua require'colorizer'.setup()
 
 let mapleader="\<Space>"
 
