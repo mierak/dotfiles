@@ -191,28 +191,6 @@ myKeys c =
     , ("M-t",          addName "Toggle Floating"                 $ withFocused toggleFloat)
     , ("M-b",          addName "Toggle Statusbar"                $ sendMessage ToggleStruts)
     ]
-    ^++^ subKeys "Workspace Switching"
-    [ ("M-1",          addName "Switch to Workspace 1"            $ viewWorkspace 1)
-    , ("M-2",          addName "Switch to Workspace 2"            $ viewWorkspace 2)
-    , ("M-3",          addName "Switch to Workspace 3"            $ viewWorkspace 3)
-    , ("M-4",          addName "Switch to Workspace 4"            $ viewWorkspace 4)
-    , ("M-5",          addName "Switch to Workspace 5"            $ viewWorkspace 5)
-    , ("M-6",          addName "Switch to Workspace 6"            $ viewWorkspace 6)
-    , ("M-7",          addName "Switch to Workspace 7"            $ viewWorkspace 7)
-    , ("M-8",          addName "Switch to Workspace 8"            $ viewWorkspace 8)
-    , ("M-9",          addName "Switch to Workspace 9"            $ viewWorkspace 9)
-    ]
-    ^++^ subKeys "Move and Switch to Workspace"
-    [ ("M-S-1",        addName "Move and Switch To Workspace 1"   $ shiftAndView  1)
-    , ("M-S-2",        addName "Move and Switch To Workspace 2"   $ shiftAndView  2)
-    , ("M-S-3",        addName "Move and Switch To Workspace 3"   $ shiftAndView  3)
-    , ("M-S-4",        addName "Move and Switch To Workspace 4"   $ shiftAndView  4)
-    , ("M-S-5",        addName "Move and Switch To Workspace 5"   $ shiftAndView  5)
-    , ("M-S-6",        addName "Move and Switch To Workspace 6"   $ shiftAndView  6)
-    , ("M-S-7",        addName "Move and Switch To Workspace 7"   $ shiftAndView  7)
-    , ("M-S-8",        addName "Move and Switch To Workspace 8"   $ shiftAndView  8)
-    , ("M-S-9",        addName "Move and Switch To Workspace 9"   $ shiftAndView  9)
-    ]
     ^++^ subKeys "Switch to Screen"
     [ ("M-,",          addName "Switch to Left Screen"            $ screenWorkspace 2 >>= flip whenJust (windows . W.view))
     , ("M-.",          addName "Switch to Middle Screen"          $ screenWorkspace 0 >>= flip whenJust (windows . W.view))
@@ -224,18 +202,29 @@ myKeys c =
     , ("M-S-.",        addName "Move and Switch to Middle Screen" $ screenWorkspace 0 >>= flip whenJust (windows . shiftScreenAndView))
     , ("M-S-/",        addName "Move and Switch to Right Screen"  $ screenWorkspace 1 >>= flip whenJust (windows . shiftScreenAndView))
     ]
-    ^++^ subKeys "Scratchpads"
+    ^++^ subKeys "Workspace Switching"
+    [ (key, func) | n <- [1..9]
+                  , let name = "Switch to Workspace " ++ show n
+                  , let key  = "M-" ++ show n
+                  , let func = addName name $ viewWorkspace n
+    ]
+    ^++^ subKeys "Move and Switch to Workspace"
+    [ (key, func) | n <- [1..9]
+                  , let name = "Move and Switch To Workspace " ++ show n
+                  , let key  = "M-S-" ++ show n
+                  , let func = addName name $ shiftAndView n
+    ]
+    ^++^ subKeys "Scratchpads" (
     [ ("M-<F1>",       addName "Toggle Terminal Scratchpad"       $ namedScratchpadAction myScratchpads "scratch-term")
     , ("M-0",          addName "Switch to Scratchpad Workspace"   $ windows $ W.view scratchpadWorkspaceTag)
-    , ("M-s S-<F1>",   addName "Create Dynamic Scratchpad 1"      $ withFocused $ toggleDynamicNSP "dyn-scratchpad-1")
-    , ("M-s   <F1>",   addName "Toggle Dynamic Scratchpad 1"      $               dynamicNSPAction "dyn-scratchpad-1")
-    , ("M-s S-<F2>",   addName "Create Dynamic Scratchpad 2"      $ withFocused $ toggleDynamicNSP "dyn-scratchpad-2")
-    , ("M-s   <F2>",   addName "Toggle Dynamic Scratchpad 2"      $               dynamicNSPAction "dyn-scratchpad-2")
-    , ("M-s S-<F3>",   addName "Create Dynamic Scratchpad 3"      $ withFocused $ toggleDynamicNSP "dyn-scratchpad-3")
-    , ("M-s   <F3>",   addName "Toggle Dynamic Scratchpad 3"      $               dynamicNSPAction "dyn-scratchpad-3")
-    , ("M-s S-<F4>",   addName "Create Dynamic Scratchpad 4"      $ withFocused $ toggleDynamicNSP "dyn-scratchpad-4")
-    , ("M-s   <F4>",   addName "Toggle Dynamic Scratchpad 4"      $               dynamicNSPAction "dyn-scratchpad-4")
-    ]
+    ] ++
+    [ (key, func) | n <- [1..4]
+                  , (mod, fn, prefix) <- [ ("S-<F", \s -> withFocused $ toggleDynamicNSP s, "Create")
+                                         , ("<F"  , \s -> dynamicNSPAction s              , "Toggle")]
+                  , let name = prefix ++ " Dynamic Scratchpad " ++ show n
+                  , let key  = "M-s " ++ mod ++ show n ++ ">"
+                  , let func = addName name $ fn ("dyn-scratchpad-" ++ show n)
+    ])
 
 -- Workspaces config
 myWorkspaces = withScreens 3 ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
