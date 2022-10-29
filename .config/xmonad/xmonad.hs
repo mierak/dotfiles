@@ -4,14 +4,12 @@ import System.Exit
 import XMonad.Actions.OnScreen
 import XMonad.Actions.UpdatePointer
 
--- import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.StatusBar
-import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.WindowSwallowing
 
@@ -26,20 +24,14 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
 
-import XMonad.Util.Cursor
-import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.EZConfig
-import XMonad.Util.Font
-import XMonad.Util.Loggers
 import XMonad.Util.NamedActions
+import XMonad.Util.NamedScratchpad
 import XMonad.Util.SpawnOnce
-import XMonad.Util.WorkspaceCompare
+import XMonad.Util.WorkspaceCompare ( filterOutWs )
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
-
-import Data.Maybe (maybeToList, fromMaybe)
-import Control.Monad ( join, when )
 
 import XProp ( xProp )
 import NamedActionsHelpers ( subtitle', showKeybindings )
@@ -66,8 +58,18 @@ backgroundSecondary   = xProp "*background-alt"
 active                = xProp "*active"
 inactive              = xProp "*inactive"
 
+-- Scratchpad Config
+myScratchpads = [ createNS "scratch-term" ""
+                ]
+                where
+                     spawnTerm cls        = myTerminal ++ " --class " ++ cls
+                     spawnTermCmd cls cmd = myTerminal ++ " --class " ++ cls ++ " -e " ++ cmd
+                     createNS name cmd    = case cmd of
+                                                [] -> NS name (spawnTerm name)        (className =? name) defaultFloating
+                                                _  -> NS name (spawnTermCmd name cmd) (className =? name) defaultFloating
+
 -- Window Rules
-myManageHook = composeOne
+myManageHook = composeOne 
              [ transience
              , className =? "Yad" <&&> title  =? "Calendar"              -?> doFocus <+> doFloatAt 0.87 0.025
              , className =? "Yad"                                        -?> doCenterRectFloat
@@ -77,10 +79,12 @@ myManageHook = composeOne
              , className =? "Steam" <&&> title ^? "Steam"                -?> doShift "0_5"
              , className =? "discord"                                    -?> insertPosition Master Newer <+> doShift "1_1"
              , className =? "Vampire_Survivors"                          -?> doFullFloat
-             ] <+> composeAll
+             ]
+             <+> composeAll
              [ className =? "Gimp"                                       --> doFloat
              , className =? "Xmessage"                                   --> doCenterRectFloat
              ]
+             <+> namedScratchpadManageHook myScratchpads
              where
                   doCenterRectFloat = doRectFloat (W.RationalRect (1 / 4) (1 / 4) (1 / 2) (1 / 2))
 
@@ -220,6 +224,18 @@ myKeys c =
     , ("M-S-.",        addName "Move and Switch to Middle Screen" $ screenWorkspace 0 >>= flip whenJust (windows . shiftScreenAndView))
     , ("M-S-/",        addName "Move and Switch to Right Screen"  $ screenWorkspace 1 >>= flip whenJust (windows . shiftScreenAndView))
     ]
+    ^++^ subKeys "Scratchpads"
+    [ ("M-<F1>",       addName "Toggle Terminal Scratchpad"       $ namedScratchpadAction myScratchpads "scratch-term")
+    , ("M-0",          addName "Switch to Scratchpad Workspace"   $ windows $ W.view scratchpadWorkspaceTag)
+    , ("M-s S-<F1>",   addName "Create Dynamic Scratchpad 1"      $ withFocused $ toggleDynamicNSP "dyn-scratchpad-1")
+    , ("M-s   <F1>",   addName "Toggle Dynamic Scratchpad 1"      $               dynamicNSPAction "dyn-scratchpad-1")
+    , ("M-s S-<F2>",   addName "Create Dynamic Scratchpad 2"      $ withFocused $ toggleDynamicNSP "dyn-scratchpad-2")
+    , ("M-s   <F2>",   addName "Toggle Dynamic Scratchpad 2"      $               dynamicNSPAction "dyn-scratchpad-2")
+    , ("M-s S-<F3>",   addName "Create Dynamic Scratchpad 3"      $ withFocused $ toggleDynamicNSP "dyn-scratchpad-3")
+    , ("M-s   <F3>",   addName "Toggle Dynamic Scratchpad 3"      $               dynamicNSPAction "dyn-scratchpad-3")
+    , ("M-s S-<F4>",   addName "Create Dynamic Scratchpad 4"      $ withFocused $ toggleDynamicNSP "dyn-scratchpad-4")
+    , ("M-s   <F4>",   addName "Toggle Dynamic Scratchpad 4"      $               dynamicNSPAction "dyn-scratchpad-4")
+    ]
 
 -- Workspaces config
 myWorkspaces = withScreens 3 ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -233,23 +249,23 @@ myHandleEventHook  = swallowEventHook (className =? "St" <||> className =? "Alac
 
 
 myConfig = def
-    { terminal           = myTerminal
-    , modMask            = mod4Mask
-    , workspaces         = myWorkspaces
-    , borderWidth        = 3
-    , focusFollowsMouse  = True
-    , clickJustFocuses   = False
-      -- Hooks
-    , layoutHook         = myLayoutHook
-    , manageHook         = myManageHook
-    , handleEventHook    = myHandleEventHook
-    , logHook            = updatePointer (0.5, 0.5) (0, 0)
-    , startupHook        = myStartupHook
+         { terminal           = myTerminal
+         , modMask            = mod4Mask
+         , workspaces         = myWorkspaces
+         , borderWidth        = 3
+         , focusFollowsMouse  = True
+         , clickJustFocuses   = False
+           -- Hooks
+         , layoutHook         = myLayoutHook
+         , manageHook         = myManageHook
+         , handleEventHook    = myHandleEventHook
+         , logHook            = updatePointer (0.5, 0.5) (0, 0)
+         , startupHook        = myStartupHook
 
-      -- Borders
-    , normalBorderColor  = inactive
-    , focusedBorderColor = active
-    }
+           -- Borders
+         , normalBorderColor  = inactive
+         , focusedBorderColor = active
+         }
 
 main :: IO ()
 main = do
@@ -258,43 +274,7 @@ main = do
      . ewmh
      . setEwmhActivateHook doAskUrgent
      . addEwmhWorkspaceRename (pure $ \s _ -> [last s])
-     . addDescrKeys' ((mod4Mask, xK_F1), showKeybindings) myKeys
+     . addEwmhWorkspaceSort (pure $ filterOutWs [scratchpadWorkspaceTag])
+     . addDescrKeys' ((mod4Mask, xK_F12), showKeybindings) myKeys
      . withEasySB (createPolybar "left" <> createPolybar "middle" <> createPolybar "right") defToggleStrutsKey
      $ myConfig
-
--- XMobar config
-{- Currently not needed as we are using polybar with EWMH
-myXmobarPP screen = def
-    { ppSep             = foreground " • "
-    , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = activeWsBorder . activeWsColor . pad
-    , ppHidden          = foreground . pad
-    , ppHiddenNoWindows = inactive . pad
-    , ppVisible         = pad
-    , ppUrgent          = urgentWsBorder . urgentWsColor . pad
-    , ppOrder           = \(ws : _ : _ : extras) -> ws : extras
-    , ppExtras          = [ logLayoutOnScreen screen
-                          , logTitlesOnScreen screen formatFocused formatUnfocused
-                          ]
-    }
-  where
-    formatFocused   = wrap (white    "[") (white    "]") . foreground . ppWindow
-    formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . inactive   . ppWindow
-    ppWindow        = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 80
-    activeWsBorder  = xmobarBorder "Full" "#363a4f" 4
-    activeWsColor   = xmobarColor "#CAD3F5" "#363a4f"
-    urgentWsBorder  = xmobarBorder "Full" "#ED8796" 4
-    urgentWsColor   = xmobarColor "#24273A" "#ED8796"
-    white           = xmobarColor "#f8f8f2" ""
-    red             = xmobarColor "#ED8796" ""
-    yellow          = xmobarColor "#f1fa8c" ""
-    lowWhite        = xmobarColor "#bbbbbb" ""
-    foreground      = xmobarColor "#CAD3F5" ""
-    active          = xmobarColor "#B7BDF8" ""
-    inactive        = xmobarColor "#6E738D" ""
-
-marshallMyPP screen = clickablePP $ marshallPP screen $ myXmobarPP screen
-createXMobar screen = do
-                      statusBarPropTo ("XMONAD_LOG_" ++ show screen) ("xmobar -x " ++ show screen ++ " ~/.config/xmobar/xmobarrc" ++ show screen)
-                      $ marshallMyPP (S screen)
--}
