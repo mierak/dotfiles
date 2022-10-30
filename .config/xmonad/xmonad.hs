@@ -51,7 +51,11 @@ spawnOnStart =  [ "xsetroot -cursor_name left_ptr"
                 , "xmodmap -e 'add mod4 = Menu'"
                 ]
 
+scratchpadCount :: Int
+scratchpadCount = 4
+
 -- XResources Colors
+foreground, background, backgroundSecondary, active, inactive :: String
 foreground            = xProp "*foreground"
 background            = xProp "*background"
 backgroundSecondary   = xProp "*background-alt"
@@ -59,14 +63,17 @@ active                = xProp "*active"
 inactive              = xProp "*inactive"
 
 -- Scratchpad Config
-myScratchpads = [ createNS "scratch-term" ""
-                ]
+myScratchpads = [ createNS ("scratch-term-" ++ show n) "" f | (n, f) <- zip [1..scratchpadCount] [topRect, rightRect, bottomRect, leftRect]]
                 where
                      spawnTerm cls        = myTerminal ++ " --class " ++ cls
                      spawnTermCmd cls cmd = myTerminal ++ " --class " ++ cls ++ " -e " ++ cmd
-                     createNS name cmd    = case cmd of
-                                                [] -> NS name (spawnTerm name)        (className =? name) defaultFloating
-                                                _  -> NS name (spawnTermCmd name cmd) (className =? name) defaultFloating
+                     createNS name cmd f  = case cmd of
+                                                [] -> NS name (spawnTerm name)        (className =? name) f
+                                                _  -> NS name (spawnTermCmd name cmd) (className =? name) f
+                     topRect              = customFloating $ W.RationalRect 0.05 0.025 0.9 0.750
+                     rightRect            = customFloating $ W.RationalRect 0.50 0.025 0.5 0.975
+                     bottomRect           = customFloating $ W.RationalRect 0.05 0.250 0.9 0.750
+                     leftRect             = customFloating $ W.RationalRect    0 0.025 0.5 0.975
 
 -- Window Rules
 myManageHook = composeOne 
@@ -215,15 +222,19 @@ myKeys c =
                   , let func = addName name $ shiftAndView n
     ]
     ^++^ subKeys "Scratchpads" (
-    [ ("M-<F1>",       addName "Toggle Terminal Scratchpad"       $ namedScratchpadAction myScratchpads "scratch-term")
-    , ("M-0",          addName "Switch to Scratchpad Workspace"   $ windows $ W.view scratchpadWorkspaceTag)
+    [ ("M-0",          addName "Switch to Scratchpad Workspace"   $ windows $ W.view scratchpadWorkspaceTag)
     ] ++
-    [ (key, func) | n <- [1..4]
+    [ (key, func) | n <- [1..scratchpadCount]
                   , (mod, fn, prefix) <- [ ("S-<F", \s -> withFocused $ toggleDynamicNSP s, "Create")
                                          , ("<F"  , \s -> dynamicNSPAction s              , "Toggle")]
                   , let name = prefix ++ " Dynamic Scratchpad " ++ show n
                   , let key  = "M-s " ++ mod ++ show n ++ ">"
                   , let func = addName name $ fn ("dyn-scratchpad-" ++ show n)
+    ] ++
+    [ (key, func) | n <- [1..scratchpadCount]
+                  , let name = "Toggle Terminal Scratchpad " ++ show n
+                  , let key  = "M-<F" ++ show n ++ ">"
+                  , let func = addName name $ namedScratchpadAction myScratchpads ("scratch-term-" ++ show n)
     ])
 
 -- Workspaces config
