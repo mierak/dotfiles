@@ -1,0 +1,56 @@
+#!/bin/sh
+# Convenience script to control/get status of volume levels
+# Notifies polybar to update if it is running
+# Shows dunst notification with volume bar
+# when "-sound" is passed as a second argument, also plays a sound
+
+play_sound=0
+if [ "$2" = "-sound" ]; then
+    play_sound=1
+fi
+
+play_sound() {
+    [ "$play_sound" = 0 ] && return 0
+    file="${XDG_DATA_HOME:-$HOME/.local/share}/systemsounds/pop.mp3"
+    if [ -f "$file" ]; then
+        ffplay "$file" -nodisp -autoexit > /dev/null 2>&1
+    fi
+}
+
+notify_mic_volume() {
+    [ "$(pgrep polybar)" ] && polybar-msg action mic-volume hook 0 > /dev/null 2>&1
+    dunstify -h int:value:$(($(pamixer --default-source --get-volume) / 2)) "Mic Volume" -r 101 "$(pamixer --default-source --get-volume)%"
+    play_sound
+}
+notify_mic_icon() {
+    [ "$(pgrep polybar)" ] && polybar-msg action mic-volume-icon hook 0 > /dev/null 2>&1
+    status=""
+    [ "$(pamixer --default-source --get-mute)" = true ] && status="Muted" || status="Unmuted"
+    dunstify "Microphone $status" -r 101
+    play_sound
+}
+notify_volume() {
+    [ "$(pgrep polybar)" ] && polybar-msg action volume hook 0 > /dev/null 2>&1
+    dunstify -h int:value:"$(pamixer --get-volume)" "Volume" -r 100 "$(pamixer --get-volume)%"
+    play_sound
+}
+notify_icon() {
+    [ "$(pgrep polybar)" ] && polybar-msg action volume-icon hook 0 > /dev/null 2>&1
+    status=""
+    [ "$(pamixer --get-mute)" = true ] && status="Muted" || status="Unmuted"
+    dunstify "Speakers $status" -r 100
+    play_sound
+}
+
+case $1 in
+    "status")         if [ "$(pamixer --get-mute)" = "true" ]; then echo "婢"; else echo ""; fi ;;
+    "mic-status")     if [ "$(pamixer --default-source --get-mute)" = "true" ]; then echo ""; else echo ""; fi ;;
+    "volume")         pamixer --get-volume ;;
+    "mic-volume")     pamixer --default-source --get-volume ;;
+    "inc-volume")     pamixer --allow-boost -i 3; notify_volume ;;
+    "dec-volume")     pamixer --allow-boost -d 3; notify_volume ;;
+    "mic-inc-volume") pamixer --default-source --allow-boost -i 3; notify_mic_volume ;;
+    "mic-dec-volume") pamixer --default-source --allow-boost -d 3; notify_mic_volume ;;
+    "toggle")         pamixer -t; notify_icon ;;
+    "mic-toggle")     pamixer --default-source -t; notify_mic_icon ;;
+esac
