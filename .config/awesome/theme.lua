@@ -19,10 +19,11 @@ local inactive = awesome.xrdb_get_value("", "inactive")
 local bg_alt   = awesome.xrdb_get_value("", "background-alt")
 
 theme.bar_height    = 28
-theme.bar_padding = 5
+theme.bar_padding   = 5
 
-theme.font          = "JetBrains Mono Nerd Font Bold 9"
+theme.font          = "JetBrains Mono Nerd Font Bold 11"
 theme.bar_font      = "JetBrains Mono Nerd Font Bold 9"
+theme.font_title    = "JetBrains Mono Nerd Font Bold 13"
 
 theme.inactive      = inactive
 theme.active        = active
@@ -40,7 +41,7 @@ theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap         = dpi(10)
-theme.border_width        = dpi(3)
+theme.border_width        = dpi(4)
 theme.gap_single_client   = true
 theme.border_color_normal = inactive
 theme.border_color_active = active
@@ -49,6 +50,8 @@ theme.border_color_marked = "#91231c"
 theme.color1 = xrdb.color1
 theme.color3 = xrdb.color3
 theme.color4 = xrdb.color4
+
+theme.margin = 10
 
 -- There are other variable sets
 -- overriding the default one when
@@ -62,14 +65,17 @@ theme.color4 = xrdb.color4
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
+theme.hotkeys_font = theme.font
+theme.hotkeys_description_font = theme.font
+
 -- Generate taglist squares:
-local taglist_square_size = dpi(4)
+--[[local taglist_square_size = dpi(4)
 theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
     taglist_square_size, theme.fg_normal
 )
 theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
     taglist_square_size, theme.fg_normal
-)
+)]]--
 
 -- Variables set for theming notifications:
 -- notification_font
@@ -81,13 +87,11 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = themes_path.."default/submenu.png"
-theme.menu_height = dpi(15)
-theme.menu_width  = dpi(100)
-
--- You can add as many variables as
--- you wish and access them by using
--- beautiful.variable in your rc.lua
---theme.bg_widget = "#cc0000"
+theme.menu_height       = dpi(25)
+theme.menu_width        = dpi(250)
+theme.menu_border_width = dpi(3)
+theme.menu_border_color = active
+theme.menu_bg_focus     = bg_alt
 
 -- Define the image to load
 theme.titlebar_close_button_normal = themes_path.."default/titlebar/close_normal.png"

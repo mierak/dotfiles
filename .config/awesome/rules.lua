@@ -63,7 +63,7 @@ local rules = {
         id = "steam-news",
         rule = {
             class = "Steam",
-            name = "Steam - News",
+            name = "Steam %- News.*",
         },
         properties = {
             screen = screen[1],
@@ -74,7 +74,7 @@ local rules = {
     {
         id = "teams",
         rule = {
-            class = "Microsoft Teams - Preview",
+            class = "Microsoft Teams %- Preview",
         },
         properties = {
             screen = screen[2],

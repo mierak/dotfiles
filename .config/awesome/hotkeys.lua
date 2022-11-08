@@ -1,28 +1,24 @@
 ---@diagnostic disable: undefined-global
-local awful = require("awful")
-local beautiful = require("beautiful")
-local naughty = require("naughty")
-local key = awful.key
-local keyboard = awful.keyboard
+local awful           = require("awful")
+local beautiful       = require("beautiful")
+local naughty         = require("naughty")
+local wibox           = require("wibox")
+local gears           = require("gears")
 
-local bling = require("bling")
-local popup = require("popup")
+local key             = awful.key
+local keyboard        = awful.keyboard
 
-local function show_gaps_popup(selected_tag)
-    popup({ 
-        title = "<span size=\"x-large\">\tGaps</span>", 
-        message = "Single Client Gap:\t"
-            .. (selected_tag.gap_single_client and "Enabled" or "Disabled")
-            .. "\nGaps:\t\t\t"
-            .. (selected_tag.gap == 0 and "Disabled" or "Enabled")
-    })
-end
+local bling           = require("bling")
+local popup           = require("popup")
+local cfg             = require("config")
+local show_gaps_popup = require("widgets/gaps_popup")
 
-return function(hotkeys_popup, menubar)
-    local M     = { modkey }
-    local M_S   = { modkey, "Shift" }
-    local M_C   = { modkey, "Control" }
-    local M_S_C = { modkey, "Shift", "Control" }
+
+return function(hotkeys_popup, main_menu)
+    local M      = { cfg.modkey }
+    local M_S    = { cfg.modkey, "Shift" }
+    local M_C    = { cfg.modkey, "Control" }
+    local M_S_C  = { cfg.modkey, "Shift", "Control" }
     
     local term_scratch = bling.module.scratchpad {
         command = "alacritty --class scratch_term_1",
@@ -53,8 +49,8 @@ return function(hotkeys_popup, menubar)
             modifiers   = M,
             key         = "Return",
             description = "Open a Terminal",
-            group       = "Launcher",
-            on_press    = function() awful.spawn(terminal) end,
+            group       = "Awesome",
+            on_press    = function() awful.spawn(cfg.terminal) end,
         },
         key {
             modifiers   = M,
@@ -67,14 +63,14 @@ return function(hotkeys_popup, menubar)
             modifiers   = M,
             key         = "w",
             description = "Show Main Menu",
-            group       = "Gaps",
-            on_press    = function() mymainmenu:show() end,
+            group       = "Awesome",
+            on_press    = function() main_menu:show() end,
         },
         key {
             modifiers   = M,
             key         = "p",
             description = "Toggle Single Client Gaps",
-            group       = "Awesome",
+            group       = "Gaps",
             on_press    = function()
                 local screen = awful.screen.focused()
                 if not screen then return end
@@ -120,13 +116,6 @@ return function(hotkeys_popup, menubar)
             end,
         },
         key {
-            modifiers   = M,
-            key         = "r",
-            description = "Run Prompt",
-            group       = "Launcher",
-            on_press    = function() awful.screen.focused().mypromptbox:run() end,
-        },
-        key {
             modifiers   = M_S,
             key         = "r",
             description = "Reload Awesome",
@@ -167,24 +156,29 @@ return function(hotkeys_popup, menubar)
         },
     })
 
+    for k, v in pairs({ { "j", "down" }, { "k", "up" }, { "h", "left" }, { "l", "right" } }) do
+        keyboard.append_global_keybindings({
+            key {
+                modifiers   = M,
+                key         = v[1],
+                description = "Focus Down/Up/Left/Right",
+                group       = "Client",
+                on_press    = function() awful.client.focus.bydirection(v[2]) end,
+            },
+            key {
+                modifiers   = M_S,
+                key         = v[1],
+                description = "Swap Down/Up/Left/Right",
+                group       = "Client",
+                on_press    = function() awful.client.swap.bydirection(v[2]) end,
+            },
+        })
+    end
+
     -- Focus related keybindings
     keyboard.append_global_keybindings({
         key {
-            modifiers   = M,
-            key         = "j",
-            description = "Focus Next by Index",
-            group       = "Client",
-            on_press    = function() awful.client.focus.byidx(1) end,
-        },
-        key {
-            modifiers   = M,
-            key         = "k",
-            description = "Focus Previous by Index",
-            group       = "Client",
-            on_press    = function() awful.client.focus.byidx(-1) end,
-        },
-        key {
-            modifiers   = M,
+            modifiers   = M_C,
             key         = "Tab",
             description = "Go Back",
             group       = "Client",
@@ -245,39 +239,11 @@ return function(hotkeys_popup, menubar)
     -- Layout related keybindings
     keyboard.append_global_keybindings({
         key {
-            modifiers   = M_S,
-            key         = "j",
-            description = "Swap Client With Next by Index",
-            group       = "Client",
-            on_press    = function() awful.client.swap.byidx(1) end,
-        },
-        key {
-            modifiers   = M_S,
-            key         = "k",
-            description = "Swap Client With Previous by Index",
-            group       = "Client",
-            on_press    = function() awful.client.swap.byidx(-1) end,
-        },
-        key {
             modifiers   = M,
             key         = "u",
             description = "Jump to Urgent Client",
             group       = "Client",
             on_press    = awful.client.urgent.jumpto,
-        },
-        key {
-            modifiers   = M,
-            key         = "l",
-            description = "Increase Master Width Factor",
-            group       = "Layout",
-            on_press    = function() awful.tag.incmwfact(0.05) end,
-        },
-        key {
-            modifiers   = M,
-            key         = "h",
-            description = "Decrease Master Width Factor",
-            group       = "Layout",
-            on_press    = function() awful.tag.incmwfact(-0.05) end,
         },
         key {
             modifiers   = M_S,
@@ -294,15 +260,15 @@ return function(hotkeys_popup, menubar)
             on_press    = function() awful.tag.incnmaster(-1, nil, true) end,
         },
         key {
-            modifiers   = M_C,
-            key         = "h",
+            modifiers   = M_S_C,
+            key         = "l",
             description = "Increase Number of Columns",
             group       = "Layout",
             on_press    = function() awful.tag.incncol(1, nil, true) end,
         },
         key {
-            modifiers   = M_C,
-            key         = "l",
+            modifiers   = M_S_C,
+            key         = "h",
             description = "Decrease Number of Columns",
             group       = "Layout",
             on_press    = function() awful.tag.incncol(-1, nil, true) end,
@@ -320,6 +286,20 @@ return function(hotkeys_popup, menubar)
             description = "Previous Layout",
             group       = "Layout",
             on_press    = function() awful.layout.inc(-1) end,
+        },
+        key {
+            modifiers   = M_C,
+            key         = "l",
+            description = "Decrease Master Width",
+            group       = "Layout",
+            on_press    = function() awful.tag.incmwfact(0.05) end,
+        },
+        key {
+            modifiers   = M_C,
+            key         = "h",
+            description = "Increase Master Width",
+            group       = "Layout",
+            on_press    = function() awful.tag.incmwfact(-0.05) end,
         },
     })
 
@@ -499,11 +479,11 @@ return function(hotkeys_popup, menubar)
             awful.button({}, 1, function(c)
                 c:activate{context = "mouse_click"} 
             end),
-            awful.button({modkey}, 1, function(c)
+            awful.button({ cfg.modkey }, 1, function(c)
                 c.floating = true
                 c:activate{context = "mouse_click", action = "mouse_move"}
             end),
-            awful.button({modkey}, 3, function(c)
+            awful.button({ cfg.modkey }, 3, function(c)
                 c:activate{context = "mouse_click", action = "mouse_resize"}
             end)
         })

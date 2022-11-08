@@ -1,7 +1,4 @@
-local awful = require("awful")
-local beautiful = require("beautiful")
-
-return function()
+return function(awful, beautiful)
     local handle_border = function(c)
         local s = c.screen
         local visible_clients = awful.client.tiled(s)

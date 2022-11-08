@@ -4,8 +4,14 @@ local beautiful = require("beautiful")
 
 local helpers = require("helpers")
 
-local vol = wibox.widget.textbox()
-local mic_vol = wibox.widget.textbox()
+local vol  = wibox.widget {
+    widget = wibox.widget.textbox,
+    font   = beautiful.bar_font,
+}
+local mic_vol = wibox.widget {
+    widget    = wibox.widget.textbox,
+    font      = beautiful.bar_font,
+}
 
 local state = {
     volume = "",

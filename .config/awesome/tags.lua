@@ -1,6 +1,4 @@
-local awful = require("awful")
-
-return function(screen)
+return function(screen, layouts, awful_tag)
     for i=1,9,1 do
         local selected = false
         local gap_single_client = true
@@ -8,8 +6,8 @@ return function(screen)
             selected = true
             gap_single_client = false
         end
-        awful.tag.add(i, {
-            layout = awful.layout.layouts[1],
+        awful_tag.add(i, {
+            layout = layouts[1],
             screen = screen,
             gap_single_client = gap_single_client,
             selected = selected,

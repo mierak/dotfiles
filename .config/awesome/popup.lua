@@ -1,4 +1,5 @@
 local naughty = require("naughty")
+local gears = require("gears")
 
 local notif = nil
 local destroyed = false
@@ -10,7 +11,7 @@ return function(args)
             text = args.message,
             position = "top_middle",
             timeout = 1,
-            auto_reset_timeout = true
+            auto_reset_timeout = true,
         }
         destroyed = false
         notif:connect_signal("destroyed", function() destroyed = true end)
