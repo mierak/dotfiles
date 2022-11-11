@@ -21,7 +21,7 @@ local state = {
 }
 
 local function set_text()
-    vol.markup = helpers.colorize { 
+    vol.markup = helpers.colorize {
         text = string.gsub(
             string.format("%s %s%%", state.volume_icon, state.volume),
             "\n",
@@ -32,7 +32,7 @@ local function set_text()
 end
 
 local function set_mic_text()
-    mic_vol.markup = helpers.colorize { 
+    mic_vol.markup = helpers.colorize {
         text = string.gsub(
             string.format("%s %s%%", state.mic_icon, state.mic_volume),
             "\n",
@@ -68,33 +68,33 @@ end
 update_all()
 
 vol:add_button(
-    awful.button({}, 1, function(c)
+    awful.button({}, 1, function(_)
         awful.spawn("volctl toggle")
     end)
 )
 vol:add_button(
-    awful.button({}, 4, function(c)
+    awful.button({}, 4, function(_)
         awful.spawn("volctl inc-volume")
     end)
 )
 vol:add_button(
-    awful.button({}, 5, function(c)
+    awful.button({}, 5, function(_)
         awful.spawn("volctl dec-volume")
     end)
 )
 
 mic_vol:add_button(
-    awful.button({}, 1, function(c)
+    awful.button({}, 1, function(_)
         awful.spawn("volctl mic-toggle")
     end)
 )
 mic_vol:add_button(
-    awful.button({}, 4, function(c)
+    awful.button({}, 4, function(_)
         awful.spawn("volctl mic-inc-volume")
     end)
 )
 mic_vol:add_button(
-    awful.button({}, 5, function(c)
+    awful.button({}, 5, function(_)
         awful.spawn("volctl mic-dec-volume")
     end)
 )

@@ -41,7 +41,7 @@ local popup = awful.popup {
             layout = wibox.layout.fixed.vertical,
             {
                 widget = wibox.container.margin,
-                bottom = 10,
+                bottom = beautiful.margin,
                 {
                     widget = wibox.widget.textbox,
                     text   = "Gaps",
@@ -55,7 +55,7 @@ local popup = awful.popup {
     },
     placement           = awful.placement.centered,
     shape               = gears.shape.rounded_rect,
-    bg                  = beautiful.bg_alt,
+    bg                  = beautiful.bg_popup,
     ontop               = true,
     border_width        = 0,
     border_color        = beautiful.active,

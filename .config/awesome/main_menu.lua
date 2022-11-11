@@ -1,9 +1,8 @@
 local awful = require("awful")
-local beautiful = require("beautiful")
 local cfg = require("config")
 
-return function()
-    awesome_menu = {
+return function(hotkeys_popup)
+    local awesome_menu = {
         {
             "hotkeys",
             function() hotkeys_popup.show_help(nil, awful.screen.focused()) end
@@ -13,7 +12,7 @@ return function()
         { "restart", awesome.restart }, { "quit", function() awesome.quit() end }
     }
 
-    power_menu = {
+    local power_menu = {
         { "Shutdown", function() awful.spawn("systemctl poweroff") end },
         { "Restart", function() awful.spawn("systemctl reboot") end },
         { "Lock", function() awful.spawn.with_shell("sleep 1 && xset dpms force suspend && slock") end }

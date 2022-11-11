@@ -20,7 +20,7 @@ local rules = {
             class = "discord"
         },
         properties = {
-            screen = screen[3]    
+            screen = screen[3]
         }
     },
     {

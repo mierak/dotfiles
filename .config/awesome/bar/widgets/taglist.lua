@@ -7,13 +7,13 @@ local bling = require("bling")
 
 local helpers = require("helpers")
 
-local function enable_previews(screen)
+local function enable_previews()
     beautiful.tag_preview_widget_border_width = 1
     beautiful.tag_preview_widget_border_color = beautiful.active
     beautiful.tag_preview_client_border_width = 0
 
     bling.widget.tag_preview.enable {
-        show_client_content = true, 
+        show_client_content = true,
         scale = 0.25,
         honor_padding = false,
         honor_workarea = false,
@@ -51,12 +51,12 @@ local function get_underline_bg(selected_tags, index, widget_screen)
 end
 
 return function(screen)
-    enable_previews(screen)
+    enable_previews()
     local taglist = awful.widget.taglist {
         screen = screen,
         filter = awful.widget.taglist.filter.all,
         layout = {
-            layout = wibox.layout.fixed.horizontal, 
+            layout = wibox.layout.fixed.horizontal,
         },
         style = {
             fg_focus = beautiful.fg_normal,
@@ -108,7 +108,7 @@ return function(screen)
             create_callback = function(self, tag, index, tags) --luacheck: no unused args
                 local underline = self:get_children_by_id("underline")[1]
                 underline.bg = get_underline_bg(awful.screen.focused().selected_tags, index, screen)
-                
+
                 self:connect_signal('mouse::enter', function()
                     if #tag:clients() > 0 then
                         awesome.emit_signal("bling::tag_preview::update", tag)

@@ -1,25 +1,18 @@
----@diagnostic disable: undefined-global
 local awful           = require("awful")
 local beautiful       = require("beautiful")
-local naughty         = require("naughty")
-local wibox           = require("wibox")
-local gears           = require("gears")
-
 local key             = awful.key
 local keyboard        = awful.keyboard
 
 local bling           = require("bling")
-local popup           = require("popup")
 local cfg             = require("config")
 local show_gaps_popup = require("widgets/gaps_popup")
-
 
 return function(hotkeys_popup, main_menu)
     local M      = { cfg.modkey }
     local M_S    = { cfg.modkey, "Shift" }
     local M_C    = { cfg.modkey, "Control" }
     local M_S_C  = { cfg.modkey, "Shift", "Control" }
-    
+
     local term_scratch = bling.module.scratchpad {
         command = "alacritty --class scratch_term_1",
         rule = { instance = "scratch_term_1" },
@@ -156,7 +149,8 @@ return function(hotkeys_popup, main_menu)
         },
     })
 
-    for k, v in pairs({ { "j", "down" }, { "k", "up" }, { "h", "left" }, { "l", "right" } }) do
+    -- Movement by direction
+    --[[for k, v in pairs({ { "j", "down" }, { "k", "up" }, { "h", "left" }, { "l", "right" } }) do
         keyboard.append_global_keybindings({
             key {
                 modifiers   = M,
@@ -171,6 +165,26 @@ return function(hotkeys_popup, main_menu)
                 description = "Swap Down/Up/Left/Right",
                 group       = "Client",
                 on_press    = function() awful.client.swap.bydirection(v[2]) end,
+            },
+        })
+    end]]--
+
+    -- Movement by index
+    for _, v in pairs({ { "j", 1 }, { "k", -1 } }) do
+        keyboard.append_global_keybindings({
+            key {
+                modifiers   = M,
+                key         = v[1],
+                description = "Focus Next/Previous Client",
+                group       = "Client",
+                on_press    = function() awful.client.focus.byidx(v[2]) end,
+            },
+            key {
+                modifiers   = M_S,
+                key         = v[1],
+                description = "Swap Client With Next/Previous Client",
+                group       = "Client",
+                on_press    = function() awful.client.swap.byidx(v[2]) end,
             },
         })
     end
@@ -273,7 +287,7 @@ return function(hotkeys_popup, main_menu)
             group       = "Layout",
             on_press    = function() awful.tag.incncol(-1, nil, true) end,
         },
-        key {
+        --[[key {
             modifiers   = M,
             key         = "space",
             description = "Next Layout",
@@ -286,7 +300,7 @@ return function(hotkeys_popup, main_menu)
             description = "Previous Layout",
             group       = "Layout",
             on_press    = function() awful.layout.inc(-1) end,
-        },
+        },]]--
         key {
             modifiers   = M_C,
             key         = "l",
@@ -477,7 +491,7 @@ return function(hotkeys_popup, main_menu)
     client.connect_signal("request::default_mousebindings", function()
         awful.mouse.append_client_mousebindings({
             awful.button({}, 1, function(c)
-                c:activate{context = "mouse_click"} 
+                c:activate{context = "mouse_click"}
             end),
             awful.button({ cfg.modkey }, 1, function(c)
                 c.floating = true
@@ -490,7 +504,7 @@ return function(hotkeys_popup, main_menu)
     end)
 
     awful.mouse.append_global_mousebindings({
-        awful.button({}, 3, function() mymainmenu:toggle() end),
+        awful.button({}, 3, function() main_menu:toggle() end),
         awful.button({}, 4, awful.tag.viewprev),
         awful.button({}, 5, awful.tag.viewnext)
     })

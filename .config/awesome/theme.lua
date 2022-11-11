@@ -6,6 +6,7 @@ local awesome = awesome
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local rnotification = require("ruled.notification")
+local gears = require("gears")
 local dpi = xresources.apply_dpi
 local xrdb = xresources.get_current_theme()
 
@@ -34,6 +35,7 @@ theme.bg_focus      = xrdb.background
 theme.bg_urgent     = xrdb.color1
 theme.bg_minimize   = "#444444"
 theme.bg_systray    = bg_alt
+theme.bg_popup      = xrdb.background
 
 theme.fg_normal     = xrdb.foreground
 theme.fg_focus      = "#ffffff"
@@ -52,6 +54,17 @@ theme.color3 = xrdb.color3
 theme.color4 = xrdb.color4
 
 theme.margin = 10
+theme.screen_margin = dpi(5)
+
+-- Notifications
+theme.notification_position = "top_right"
+theme.notification_font = theme.font
+theme.notification_border_width = dpi(0)
+theme.notification_border_color = active
+theme.notification_shape = gears.shape.rounded_rect
+
+theme.notification_padding = theme.screen_margin * 2
+theme.notification_spacing = theme.screen_margin * 4
 
 -- There are other variable sets
 -- overriding the default one when

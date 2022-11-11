@@ -1,5 +1,4 @@
 local naughty = require("naughty")
-local gears = require("gears")
 
 local notif = nil
 local destroyed = false

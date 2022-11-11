@@ -1,6 +1,6 @@
 local beautiful = require("beautiful")
 
-beautiful.parent_filter_list = { 
+beautiful.parent_filter_list = {
     "Vivaldi%-stable",
     "code-oss",
     "code",
@@ -10,7 +10,7 @@ beautiful.parent_filter_list = {
     "krita",
     "Skype",
 }
-beautiful.dont_swallow_filter_activated  = true   
+beautiful.dont_swallow_filter_activated  = true
 
 local bling = require("bling")
 bling.module.window_swallowing.start()

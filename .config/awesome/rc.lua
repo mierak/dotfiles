@@ -27,6 +27,7 @@ local create_rules = require("rules")
 local init_smart_borders = require("smart_borders")
 local crete_tags_for_screen = require("tags")
 local create_main_menu = require("main_menu")
+require("widgets/layout_switcher")
 
 local layouts = {
     awful.layout.suit.tile,
@@ -41,13 +42,13 @@ local layouts = {
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier,
-    awful.layout.suit.corner.nw
+    awful.layout.suit.corner.nw,
 }
 tag.connect_signal("request::default_layouts", function()
     awful.layout.append_default_layouts(layouts)
 end)
 
-local main_menu = create_main_menu()
+local main_menu = create_main_menu(hotkeys_popup)
 
 screen.connect_signal("request::desktop_decoration", function(s)
     crete_tags_for_screen(s, layouts, awful.tag)
