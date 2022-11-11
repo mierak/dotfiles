@@ -51,6 +51,8 @@ lua require("nvimtree")
 lua require("lsp")
 
 set tabstop=4
+set shiftwidth=4
+set expandtab
 set timeoutlen=500
 set number relativenumber
 set title

@@ -33,6 +33,30 @@ require'lspconfig'.rust_analyzer.setup {
   on_attach = on_attach,
   capabilities = capabilities,
 }
+require'lspconfig'.sumneko_lua.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      workspace = {
+        library = {
+          ['/usr/share/nvim/runtime/lua'] = true,
+          ['/usr/share/nvim/runtime/lua/lsp'] = true,
+          ['/usr/share/awesome/lib'] = true
+        }
+      },
+      diagnostics = {
+        enable = true,
+        globals = {
+          -- VIM
+          "vim", "use", -- Packer use keyword
+          -- AwesomeWM
+          "awesome", "client", "root", "screen"
+        }
+      }
+    }
+  },
+}
 
 require("autocomp")
 
