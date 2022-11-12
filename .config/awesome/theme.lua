@@ -22,9 +22,12 @@ local bg_alt   = awesome.xrdb_get_value("", "background-alt")
 theme.bar_height    = 28
 theme.bar_padding   = 5
 
-theme.font          = "JetBrains Mono Nerd Font Bold 11"
-theme.bar_font      = "JetBrains Mono Nerd Font Bold 9"
-theme.font_title    = "JetBrains Mono Nerd Font Bold 13"
+theme.base_font     = "JetBrains Mono Nerd Font Bold "
+theme.font          = theme.base_font .. "11"
+theme.bar_font      = theme.base_font .. "9"
+theme.font_title    = theme.base_font .. "13"
+theme.base_font_symbols = "Symbols Nerd Font "
+theme.font_symbols  = theme.base_font_symbols .. "20"
 
 theme.inactive      = inactive
 theme.active        = active
@@ -49,9 +52,22 @@ theme.border_color_normal = inactive
 theme.border_color_active = active
 theme.border_color_marked = "#91231c"
 
-theme.color1 = xrdb.color1
-theme.color3 = xrdb.color3
-theme.color4 = xrdb.color4
+theme.color0  = xrdb.color0
+theme.color1  = xrdb.color1
+theme.color2  = xrdb.color2
+theme.color3  = xrdb.color3
+theme.color4  = xrdb.color4
+theme.color5  = xrdb.color5
+theme.color6  = xrdb.color6
+theme.color7  = xrdb.color7
+theme.color8  = xrdb.color8
+theme.color9  = xrdb.color9
+theme.color10 = xrdb.color10
+theme.color11 = xrdb.color11
+theme.color12 = xrdb.color12
+theme.color13 = xrdb.color13
+theme.color14 = xrdb.color14
+theme.color15 = xrdb.color15
 
 theme.margin = 10
 theme.screen_margin = dpi(5)
@@ -65,6 +81,15 @@ theme.notification_shape = gears.shape.rounded_rect
 
 theme.notification_padding = theme.screen_margin * 2
 theme.notification_spacing = theme.screen_margin * 4
+
+-- Sidebar
+local sidebar = {}
+theme.sidebar = sidebar
+
+sidebar.width = dpi(400)
+
+-- Calendar
+theme.calendar_long_weekdays = true
 
 -- There are other variable sets
 -- overriding the default one when

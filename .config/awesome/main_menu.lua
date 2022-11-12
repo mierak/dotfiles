@@ -9,13 +9,14 @@ return function(hotkeys_popup)
         },
         { "manual", cfg.terminal .. " -e man awesome" },
         { "edit config", cfg.terminal .. " -e " .. cfg.editor .. " " .. awesome.conffile },
-        { "restart", awesome.restart }, { "quit", function() awesome.quit() end }
+        { "restart", awesome.restart }, { "quit", function() awesome.quit() end },
     }
 
     local power_menu = {
-        { "Shutdown", function() awful.spawn("systemctl poweroff") end },
-        { "Restart", function() awful.spawn("systemctl reboot") end },
-        { "Lock", function() awful.spawn.with_shell("sleep 1 && xset dpms force suspend && slock") end }
+        { "Lock", function() awful.spawn.with_shell(cfg.command.lock) end },
+        { "Logout", function() awful.spawn.with_shell(cfg.command.logout) end },
+        { "Restart", function() awful.spawn(cfg.command.reboot) end },
+        { "Shutdown", function() awful.spawn(cfg.command.poweroff) end },
     }
 
     return awful.menu({

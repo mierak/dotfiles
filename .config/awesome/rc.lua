@@ -27,6 +27,7 @@ local create_rules = require("rules")
 local init_smart_borders = require("smart_borders")
 local crete_tags_for_screen = require("tags")
 local create_main_menu = require("main_menu")
+local sidebar = require("widgets/sidebar")
 require("widgets/layout_switcher")
 
 local layouts = {

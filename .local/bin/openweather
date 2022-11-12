@@ -1,0 +1,11 @@
+#!/bin/sh
+
+api_key=$(pass web/openweather)
+weather=$(curl -sf "https://api.openweathermap.org/data/2.5/weather?lat=50.2&lon=15.8&appid=$api_key&units=metric")
+
+icon=$(echo "$weather" | jq -r '.weather[].icon')
+temp=$(echo "$weather" | jq -r '.main.temp' | cut -d "." -f 1)
+desc=$(echo "$weather" | jq -r '.weather[].description')
+city=$(echo "$weather" | jq -r '.name')
+
+printf "icon=%s\ntemp=%s\ndesc=%s\ncity=%s\ntimestamp=%s\n" "$icon" "$temp" "$desc" "$city" "$(date +%s)"

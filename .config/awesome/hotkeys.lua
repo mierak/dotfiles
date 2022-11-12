@@ -23,7 +23,7 @@ return function(hotkeys_popup, main_menu)
         reapply = true,
         dont_focus_before_close  = false,
     }
-    term_scratch:connect_signal("initial_apply", function(c) term_scratch:turn_off() end)
+    term_scratch:connect_signal("initial_apply", function() term_scratch:turn_off() end)
 
     -- Scratchpad hotkeys
     keyboard.append_global_keybindings({
@@ -123,6 +123,18 @@ return function(hotkeys_popup, main_menu)
             on_press    = awesome.quit,
         },
     })
+
+    if cfg.sidebar.enabled then
+        keyboard.append_global_keybindings({
+            key {
+                modifiers   = M_C,
+                key         = "s",
+                description = "Toggle Sidebar",
+                group       = "Awesome",
+                on_press    = function() awesome.emit_signal("sidebar::toggle") end,
+            },
+        })
+    end
 
     -- Tags related keybindings
     keyboard.append_global_keybindings({
