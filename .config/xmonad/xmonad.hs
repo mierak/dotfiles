@@ -2,6 +2,7 @@ import XMonad
 import System.Exit
 
 import XMonad.Actions.OnScreen
+import XMonad.Actions.Promote
 import XMonad.Actions.UpdatePointer
 
 import XMonad.Hooks.DynamicProperty
@@ -181,7 +182,7 @@ myKeys c =
     , ("M-q",          addName "Kill Focused Window"             $ kill)
     ]
     ^++^ subKeys "Focus"
-    [ ("M-S-<Return>", addName "Swap Active Window to Master"    $ windows W.swapMaster)
+    [ ("M-S-<Return>", addName "Swap Active Window to Master"    $ promote)
     , ("M-j",          addName "Focus Down"                      $ windows W.focusDown)
     , ("M-k",          addName "Focus Up"                        $ windows W.focusUp)
     , ("M-S-j",        addName "Swap Down"                       $ windows W.swapDown)

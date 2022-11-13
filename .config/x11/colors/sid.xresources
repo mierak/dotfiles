@@ -24,9 +24,9 @@
 
 *foreground:   base07
 *background:   #1e222a
-*background-alt: #1e222a
+*background-alt: #363a4f
 *cursorColor:  base05
-*active:         #3f485a
+*active:         #546078
 *inactive:       #1e222a
 
 *color0:       base00

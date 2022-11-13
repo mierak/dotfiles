@@ -12,4 +12,5 @@ sxhkd &
 dunst &
 #dwmblocks &
 #exec ~/.config/x11/dwmauto
-exec xmonad
+#exec xmonad
+exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
