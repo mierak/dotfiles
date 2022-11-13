@@ -4,6 +4,7 @@ return {
     modkey   = "Mod4",
     use_confirm_dialogs = true,
     enable_tagl_preview = false,
+    focus_follows_mouse = true,
     command  = {
         reboot   = "systemctl reboot",
         poweroff = "systemctl poweroff",

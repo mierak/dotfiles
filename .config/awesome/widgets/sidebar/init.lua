@@ -38,9 +38,9 @@ awful.placement.bottom_left(sidebar)
 sidebar:setup {
     layout = wibox.container.margin,
     top = 20,
-    bottom = 20,
-    left = beautiful.margin,
-    right = beautiful.margin,
+    --bottom = 20,
+    --left = beautiful.margin,
+    --right = beautiful.margin,
     {
         layout = wibox.layout.fixed.vertical,
         fill_space = true,
@@ -52,15 +52,31 @@ sidebar:setup {
             calendar.calendar,
         },
         {
-            layout = wibox.container.place,
-            halign = "center",
-            weather,
-        },
-        {
-            layout = wibox.container.place,
-            valign = "bottom",
-            content_fill_horizontal = true,
-            powerbar,
+            widget = wibox.container.background,
+            bg = beautiful.bg_alt_dark,
+            shape   = function(cr, width, height)
+                gears.shape.partially_rounded_rect(cr, width, height, false, true, false, false, 30)
+            end,
+            {
+                layout = wibox.layout.fixed.vertical,
+                fill_space = true,
+                helpers.vertical_spacer(20),
+                {
+                    layout = wibox.container.place,
+                    halign = "center",
+                    weather,
+                },
+                {
+                    layout = wibox.container.place,
+                    valign = "bottom",
+                    content_fill_horizontal = true,
+                    {
+                        layout = wibox.container.margin,
+                        bottom = 20,
+                        powerbar,
+                    }
+                },
+            },
         },
     },
 }

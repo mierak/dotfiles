@@ -15,9 +15,10 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-local active   = awesome.xrdb_get_value("", "active")
-local inactive = awesome.xrdb_get_value("", "inactive")
-local bg_alt   = awesome.xrdb_get_value("", "background-alt")
+local active      = awesome.xrdb_get_value("", "active")
+local inactive    = awesome.xrdb_get_value("", "inactive")
+local bg_alt      = awesome.xrdb_get_value("", "background-alt")
+local bg_alt_dark = awesome.xrdb_get_value("", "background-alt-dark")
 
 theme.bar_height    = 28
 theme.bar_padding   = 5
@@ -36,6 +37,7 @@ theme.active        = active
 
 theme.bg_normal     = xrdb.background
 theme.bg_alt        = bg_alt
+theme.bg_alt_dark   = bg_alt_dark
 theme.bg_focus      = xrdb.background
 theme.bg_urgent     = xrdb.color1
 theme.bg_minimize   = "#444444"
