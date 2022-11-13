@@ -7,7 +7,7 @@ local cfg       = require("config")
 
 local confirm  = require("widgets.confirm_dialog")
 
-local font = beautiful.base_font_symbols .. "32"
+local font = beautiful.fonts.symbols_base .. "32"
 
 return wibox.widget {
     layout              = wibox.layout.ratio.horizontal,

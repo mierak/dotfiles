@@ -5,7 +5,7 @@ local beautiful = require("beautiful")
 local helpers   = require("helpers")
 local cfg       = require("config")
 
-local icon_font = beautiful.base_font_symbols .. "30"
+local icon_font = beautiful.fonts.symbols_base .. "30"
 
 local info_icon = wibox.widget {
     widget = wibox.widget.textbox,
@@ -77,7 +77,7 @@ return function (args)
                 {
                     widget = wibox.widget.textbox,
                     text   = params.title or get_default_title(params.severity or "info"),
-                    font = beautiful.base_font .. "12",
+                    font = beautiful.fonts.base .. "12",
                 },
                 {
                     layout  = wibox.layout.fixed.horizontal,
@@ -98,7 +98,7 @@ return function (args)
                         spacing = beautiful.margin,
                         helpers.text_button {
                             text = params.ok_text or "Confirm",
-                            font = beautiful.base_font .. "12",
+                            font = beautiful.fonts.base .. "12",
                             margins = {
                                 left  = beautiful.margin * 1,
                                 right = beautiful.margin * 1,
@@ -110,7 +110,7 @@ return function (args)
                         },
                         helpers.text_button {
                             text = params.cancel_text or "Cancel",
-                            font = beautiful.base_font .. "12",
+                            font = beautiful.fonts.base .. "12",
                             margins = {
                                 left  = beautiful.margin * 1,
                                 right = beautiful.margin * 1,

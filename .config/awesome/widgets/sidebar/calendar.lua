@@ -11,28 +11,28 @@ local styles = {
         border_width = 0,
     },
     normal = {
-        markup   = function (t) return '<span font="' .. beautiful.base_font .. '12">' .. t .. '</span>' end
+        markup   = function (t) return '<span font="' .. beautiful.fonts.base .. '12">' .. t .. '</span>' end
     },
     focus = {
         fg_color = beautiful.color4,
         bg_color = beautiful.color5.."00",
         border_width = 2,
-        markup   = function (t) return '<span font="' .. beautiful.base_font .. '12">' .. t .. '</span>' end
+        markup   = function (t) return '<span font="' .. beautiful.fonts.base .. '12">' .. t .. '</span>' end
     },
     header = {
         fg_color = beautiful.color4,
         bg_color = beautiful.color1.."00",
-        markup   = function (t) return '<span font="' .. beautiful.base_font .. '16">' .. t .. '</span>' end
+        markup   = function (t) return '<span font="' .. beautiful.fonts.base .. '16">' .. t .. '</span>' end
     },
     monthheader = {
         fg_color = beautiful.color4,
         bg_color = beautiful.color1.."00",
-        markup   = function (t) return '<span font="' .. beautiful.base_font .. '16">' .. t .. '</span>' end
+        markup   = function (t) return '<span font="' .. beautiful.fonts.base .. '16">' .. t .. '</span>' end
     },
     weekday = {
         fg_color = beautiful.color7,
         bg_color = beautiful.color1.."00",
-        markup   = function (t) return '<span font="' .. beautiful.base_font .. '14">' .. t .. '</span>' end
+        markup   = function (t) return '<span font="' .. beautiful.fonts.base .. '14">' .. t .. '</span>' end
     },
 }
 

@@ -18,7 +18,7 @@ local clock = wibox.widget {
     widget  = wibox.widget.textclock,
     format  = "%H:%M:%S",
     refresh = 1,
-    font    = beautiful.base_font .. "44",
+    font    = beautiful.fonts.base .. "44",
     halign  = "center",
 }
 

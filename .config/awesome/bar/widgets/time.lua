@@ -7,7 +7,7 @@ local clock = wibox.widget {
     widget = wibox.widget.textclock,
     format = helpers.colorize { text = "%a %d.%m.%Y %H:%M:%S", fg = beautiful.fg_normal },
     refresh = 1,
-    font = beautiful.bar_font,
+    font = beautiful.fonts.bar,
 }
 
 return {

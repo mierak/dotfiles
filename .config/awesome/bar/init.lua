@@ -15,7 +15,7 @@ local helpers = require("helpers")
 
 return function (screen, menu)
     local tray       = wibox.widget.systray()
-    local prompt_box = awful.widget.prompt { font = beautiful.bar_font }
+    local prompt_box = awful.widget.prompt { font = beautiful.fonts.bar }
     local launcher   = create_launcher(menu)
     local tag_list   = create_tag_list(screen)
     local layout_box = create_layout_box(screen)

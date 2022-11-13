@@ -5,7 +5,7 @@ local lain = require("lain")
 local helpers = require("helpers")
 
 local fs = lain.widget.fs {
-    widget = wibox.widget { widget = wibox.widget.textbox, font = beautiful.bar_font },
+    widget = wibox.widget { widget = wibox.widget.textbox, font = beautiful.fonts.bar },
     timeout = 1800,
     notification_preset = {
         border_width = 0

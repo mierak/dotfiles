@@ -64,7 +64,7 @@ function helpers.text_button(args)
 
     local text = wibox.widget {
         markup  = helpers.colorize { text = args.text, fg = args.fg or beautiful.fg_norm },
-        font    = args.font or beautiful.font_symbols,
+        font    = args.font or beautiful.fonts.symbols,
         halign  = args.align,
         widget  = wibox.widget.textbox,
     }

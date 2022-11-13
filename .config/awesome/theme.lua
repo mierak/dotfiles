@@ -22,12 +22,14 @@ local bg_alt   = awesome.xrdb_get_value("", "background-alt")
 theme.bar_height    = 28
 theme.bar_padding   = 5
 
-theme.base_font     = "JetBrains Mono Nerd Font Bold "
-theme.font          = theme.base_font .. "11"
-theme.bar_font      = theme.base_font .. "9"
-theme.font_title    = theme.base_font .. "13"
-theme.base_font_symbols = "Symbols Nerd Font "
-theme.font_symbols  = theme.base_font_symbols .. "20"
+theme.fonts = {}
+theme.fonts.base         = "monospace Bold "
+theme.fonts.bar          = theme.fonts.base .. "9"
+theme.fonts.title        = theme.fonts.base .. "13"
+theme.fonts.symbols_base = "Symbols Nerd Font "
+theme.fonts.symbols      = theme.fonts.symbols_base .. "20"
+
+theme.font          = theme.fonts.base .. "11"
 
 theme.inactive      = inactive
 theme.active        = active

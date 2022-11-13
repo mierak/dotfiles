@@ -62,7 +62,7 @@ local layout_popup = awful.popup {
                         widget = wibox.widget.textbox,
                         text   = "Layouts",
                         halign = "center",
-                        font   = beautiful.font_title,
+                        font   = beautiful.fonts.title,
                     },
                 },
                 layout_list,

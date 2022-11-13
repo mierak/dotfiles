@@ -6,7 +6,7 @@ return function(screen)
         screen = screen,
         filter = awful.widget.tasklist.filter.currenttags,
         style = {
-            font = beautiful.bar_font,
+            font = beautiful.fonts.bar,
         },
         buttons = {
             awful.button({}, 3, function()

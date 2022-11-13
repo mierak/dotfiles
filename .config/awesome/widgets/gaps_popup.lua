@@ -46,7 +46,7 @@ local popup = awful.popup {
                     widget = wibox.widget.textbox,
                     text   = "Gaps",
                     halign = "center",
-                    font   = beautiful.font_title,
+                    font   = beautiful.fonts.title,
                 },
             },
             row1.widget,

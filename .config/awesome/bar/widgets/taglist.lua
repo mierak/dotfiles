@@ -68,7 +68,7 @@ return function(screen)
             bg_empty = beautiful.bg_alt,
             fg_occupied = beautiful.foreground,
             bg_occupied = beautiful.bg_alt,
-            font = beautiful.bar_font,
+            font = beautiful.fonts.bar,
         },
         buttons = {
             awful.button({}, 1, function(t) t:view_only() end),

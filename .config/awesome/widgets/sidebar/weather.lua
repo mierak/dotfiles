@@ -31,13 +31,13 @@ local icons = {
 
 local description = wibox.widget {
     widget = wibox.widget.textbox,
-    font   = beautiful.base_font .. "12",
+    font   = beautiful.fonts.base .. "12",
     halign = "center",
 }
 
 local icon  = wibox.widget {
     widget = wibox.widget.textbox,
-    font   = beautiful.base_font_symbols .. "30",
+    font   = beautiful.fonts.symbols_base .. "30",
     halign = "center",
 }
 
