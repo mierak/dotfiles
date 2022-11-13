@@ -102,7 +102,7 @@ return function(hotkeys_popup, main_menu)
             on_press    = function()
                 awful.prompt.run {
                 prompt = "Run Lua code: ",
-                textbox = awful.screen.focused().mypromptbox.widget,
+                textbox = awful.screen.focused().prompt.widget,
                 exe_callback = awful.util.eval,
                 history_path = awful.util.get_cache_dir() .. "/history_eval"
                 }
@@ -127,8 +127,8 @@ return function(hotkeys_popup, main_menu)
     if cfg.sidebar.enabled then
         keyboard.append_global_keybindings({
             key {
-                modifiers   = M_C,
-                key         = "s",
+                modifiers   = M,
+                key         = "`",
                 description = "Toggle Sidebar",
                 group       = "Awesome",
                 on_press    = function() awesome.emit_signal("sidebar::toggle") end,

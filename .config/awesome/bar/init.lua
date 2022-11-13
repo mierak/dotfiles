@@ -2,8 +2,6 @@ local wibox = require("wibox")
 local awful = require("awful")
 local beautiful = require("beautiful")
 
-local lain = require("lain")
-
 local create_launcher = require("bar/widgets/launcher")
 local volume = require("bar/widgets/volume")
 local memory = require("bar/widgets/memory")
@@ -23,6 +21,7 @@ return function (screen, menu)
     local layout_box = create_layout_box(screen)
     local task_list  = create_task_list(screen)
 
+    screen.prompt = prompt_box
     screen.mywibox = awful.wibar {
         position = "top",
         screen = screen,

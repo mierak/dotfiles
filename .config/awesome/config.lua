@@ -2,6 +2,8 @@ return {
     editor   = os.getenv("EDITOR") or "nano",
     terminal = "alacritty",
     modkey   = "Mod4",
+    use_confirm_dialogs = true,
+    enable_tagl_preview = false,
     command  = {
         reboot   = "systemctl reboot",
         poweroff = "systemctl poweroff",

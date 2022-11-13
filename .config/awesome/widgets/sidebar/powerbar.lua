@@ -5,6 +5,8 @@ local awful     = require("awful")
 local helpers   = require("helpers")
 local cfg       = require("config")
 
+local confirm  = require("widgets.confirm_dialog")
+
 local font = beautiful.base_font_symbols .. "32"
 
 return wibox.widget {
@@ -31,7 +33,15 @@ return wibox.widget {
         hover    = {
             fg = beautiful.color4,
         },
-        on_click = function () awful.spawn.with_shell(cfg.command.logout) end
+        on_click = function ()
+            confirm {
+                severity = "warn",
+                title    = "Log Out",
+                message  = "You are about to log out. Are you sure?",
+                ok_text  = "Log out",
+                on_click = function () awful.spawn(cfg.command.logout) end
+            }
+        end
     },
     helpers.text_button {
         text     = "",
@@ -42,7 +52,13 @@ return wibox.widget {
             fg = beautiful.color3,
         },
         on_click = function ()
-            awful.spawn(cfg.command.reboot)
+            confirm {
+                severity = "warn",
+                title    = "Reboot PC",
+                message  = "You are about to reboot this computer. Are you sure?",
+                ok_text  = "Reboot",
+                on_click = function () awful.spawn(cfg.command.reboot) end
+            }
         end
     },
     helpers.text_button {
@@ -53,6 +69,14 @@ return wibox.widget {
         hover    = {
             fg = beautiful.color1,
         },
-        on_click = function () awful.spawn(cfg.command.poweroff) end
+        on_click = function ()
+            confirm {
+                severity = "warn",
+                title    = "Shutdown PC",
+                message  = "You are about to shutdown this computer. Are you sure?",
+                ok_text  = "Shutdown",
+                on_click = function () awful.spawn(cfg.command.poweroff) end
+            }
+        end
     },
 }

@@ -2,6 +2,7 @@ local wibox = require("wibox")
 local awful = require("awful")
 local gears = require("gears")
 local beautiful = require("beautiful")
+local config    = require("config")
 
 local bling = require("bling")
 
@@ -51,7 +52,9 @@ local function get_underline_bg(selected_tags, index, widget_screen)
 end
 
 return function(screen)
-    enable_previews()
+    if config.enable_tagl_preview then
+        enable_previews()
+    end
     local taglist = awful.widget.taglist {
         screen = screen,
         filter = awful.widget.taglist.filter.all,

@@ -1,5 +1,7 @@
-local awful = require("awful")
-local cfg = require("config")
+local awful   = require("awful")
+local cfg     = require("config")
+
+local confirm = require("widgets.confirm_dialog")
 
 return function(hotkeys_popup)
     local awesome_menu = {
@@ -14,9 +16,33 @@ return function(hotkeys_popup)
 
     local power_menu = {
         { "Lock", function() awful.spawn.with_shell(cfg.command.lock) end },
-        { "Logout", function() awful.spawn.with_shell(cfg.command.logout) end },
-        { "Restart", function() awful.spawn(cfg.command.reboot) end },
-        { "Shutdown", function() awful.spawn(cfg.command.poweroff) end },
+        { "Logout", function()
+            confirm {
+                severity = "warn",
+                title    = "Log Out",
+                message  = "You are about to log out. Are you sure?",
+                ok_text  = "Log out",
+                on_click = function () awful.spawn(cfg.command.logout) end
+            }
+        end },
+        { "Restart", function()
+            confirm {
+                severity = "warn",
+                title    = "Reboot PC",
+                message  = "You are about to reboot this computer. Are you sure?",
+                ok_text  = "Restart",
+                on_click = function () awful.spawn(cfg.command.reboot) end
+            }
+        end },
+        { "Shutdown", function()
+            confirm {
+                severity = "warn",
+                title    = "Shutdown PC",
+                message  = "You are about to shutdown this computer. Are you sure?",
+                ok_text  = "Shutdown",
+                on_click = function () awful.spawn(cfg.command.poweroff) end
+            }
+        end },
     }
 
     return awful.menu({

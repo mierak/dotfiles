@@ -48,8 +48,11 @@ function helpers.vertical_spacer(height)
     }
 end
 
+--- Creates a text button
+-- @param args A table
 function helpers.text_button(args)
     if not args.hover then args.hover = {} end
+    if not args.margins then args.margins = {} end
 
     local buttons = {}
     if args.on_click then
@@ -59,29 +62,38 @@ function helpers.text_button(args)
         table.insert(buttons, awful.button({}, 1, function () args.on_right_click() end))
     end
 
-    local button = wibox.widget {
+    local text = wibox.widget {
         markup  = helpers.colorize { text = args.text, fg = args.fg or beautiful.fg_norm },
         font    = args.font or beautiful.font_symbols,
         halign  = args.align,
         widget  = wibox.widget.textbox,
-        buttons = buttons,
     }
 
-    button:connect_signal("mouse::enter", function (self)
-       self.backup = self.markup
-       self.markup = helpers.colorize { text = args.text, fg = args.hover.fg or beautiful.active }
+    local button = wibox.widget {
+        widget  = wibox.container.margin,
+        left    = args.margins.left or 0,
+        right   = args.margins.right or 0,
+        top     = args.margins.top or 0,
+        bottom  = args.margins.bottom or 0,
+        buttons = buttons,
+        text,
+    }
+
+    button:connect_signal("mouse::enter", function ()
+       text.backup = text.markup
+       text.markup = helpers.colorize { text = args.text, fg = args.hover.fg or beautiful.active }
        local w = mouse.current_wibox
        if w then
-           self.backup_cursor = w.cursor
+           text.backup_cursor = w.cursor
            w.cursor = "hand1"
        end
     end)
 
-    button:connect_signal("mouse::leave", function (self)
-       self.markup = self.backup
+    button:connect_signal("mouse::leave", function ()
+       text.markup = text.backup
        local w = mouse.current_wibox
        if w then
-           w.cursor = self.backup_cursor
+           w.cursor = text.backup_cursor
        end
     end)
 
