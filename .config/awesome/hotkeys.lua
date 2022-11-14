@@ -13,28 +13,28 @@ return function(hotkeys_popup, main_menu)
     local M_C    = { cfg.modkey, "Control" }
     local M_S_C  = { cfg.modkey, "Shift", "Control" }
 
+    for i=1,4,1 do
     local term_scratch = bling.module.scratchpad {
-        command = "alacritty --class scratch_term_1",
-        rule = { instance = "scratch_term_1" },
-        sticky = true,
-        autoclose = true,
+        command = "alacritty --class scratch_term_" .. i,
+        rule = { instance = "scratch_term_" .. i },
+        sticky = false,
+        autoclose = false,
         floating = true,
         geometry = { x = 100, y = 28, height = 900, width = 1720 },
         reapply = true,
         dont_focus_before_close  = false,
     }
-    term_scratch:connect_signal("initial_apply", function() term_scratch:turn_off() end)
 
-    -- Scratchpad hotkeys
     keyboard.append_global_keybindings({
         key {
             modifiers   = M,
-            key         = "F1",
+            key         = "F" .. i,
             description = "Empty Terminal",
             group       = "Scratchpad",
             on_press    = function() term_scratch:toggle() end,
         },
     })
+    end
 
     -- General Awesome keys
     keyboard.append_global_keybindings({

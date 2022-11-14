@@ -62,7 +62,7 @@ local function read_cached(cb)
 end
 
 local function update_widget(data)
-    icon.markup = helpers.colorize { text = icons[data.icon_value].icon, fg = icons[data.icon_value].color } .. " " .. data.temp_value .. "°C"
+    icon.markup = helpers.colorize { text = icons[data.icon_value].icon, fg = icons[data.icon_value].color } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. data.temp_value .. '°C</span>'
     description.markup = data.city_value
 end
 

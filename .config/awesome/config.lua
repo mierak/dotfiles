@@ -14,6 +14,9 @@ return {
     weather = {
         update_interval = 1600,
     },
+    redshift = {
+        update_interval = 60,
+    },
     sidebar = {
         enabled = true,
         hide_on_mouse_leave = true,

@@ -6,6 +6,7 @@ local gears      = require("gears")
 local create_cal = require("widgets/sidebar/calendar")
 local powerbar   = require("widgets/sidebar/powerbar")
 local weather    = require("widgets/sidebar/weather")
+local redshift   = require("widgets/sidebar/redshift")
 local helpers    = require("helpers")
 local cfg        = require("config")
 
@@ -62,9 +63,22 @@ sidebar:setup {
                 fill_space = true,
                 helpers.vertical_spacer(20),
                 {
-                    layout = wibox.container.place,
-                    halign = "center",
-                    weather,
+                    widget = wibox.container.margin,
+                    left = beautiful.margin,
+                    right = beautiful.margin,
+                    {
+                        layout = wibox.container.place,
+                        halign = "center",
+                        {
+                            layout = wibox.layout.grid,
+                            forced_num_cols = 2,
+                            homogenous = true,
+                            expand = true,
+                            spacing = 30,
+                            weather,
+                            redshift
+                        },
+                    }
                 },
                 {
                     layout = wibox.container.place,
