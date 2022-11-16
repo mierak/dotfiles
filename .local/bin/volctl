@@ -19,11 +19,13 @@ play_sound() {
 
 notify_mic_volume() {
     [ "$(pgrep polybar)" ] && polybar-msg action mic-volume hook 0 > /dev/null 2>&1
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_mic_volume()'
     dunstify -h int:value:$(($(pamixer --default-source --get-volume) / 2)) "Mic Volume" -r 101 "$(pamixer --default-source --get-volume)%"
     play_sound
 }
 notify_mic_icon() {
     [ "$(pgrep polybar)" ] && polybar-msg action mic-volume-icon hook 0 > /dev/null 2>&1
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_mic_status()'
     status=""
     [ "$(pamixer --default-source --get-mute)" = true ] && status="Muted" || status="Unmuted"
     dunstify "Microphone $status" -r 101
@@ -31,11 +33,13 @@ notify_mic_icon() {
 }
 notify_volume() {
     [ "$(pgrep polybar)" ] && polybar-msg action volume hook 0 > /dev/null 2>&1
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_volume()'
     dunstify -h int:value:"$(pamixer --get-volume)" "Volume" -r 100 "$(pamixer --get-volume)%"
     play_sound
 }
 notify_icon() {
     [ "$(pgrep polybar)" ] && polybar-msg action volume-icon hook 0 > /dev/null 2>&1
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_status()'
     status=""
     [ "$(pamixer --get-mute)" = true ] && status="Muted" || status="Unmuted"
     dunstify "Speakers $status" -r 100
