@@ -80,7 +80,6 @@ function helpers.text_button(args)
     }
 
     button:connect_signal("mouse::enter", function ()
-       text.backup = text.markup
        text.markup = helpers.colorize { text = args.text, fg = args.hover.fg or beautiful.active }
        local w = mouse.current_wibox
        if w then
@@ -90,12 +89,17 @@ function helpers.text_button(args)
     end)
 
     button:connect_signal("mouse::leave", function ()
-       text.markup = text.backup
+       text.markup = helpers.colorize { text = args.text, fg = args.fg or beautiful.fg_norm }
        local w = mouse.current_wibox
        if w then
            w.cursor = text.backup_cursor
        end
     end)
+
+    function button.update_text(val)
+        args.text = val
+        text.markup = helpers.colorize { text = val, fg = args.fg or beautiful.fg_norm }
+    end
 
     return button
 end
@@ -107,9 +111,5 @@ end
 function helpers.title_case(str)
     return str:gsub("(%a)([%w_']*)", tchelper)
 end
-
-helpers.data_dir = os.getenv("XDG_DATA_HOME") or os.getenv("HOME") .. "/.local/share"
-helpers.config_dir = os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config"
-helpers.icon_dir = helpers.config_dir .. "/awesome/icons"
 
 return helpers

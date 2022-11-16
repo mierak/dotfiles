@@ -19,7 +19,7 @@ require("awful.autofocus")
 require("awful.hotkeys_popup.keys")
 require("swallow") -- Has to be called before any other module initializes bling!
 
-beautiful.init(helpers.config_dir .. "/awesome/theme.lua")
+beautiful.init(config.dir.config .. "/awesome/theme.lua")
 awful.spawn("setbg")
 
 local create_bar_for_screen = require("bar")

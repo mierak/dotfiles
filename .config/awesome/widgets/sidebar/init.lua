@@ -7,6 +7,8 @@ local create_cal = require("widgets/sidebar/calendar")
 local powerbar   = require("widgets/sidebar/powerbar")
 local weather    = require("widgets/sidebar/weather")
 local redshift   = require("widgets/sidebar/redshift")
+local player     = require("widgets/sidebar/player")
+local demon      = require("daemon/playerctl")
 local helpers    = require("helpers")
 local cfg        = require("config")
 
@@ -76,9 +78,20 @@ sidebar:setup {
                             expand = true,
                             spacing = 30,
                             weather,
-                            redshift
+                            redshift,
                         },
                     }
+                },
+                helpers.vertical_spacer(40),
+                {
+                    layout = wibox.container.place,
+                    halign = "center",
+                    {
+                        widget = wibox.container.margin,
+                        left = 50,
+                        right = 50,
+                        player,
+                    },
                 },
                 {
                     layout = wibox.container.place,

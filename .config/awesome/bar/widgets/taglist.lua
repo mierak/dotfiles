@@ -28,7 +28,7 @@ local function enable_previews()
             })
         end,
         background_widget = wibox.widget {
-            image = helpers.data_dir .. "/wallpaper/current",
+            image = config.dir.data .. "/wallpaper/current",
             horizontal_fit_policy = "fit",
             vertical_fit_policy   = "fit",
             widget = wibox.widget.imagebox

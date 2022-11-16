@@ -44,7 +44,7 @@ local icon  = wibox.widget {
 local function parse(response)
     local ret = {}
     ret.timestamp  = tonumber(response:match("timestamp=(.-)\n"))
-    ret.icon_value = string.sub(response:match("icon=(.-)\n"), 1, 3)
+    ret.icon_value = string.sub(response:match("icon=(.-)\n" or ""), 1, 3)
     ret.desc_value = response:match("desc=(.-)\n")
     ret.temp_value = response:match("temp=(.-)\n")
     ret.city_value = response:match("city=(.-)\n")

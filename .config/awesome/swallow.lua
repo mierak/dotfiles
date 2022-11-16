@@ -9,6 +9,8 @@ beautiful.parent_filter_list = {
     "Microsoft Teams %- Preview",
     "krita",
     "Skype",
+    "Pcmanfm",
+    "Virt%-manager",
 }
 beautiful.dont_swallow_filter_activated  = true
 
