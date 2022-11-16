@@ -37,7 +37,7 @@ alias \
 
 # Utilities
 alias \
-	myip="echo $(curl -s https://api.my-ip.io/ip)" \
+	myip='echo $(curl -s https://api.my-ip.io/ip)' \
 	cat="bat --paging=auto"
 
 alias bathelp='bat --plain --language=help'
