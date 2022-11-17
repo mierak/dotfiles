@@ -13,7 +13,6 @@ end)
 local awful         = require("awful")
 local beautiful     = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup")
-local helpers       = require("helpers")
 
 require("awful.autofocus")
 require("awful.hotkeys_popup.keys")

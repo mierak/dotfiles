@@ -3,6 +3,7 @@ local gears = require("gears")
 
 local cfg   = require("config")
 
+local observer = gears.object{}
 local seek_debounce_threshold_sec = 2
 local defaul_cover = cfg.dir.assets .. "/default_album_cover.png"
 local current = {
@@ -14,8 +15,8 @@ local current = {
 }
 
 -- emit updates once to init default values
-awesome.emit_signal("playerctl::metadata", current)
-awesome.emit_signal("playerctl::update_position", current)
+observer:emit_signal("metadata", current)
+observer:emit_signal("update_position", current)
 
 local function on_metadata_changed(stdout)
     current = {}
@@ -47,10 +48,9 @@ local function on_metadata_changed(stdout)
     local length = stdout:match(".*length=*(.-),")
     if length then
         current.length = tonumber(length) / 1000000
-        awesome.emit_signal("playerctl::update_length", current)
     end
 
-    awesome.emit_signal("playerctl::metadata", current)
+    observer:emit_signal("metadata", current)
 end
 
 local metadata_format = "'player={{playerName}},status={{status}},volume={{volume}},artist={{artist}},title={{title}},artUrl={{mpris:artUrl}},length={{mpris:length}},'"
@@ -64,13 +64,13 @@ awful.spawn.easy_async({ "pkill", "--full", "--uid", os.getenv("USER"), "^player
     awful.spawn.with_line_callback("playerctl -F metadata -f '{{position}}'", {
         stdout = function (line)
             current.position = tonumber(line) / 1000000
-            awesome.emit_signal("playerctl::update_position", current)
+            observer:emit_signal("update_position", current)
         end
     })
 end)
 
 -- Connect to signals for handling user inputs
-awesome.connect_signal("playerctl::seek", function (value)
+observer:connect_signal("seek", function (_, value)
     if not current.position or math.abs(value - current.position) < seek_debounce_threshold_sec then
         return
     end
@@ -78,26 +78,28 @@ awesome.connect_signal("playerctl::seek", function (value)
     awful.spawn("playerctl position " .. value)
 end)
 
-awesome.connect_signal("playerctl::play", function ()
+observer:connect_signal("play", function ()
     awful.spawn("playerctl play")
 end)
 
-awesome.connect_signal("playerctl::stop", function ()
+observer:connect_signal("stop", function ()
     awful.spawn("playerctl stop")
 end)
 
-awesome.connect_signal("playerctl::pause", function ()
+observer:connect_signal("pause", function ()
     awful.spawn("playerctl pause")
 end)
 
-awesome.connect_signal("playerctl::play-pause", function ()
+observer:connect_signal("play-pause", function ()
     awful.spawn("playerctl play-pause")
 end)
 
-awesome.connect_signal("playerctl::next", function ()
+observer:connect_signal("next", function ()
     awful.spawn("playerctl next")
 end)
 
-awesome.connect_signal("playerctl::previous", function ()
+observer:connect_signal("previous", function ()
     awful.spawn("playerctl previous")
 end)
+
+return observer

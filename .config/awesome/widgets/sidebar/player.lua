@@ -3,6 +3,8 @@ local gears     = require("gears")
 local awful     = require("awful")
 local beautiful = require("beautiful")
 
+local playerctl = require("daemon/playerctl")
+
 local helpers   = require("helpers")
 
 local button_size = 30
@@ -50,7 +52,7 @@ local next = helpers.text_button {
         fg = beautiful.color4,
     },
     on_click     = function ()
-        awesome.emit_signal("playerctl::next")
+        playerctl:emit_signal("next")
     end,
 }
 local prev = helpers.text_button {
@@ -62,7 +64,7 @@ local prev = helpers.text_button {
         fg = beautiful.color4,
     },
     on_click     = function ()
-        awesome.emit_signal("playerctl::previous")
+        playerctl:emit_signal("previous")
     end,
 }
 local play_pause = helpers.text_button {
@@ -74,7 +76,7 @@ local play_pause = helpers.text_button {
         fg = beautiful.color4,
     },
     on_click     = function ()
-        awesome.emit_signal("playerctl::play-pause")
+        playerctl:emit_signal("play-pause")
     end,
 }
 
@@ -97,7 +99,7 @@ local function format_seconds(seconds)
     return string.format("%d:%02d", minutes, sec)
 end
 
-awesome.connect_signal("playerctl::metadata", function (table)
+playerctl:connect_signal("metadata", function (_, table)
     artist.markup = table.artist
     title.markup = table.title
 
@@ -124,7 +126,7 @@ awesome.connect_signal("playerctl::metadata", function (table)
     end
 end)
 
-awesome.connect_signal("playerctl::update_position", function (table)
+playerctl:connect_signal("update_position", function (_, table)
     progress.value = table.position
     progress.skip_next_seek = true
     if not table.position then
@@ -136,7 +138,7 @@ end)
 
 progress:connect_signal("property::value", function (self, value)
     if not self.skip_seek then
-        awesome.emit_signal("playerctl::seek", value)
+        playerctl:emit_signal("seek", value)
     end
 end)
 progress:connect_signal("mouse::enter", function (self)

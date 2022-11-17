@@ -8,7 +8,6 @@ local powerbar   = require("widgets/sidebar/powerbar")
 local weather    = require("widgets/sidebar/weather")
 local redshift   = require("widgets/sidebar/redshift")
 local player     = require("widgets/sidebar/player")
-local demon      = require("daemon/playerctl")
 local helpers    = require("helpers")
 local cfg        = require("config")
 
