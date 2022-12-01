@@ -5,7 +5,7 @@ PROMPT="%{$fg[blue]%}%{$bg[gray]%}  %{$fg[white]%}%B%n %b%{$fg[gray]%}%{$bg[w
 HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/histfile"
 HISTSIZE=1000000
 SAVEHIST=1000000
-setopt autocd extendedglob nomatch
+setopt autocd extendedglob nomatch complete_aliases
 unsetopt beep
 
 

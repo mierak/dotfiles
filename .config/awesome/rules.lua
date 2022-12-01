@@ -42,6 +42,7 @@ local rules = {
         properties = {
             screen = screen[3],
             tag = "1",
+            focus = nil,
             callback = function (client) client:to_secondary_section() end,
         }
     },
@@ -82,12 +83,21 @@ local rules = {
         }
     },
     {
-        id = "vampire-survivors",
+        id = "mpv-floating",
         rule = {
-            class = "Vampire Survivors",
-            name = "Vampire Survivors",
+            instance = "mpv-float",
         },
         properties = {
+            floating = true,
+        }
+    },
+    {
+        id = "vampire-survivors",
+        rule = {
+            class = "Vampire_Survivors",
+        },
+        properties = {
+            fullscreen = true,
             maximized = true,
         }
     },

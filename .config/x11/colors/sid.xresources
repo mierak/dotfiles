@@ -25,6 +25,7 @@
 *foreground:   base07
 *background:   #1e222a
 *background-alt: #363a4f
+*background-alt-dark: #222630
 *cursorColor:  base05
 *active:         #546078
 *inactive:       #1e222a

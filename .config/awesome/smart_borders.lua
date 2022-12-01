@@ -1,7 +1,7 @@
 return function(awful, beautiful)
     local handle_border = function(c)
-        local s = c.screen
-        local visible_clients = awful.client.tiled(s)
+        local screen = c.screen
+        local visible_clients = awful.client.tiled(screen)
         if #visible_clients == 1 then
             for _, val in pairs(visible_clients) do
                 val.border_width = 0

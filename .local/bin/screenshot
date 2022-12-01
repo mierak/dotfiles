@@ -12,7 +12,7 @@ area_upload() {
 
 screen() {
 	sel=$(xrandr | grep -Po '(?<= )\d+x\d+\+\d+\+\d+' | tr '\n' '|' | rofi -dmenu -sep "|" -p "Choose a screen" -l 3)
-	maim -g "$sel" | xclip -selection clipboard -t image/png && notify-send "Screen copied to clipboard"
+	sleep 0.5 && maim -g "$sel" | xclip -selection clipboard -t image/png && notify-send "Screen copied to clipboard"
 }
 
 screen_upload() {

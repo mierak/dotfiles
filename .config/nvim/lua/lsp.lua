@@ -36,6 +36,7 @@ require'lspconfig'.rust_analyzer.setup {
 require'lspconfig'.sumneko_lua.setup {
   on_attach = on_attach,
   capabilities = capabilities,
+  root_dir = vim.loop.cwd,
   settings = {
     Lua = {
       workspace = {

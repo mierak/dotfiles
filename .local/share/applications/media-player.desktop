@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Test
+Exec=lo %u
+MimeType=x-scheme-handler/test
+Hidden=True

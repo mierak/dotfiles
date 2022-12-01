@@ -10,6 +10,7 @@ local redshift   = require("widgets/sidebar/redshift")
 local player     = require("widgets/sidebar/player")
 local helpers    = require("helpers")
 local cfg        = require("config")
+local volume     = require("widgets/sidebar/volume")
 
 local calendar = create_cal {
     width = beautiful.sidebar.width - 50,
@@ -90,6 +91,17 @@ sidebar:setup {
                         left = 50,
                         right = 50,
                         player,
+                    },
+                },
+                helpers.vertical_spacer(40),
+                {
+                    layout = wibox.container.place,
+                    halign = "center",
+                    {
+                        widget = wibox.container.margin,
+                        left = 50,
+                        right = 50,
+                        volume,
                     },
                 },
                 {

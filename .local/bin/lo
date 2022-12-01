@@ -6,11 +6,12 @@ else
 	url="$1"
 fi
 
+url=$(echo "$url" | sed 's/media-player:\/\///')
 case $url in
 	*youtube.com/watch*|*youtube.com/shorts*|*youtube.com/playlist*|*youtu.be*|*pornhub.com*)
-		setsid -f mpv -quiet --force-window=immediate --ytdl-format="bestvideo[height<=?1080]+bestaudio/best" "$url" > /dev/null 2>&1 ;;
+		mpv -quiet --x11-name=mpv-float --geometry=80% --force-window=immediate --ytdl-format="bestvideo[height<=?1080]+bestaudio/best" "$url" > /dev/null 2>&1 ;;
 	*twitch.tv*)
-		setsid -f mpv -quiet --force-window=immediate --ytdl-format="bestvideo[height<=?1080]+bestaudio/best" --demuxer-readahead-secs=10 --demuxer-max-bytes=200MiB "$url" > /dev/null 2>&1 ;;
+		mpv -quiet --x11-name=mpv-float --geometry=80% --force-window=immediate --ytdl-format="bestvideo[height<=?1080]+bestaudio/best" --demuxer-readahead-secs=10 --demuxer-max-bytes=200MiB "$url" > /dev/null 2>&1 ;;
 	*)
 		[ -f "$url" ] && setsid -f "$TERMINAL" -e "$EDITOR" "$url" >/dev/null 2>&1 || setsid -f "$BROWSER" "$url" > /dev/null 2>&1 && sleep 0 ;;
 esac

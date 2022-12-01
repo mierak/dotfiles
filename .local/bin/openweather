@@ -1,7 +1,17 @@
 #!/bin/sh
+# Calls openweathermap and parses resulting data
+# Output format is:
+# icon=<icon-value> - refer to https://openweathermap.org/weather-conditions for icon codes
+# temp=<temp-value>
+# city=<city-value>
+# timestamp=<timestamp>
 
+lat="50.2"
+lon="15.8"
 api_key=$(pass web/openweather)
-weather=$(curl -sf "https://api.openweathermap.org/data/2.5/weather?lat=50.2&lon=15.8&appid=$api_key&units=metric")
+if ! weather="$(curl -sf "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$api_key&units=metric")"; then
+    exit 1
+fi
 
 icon=$(echo "$weather" | jq -r '.weather[].icon')
 temp=$(echo "$weather" | jq -r '.main.temp' | cut -d "." -f 1)

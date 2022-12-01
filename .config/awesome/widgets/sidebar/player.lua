@@ -4,6 +4,7 @@ local awful     = require("awful")
 local beautiful = require("beautiful")
 
 local playerctl = require("daemon/playerctl")
+--local playerctl2 = require("daemon/playerctlv2")
 
 local helpers   = require("helpers")
 
@@ -154,7 +155,16 @@ local widget = wibox.widget {
     {
         layout = wibox.layout.fixed.horizontal,
         spacing = beautiful.margin,
-        art,
+        {
+            widget = wibox.container.background,
+            bg = "#222326",
+            border_width = 1,
+            border_color = beautiful.active,
+            art,
+            forced_width = thumb_size,
+            forced_height = thumb_size,
+            shape = gears.shape.rounded_rect,
+        },
         {
             layout = wibox.layout.fixed.vertical,
             artist,

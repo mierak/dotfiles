@@ -5,11 +5,11 @@ local cfg   = require("config")
 
 local observer = gears.object{}
 local seek_debounce_threshold_sec = 2
-local defaul_cover = cfg.dir.assets .. "/default_album_cover.png"
+local default_cover = cfg.dir.assets .. "/default_album_cover.png"
 local current = {
     artist   = "Unknown Artist",
     title    = "Not Playing",
-    artUrl   = defaul_cover,
+    artUrl   = default_cover,
     position = 0,
     length   = 0,
 }
@@ -42,12 +42,12 @@ local function on_metadata_changed(stdout)
     if artUrl and string.len(artUrl) > 1 then
         current.artUrl = artUrl
     else
-        current.artUrl = defaul_cover
+        current.artUrl = default_cover
     end
 
-    local length = stdout:match(".*length=*(.-),")
+    local length = tonumber(stdout:match(".*length=*(.-),"))
     if length then
-        current.length = tonumber(length) / 1000000
+        current.length = length / 1000000
     end
 
     observer:emit_signal("metadata", current)
@@ -63,7 +63,7 @@ awful.spawn.easy_async({ "pkill", "--full", "--uid", os.getenv("USER"), "^player
 
     awful.spawn.with_line_callback("playerctl -F metadata -f '{{position}}'", {
         stdout = function (line)
-            current.position = tonumber(line) / 1000000
+            current.position = (tonumber(line) or 0) / 1000000
             observer:emit_signal("update_position", current)
         end
     })

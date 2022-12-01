@@ -29,6 +29,26 @@ local icons = {
     ["50n"] = { icon = "", color = beautiful.color4 },
 }
 
+local function call_api(cb)
+    awful.spawn.easy_async_with_shell("openweather", function (out, _, _, exit_code)
+        if exit_code ~= 0 or helpers.nil_or_empty(out) then
+            cb()
+            return
+        end
+        cb(out)
+    end)
+end
+
+local function parse_response(response)
+    local ret = {}
+    ret.timestamp  = tonumber(response:match("timestamp=(.-)\n"))
+    ret.icon_value = string.sub(response:match("icon=(.-)\n" or ""), 1, 3)
+    ret.desc_value = response:match("desc=(.-)\n")
+    ret.temp_value = string.gsub(response:match("temp=(.-)\n"), "%-0", "0")
+    ret.city_value = response:match("city=(.-)\n")
+    return ret
+end
+
 local description = wibox.widget {
     widget = wibox.widget.textbox,
     font   = beautiful.fonts.base .. "12",
@@ -41,23 +61,18 @@ local icon  = wibox.widget {
     halign = "center",
 }
 
-local function parse(response)
-    local ret = {}
-    ret.timestamp  = tonumber(response:match("timestamp=(.-)\n"))
-    ret.icon_value = string.sub(response:match("icon=(.-)\n" or ""), 1, 3)
-    ret.desc_value = response:match("desc=(.-)\n")
-    ret.temp_value = response:match("temp=(.-)\n")
-    ret.city_value = response:match("city=(.-)\n")
-    return ret
-end
-
 local function read_cached(cb)
     awful.spawn.easy_async_with_shell("cat /tmp/awm_weather", function (out, _, _, exit_code)
         if exit_code ~= 0 then
             cb()
+            return
         end
-        local data = parse(out)
-        cb(data)
+        if not helpers.nil_or_empty(out) then
+            local data = parse_response(out)
+            cb(data)
+        else
+            cb()
+        end
     end)
 end
 
@@ -66,13 +81,29 @@ local function update_widget(data)
     description.markup = data.city_value
 end
 
-local function update()
-    awful.spawn.easy_async_with_shell("openweather", function (out)
+local function set_no_data()
+    icon.markup = "---"
+    description.markup = "No Data"
+end
+
+local function call_api_and_update_widget()
+    call_api(function (out)
+        if not out then
+            set_no_data()
+            return
+        end
         awful.spawn.with_shell('echo "' .. out .. '" > /tmp/awm_weather')
-        local data = parse(out)
+        local data = parse_response(out)
         update_widget(data)
     end)
 end
+
+icon.buttons = {
+    awful.button({}, 1, function ()
+        description.markup = "Updating"
+        call_api_and_update_widget()
+    end),
+}
 
 if cfg.weather.update_interval > 0 then
     gears.timer {
@@ -84,7 +115,7 @@ if cfg.weather.update_interval > 0 then
             read_cached(function (data)
                 awful.spawn.easy_async("date +%s", function (current_timestamp)
                     if not data or data.timestamp + cfg.weather.update_interval - 1 < tonumber(current_timestamp) then
-                        update()
+                        call_api_and_update_widget()
                     else
                         update_widget(data)
                     end

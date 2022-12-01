@@ -12,7 +12,7 @@ record_icon=⏺️
 
 update_icon() {
 	echo "$1" > /tmp/recordingicon
-	kill -40 "$(pidof dwmblocks)"
+    [ -n "$(pgrep -x dwmblocks)" ] && kill -40 "$(pidof dwmblocks)"
 }
 
 cache_filename() {
