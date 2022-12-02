@@ -41,9 +41,6 @@ awful.placement.bottom_left(sidebar)
 sidebar:setup {
     layout = wibox.container.margin,
     top = 20,
-    --bottom = 20,
-    --left = beautiful.margin,
-    --right = beautiful.margin,
     {
         layout = wibox.layout.fixed.vertical,
         fill_space = true,
@@ -139,6 +136,9 @@ end)
 awesome.connect_signal("sidebar::toggle", function ()
     if sidebar.visible then
         calendar.reset()
+    elseif cfg.sidebar.show_on_focused_screen then
+        sidebar.screen = awful.screen.focused()
+        awful.placement.bottom_left(sidebar)
     end
     sidebar.visible = not sidebar.visible
 end)

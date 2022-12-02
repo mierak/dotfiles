@@ -83,18 +83,19 @@ function helpers.text_button(args)
     return button
 end
 
+local icon_paths = {
+    "/usr/share/icons/hicolor/",
+    "/usr/share/pixmaps/",
+    config.dir.assets .. "/icons/",
+    config.dir.assets .. "/icons/apps/",
+    config.dir.data .. "/icons/",
+    config.dir.data .. "/icons/hicolor/"
+}
+local icon_formats = { "ico", "svg", "png", "jpg" }
+local icon_size = "22"
 function helpers.find_icon(app_binary, app_name)
-    return awful.util.geticonpath(
-        app_binary,
-        { "ico", "png", "svg" },
-        { "/usr/share/icons/hicolor/", "/usr/share/pixmaps/", config.dir.assets .. "/icons/", config.dir.data .. "/icons/", config.dir.data .. "/icons/hicolor/" },
-        "22"
-    ) or awful.util.geticonpath(
-        app_name,
-        { "ico", "png", "svg" },
-        { "/usr/share/icons/hicolor/", "/usr/share/pixmaps/", config.dir.assets .. "/icons/", config.dir.data .. "/icons/", config.dir.data .. "/icons/hicolor/" },
-        "22"
-    )
+    return awful.util.geticonpath(app_binary, icon_formats, icon_paths, icon_size)
+        or awful.util.geticonpath(app_name, icon_formats, icon_paths, icon_size)
 end
 
 return helpers

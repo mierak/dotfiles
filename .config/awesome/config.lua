@@ -30,6 +30,7 @@ return {
     },
     sidebar = {
         enabled = true,
+        show_on_focused_screen = true,
         hide_on_mouse_leave = true,
     },
     bar = {

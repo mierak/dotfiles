@@ -92,6 +92,7 @@ local rules = {
             instance = "mpv-float",
         },
         properties = {
+            screen = screen[1],
             floating = true,
         }
     },

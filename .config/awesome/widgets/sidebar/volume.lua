@@ -19,26 +19,30 @@ daemon:connect_signal("sink_inputs", function (_, sinks)
             widget = wibox.widget.slider,
             handle_shape = gears.shape.circle,
             handle_cursor = "hand1",
-            handle_width = 15,
+            handle_width = 12,
+            handle_color = beautiful.active,
             bar_shape = gears.shape.rounded_bar,
-            background_color = "#00000000",
-            color = beautiful.fg_normal,
+            bar_color = beautiful.bg_alt,
+            bar_border_width = 1,
+            bar_border_color = beautiful.active,
+            bar_height = 14,
             paddings = {
                 top = 4,
                 bottom = 4,
             },
-            forced_height = 15,
-            bar_height = 6,
+            forced_height = 13,
             max_value = 100,
             value = sink.volume,
         }
 
         local mute_change = false
-        volume_slider:connect_signal("mouse::enter", function ()
+        volume_slider:connect_signal("mouse::enter", function (self)
+            self.handle_color = beautiful.color4
             mute_change = true
         end)
-        volume_slider:connect_signal("mouse::leave", function ()
+        volume_slider:connect_signal("mouse::leave", function (self)
             mute_change = false
+            self.handle_color = beautiful.active
         end)
 
         volume_slider:connect_signal("property::value", function (_, val)
