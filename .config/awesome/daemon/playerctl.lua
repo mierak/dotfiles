@@ -15,8 +15,10 @@ local current = {
 }
 
 -- emit updates once to init default values
-observer:emit_signal("metadata", current)
-observer:emit_signal("update_position", current)
+gears.timer.delayed_call(function ()
+    observer:emit_signal("metadata", current)
+    observer:emit_signal("update_position", current)
+end)
 
 local function on_metadata_changed(stdout)
     current = {}

@@ -4,7 +4,6 @@ local awful     = require("awful")
 local beautiful = require("beautiful")
 
 local playerctl = require("daemon/playerctl")
---local playerctl2 = require("daemon/playerctlv2")
 
 local helpers   = require("helpers")
 
@@ -119,10 +118,11 @@ playerctl:connect_signal("metadata", function (_, table)
         play_pause.update_text("契")
     end
 
-    progress.maximum = table.length
-    if not table.length or table.length > 86400 then
+    if not table.length or table.length > 86400 or table.length < 1 then
+        progress.maximum = 1
         timer_length.markup = "N/A"
     else
+        progress.maximum = table.length
         timer_length.markup = format_seconds(table.length)
     end
 end)
@@ -130,7 +130,7 @@ end)
 playerctl:connect_signal("update_position", function (_, table)
     progress.value = table.position
     progress.skip_next_seek = true
-    if not table.position then
+    if not table.position or table.position < 1 then
         timer_current.markup = "N/A"
     else
         timer_current.markup = format_seconds(table.position)
