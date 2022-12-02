@@ -9,21 +9,21 @@ local icon_font = beautiful.fonts.symbols_base .. "30"
 
 local info_icon = wibox.widget {
     widget = wibox.widget.textbox,
-    markup = helpers.colorize { text = "", fg = beautiful.color4 },
+    markup = helpers.misc.colorize { text = "", fg = beautiful.color4 },
     font   = icon_font,
     valign = "top",
 }
 
 local warn_icon = wibox.widget {
     widget = wibox.widget.textbox,
-    markup = helpers.colorize { text = "", fg = beautiful.color3 },
+    markup = helpers.misc.colorize { text = "", fg = beautiful.color3 },
     font   = icon_font,
     valign = "top",
 }
 
 local err_icon = wibox.widget {
     widget = wibox.widget.textbox,
-    markup = helpers.colorize { text = "", fg = beautiful.color1 },
+    markup = helpers.misc.colorize { text = "", fg = beautiful.color1 },
     font   = icon_font,
     valign = "top",
 }
@@ -96,7 +96,7 @@ return function (args)
                     {
                         layout = wibox.layout.fixed.horizontal,
                         spacing = beautiful.margin,
-                        helpers.text_button {
+                        helpers.misc.text_button {
                             text = params.ok_text or "Confirm",
                             font = beautiful.fonts.base .. "12",
                             margins = {
@@ -108,7 +108,7 @@ return function (args)
                                 params.on_click()
                             end
                         },
-                        helpers.text_button {
+                        helpers.misc.text_button {
                             text = params.cancel_text or "Cancel",
                             font = beautiful.fonts.base .. "12",
                             margins = {

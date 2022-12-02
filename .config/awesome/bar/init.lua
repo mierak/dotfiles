@@ -35,12 +35,12 @@ return function (screen, menu)
     -- Init widgets from config as defined in config for given screen
     local widgets_for_screen = cfg.bar.right_widgets[screen.index] or {}
     for i=1,#widgets_for_screen do
-        table.insert(right_widgets, helpers.to_pill { widget = widgets[widgets_for_screen[i]] })
+        table.insert(right_widgets, helpers.misc.to_pill { widget = widgets[widgets_for_screen[i]] })
     end
     -- Append systray only on main screen
     if screen.index == 1 then
         local tray = wibox.widget.systray()
-        table.insert(right_widgets, helpers.to_pill { widget = tray })
+        table.insert(right_widgets, helpers.misc.to_pill { widget = tray })
     end
     -- Layoutbox on every screen
     table.insert(right_widgets, layout_box)

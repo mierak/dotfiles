@@ -129,5 +129,5 @@ return function(screen)
         }
     }
 
-    return helpers.to_pill { widget = taglist }
+    return helpers.misc.to_pill { widget = taglist }
 end

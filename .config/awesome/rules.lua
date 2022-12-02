@@ -43,7 +43,9 @@ local rules = {
             screen = screen[3],
             tag = "1",
             focus = nil,
-            callback = function (client) client:to_secondary_section() end,
+            callback = function (client)
+                client:to_secondary_section()
+            end,
         }
     },
     {
@@ -57,7 +59,9 @@ local rules = {
         properties = {
             screen = screen[3],
             tag = "1",
-            callback = function (client) client:to_secondary_section() end,
+            callback = function (client)
+                client:to_secondary_section()
+            end,
         }
     },
     {

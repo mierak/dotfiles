@@ -21,7 +21,7 @@ local state = {
 }
 
 local function set_text()
-    vol.markup = helpers.colorize {
+    vol.markup = helpers.misc.colorize {
         text = string.gsub(
             string.format("%s %s%%", state.volume_icon, state.volume),
             "\n",
@@ -32,7 +32,7 @@ local function set_text()
 end
 
 local function set_mic_text()
-    mic_vol.markup = helpers.colorize {
+    mic_vol.markup = helpers.misc.colorize {
         text = string.gsub(
             string.format("%s %s%%", state.mic_icon, state.mic_volume),
             "\n",

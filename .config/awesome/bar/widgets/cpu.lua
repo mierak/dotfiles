@@ -8,7 +8,7 @@ local cpu = lain.widget.cpu {
     widget = wibox.widget { widget = wibox.widget.textbox, font = beautiful.fonts.bar },
     timeout = 2,
     settings = function()
-        widget:set_markup(helpers.colorize { 
+        widget:set_markup(helpers.misc.colorize { 
             text = string.format(" %2d%%", cpu_now.usage),
             fg = beautiful.color1
         })

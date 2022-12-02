@@ -12,7 +12,7 @@ local font = beautiful.fonts.symbols_base .. "32"
 return wibox.widget {
     layout              = wibox.layout.ratio.horizontal,
     inner_fill_strategy = "justify",
-    helpers.text_button {
+    helpers.misc.text_button {
         text     = "",
         font     = font,
         align    = "center",
@@ -25,7 +25,7 @@ return wibox.widget {
             awesome.emit_signal("sidebar::hide")
         end
     },
-    helpers.text_button {
+    helpers.misc.text_button {
         text     = "",
         font     = font,
         align    = "center",
@@ -43,7 +43,7 @@ return wibox.widget {
             }
         end
     },
-    helpers.text_button {
+    helpers.misc.text_button {
         text     = "",
         font     = font,
         align    = "center",
@@ -61,7 +61,7 @@ return wibox.widget {
             }
         end
     },
-    helpers.text_button {
+    helpers.misc.text_button {
         text     = "⏻",
         font     = font,
         align    = "center",

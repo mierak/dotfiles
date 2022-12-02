@@ -3,9 +3,7 @@ local wibox     = require("wibox")
 local awful     = require("awful")
 local beautiful = require("beautiful")
 
-local helpers = {
-    table = {},
-}
+local helpers = {}
 
 function helpers.colorize(args)
     return string.format('<span color="%s">%s</span>', args.fg or beautiful.fg_normal, args.text)
@@ -19,27 +17,6 @@ function helpers.to_pill(args)
     )
 end
 
-function helpers.table.contains(table, element)
-  for _, value in pairs(table) do
-    if value == element then
-      return true
-    end
-  end
-  return false
-end
-
-function helpers.table.to_string(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. helpers.table.to_string(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
-end
 
 function helpers.vertical_spacer(height)
     return wibox.widget {

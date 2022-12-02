@@ -60,8 +60,8 @@ daemon:connect_signal("sink_inputs", function (_, sinks)
         widget:add(w)
         local icon_path = awful.util.geticonpath(
             sink.app_bin,
-            { "png" },
-            { "/usr/share/icons/hicolor/", "/usr/share/pixmaps/", config.dir.data .. "/icons", config.dir.data .. "/icons/hicolor" },
+            { "ico", "png" },
+            { "/usr/share/icons/hicolor/", "/usr/share/pixmaps/", config.dir.assets .. "/icons/", config.dir.data .. "/icons/", config.dir.data .. "/icons/hicolor/" },
             "22"
         )
         if icon_path then

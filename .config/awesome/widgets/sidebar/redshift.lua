@@ -50,9 +50,9 @@ gears.timer {
                     local period_value = stdout:match("Period: (.-)\n")
                     period.markup = period_value
                     if period_value == "Night" then
-                        icon.markup = helpers.colorize { text = "ﯧ", fg = beautiful.color3 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
+                        icon.markup = helpers.misc.colorize { text = "ﯧ", fg = beautiful.color3 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
                     else
-                        icon.markup = helpers.colorize { text = "", fg = beautiful.color4 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
+                        icon.markup = helpers.misc.colorize { text = "", fg = beautiful.color4 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
                     end
                 end)
             end

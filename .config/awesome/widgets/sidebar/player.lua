@@ -42,7 +42,7 @@ local timer = wibox.widget {
     timer_length,
 }
 
-local next = helpers.text_button {
+local next = helpers.misc.text_button {
     text         = "怜",
     align        = "right",
     fg       = beautiful.active,
@@ -54,7 +54,7 @@ local next = helpers.text_button {
         playerctl:emit_signal("next")
     end,
 }
-local prev = helpers.text_button {
+local prev = helpers.misc.text_button {
     text         = "玲",
     align        = "left",
     fg       = beautiful.active,
@@ -66,7 +66,7 @@ local prev = helpers.text_button {
         playerctl:emit_signal("previous")
     end,
 }
-local play_pause = helpers.text_button {
+local play_pause = helpers.misc.text_button {
     text         = "契",
     align        = "center",
     fg       = beautiful.active,

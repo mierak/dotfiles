@@ -48,7 +48,7 @@ sidebar:setup {
         layout = wibox.layout.fixed.vertical,
         fill_space = true,
         clock,
-        helpers.vertical_spacer(20),
+        helpers.misc.vertical_spacer(20),
         {
             layout = wibox.container.place,
             halign = "center",
@@ -63,7 +63,7 @@ sidebar:setup {
             {
                 layout = wibox.layout.fixed.vertical,
                 fill_space = true,
-                helpers.vertical_spacer(20),
+                helpers.misc.vertical_spacer(20),
                 {
                     widget = wibox.container.margin,
                     left = beautiful.margin,
@@ -82,7 +82,7 @@ sidebar:setup {
                         },
                     }
                 },
-                helpers.vertical_spacer(40),
+                helpers.misc.vertical_spacer(40),
                 {
                     layout = wibox.container.place,
                     halign = "center",
@@ -93,7 +93,7 @@ sidebar:setup {
                         player,
                     },
                 },
-                helpers.vertical_spacer(40),
+                helpers.misc.vertical_spacer(40),
                 {
                     layout = wibox.container.place,
                     halign = "center",

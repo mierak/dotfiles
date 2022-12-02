@@ -83,7 +83,7 @@ local function create(args)
     local params = args or {}
     local ret    = {}
 
-    local next = helpers.text_button {
+    local next = helpers.misc.text_button {
         text         = "  ",
         align        = "right",
         fg       = beautiful.active,
@@ -95,7 +95,7 @@ local function create(args)
         end,
     }
 
-    local prev = helpers.text_button {
+    local prev = helpers.misc.text_button {
         text         = "  ",
         align        = "left",
         fg       = beautiful.active,

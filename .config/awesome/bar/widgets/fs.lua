@@ -11,7 +11,7 @@ local fs = lain.widget.fs {
         border_width = 0
     },
     settings = function ()
-        widget:set_markup(helpers.colorize {
+        widget:set_markup(helpers.misc.colorize {
             text = string.format(" %.1f/%.1f%s", fs_now["/"].used, fs_now["/"].size, fs_now["/"].units),
             fg = beautiful.fg_normal
         })
