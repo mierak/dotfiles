@@ -1,11 +1,12 @@
 local awful = require("awful")
 local gears = require("gears")
+local helpers = require("helpers")
 
 local observer = gears.object{}
 
 -- CSV: index, vol_mono, vol_left, vol_right, muted, app_name, app_bin, app_icon
-local cmd_list_sinks = "pactl --format=json list sink-inputs | jq -r '.[] | [.index, .volume.mono.value_percent, .volume.\"front-left\".value_percent, .volume.\"front-right\".value_percent, .mute, .properties.\"application.name\", .properties.\"application.process.binary\", .properties.\"application.icon_name\"] | @csv'"
-local csv_line_pattern = "%s*(.-),%s*(.-),%s*(.-),%s*(.-),%s*(.-),%s*(.-),%s*(.-),%s*(.-)\n"
+local cmd_list_sinks = "pactl --format=json list sink-inputs | jq -r '.[] | [.index, .volume.mono.value_percent, .volume.\"front-left\".value_percent, .volume.\"front-right\".value_percent, .mute, .properties.\"application.name\", .properties.\"application.process.binary\"] | @csv'"
+local csv_line_pattern = "%s*(.-),%s*(.-),%s*(.-),%s*(.-),%s*(.-),%s*(.-),%s*(.-)\n"
 
 local function split_lines(s)
     if s:sub(-1)~="\n" then s=s.."\n" end
@@ -19,27 +20,38 @@ local function trim_safe(str, start_idx, end_idx)
     return nil
 end
 
+local current_sink_inputs = {}
+
 local function get_all_sink_inputs(callback)
     awful.spawn.easy_async_with_shell(cmd_list_sinks, function (out)
-        local sink_inputs = {}
+        local sinks = {}
         for line in split_lines(out) do
-            local idx, mono, left, right, muted, app, bin, icon = (line .. "\n"):match(csv_line_pattern)
+            -- Group all sink sink inputs by key of "<app_bin><app_name>" and register all indices in the group
+            local idx, mono, left, right, muted, app, bin = (line .. "\n"):match(csv_line_pattern)
             if #bin > 0 and #app > 0 and #idx > 0 then
-                local sink_input = {
-                    index     = idx,
-                    vol_mono  = tonumber(trim_safe(mono, 2, -3)),
-                    vol_left  = tonumber(trim_safe(left, 2, -3)),
-                    vol_right = tonumber(trim_safe(right, 2, -3)),
-                    app_name  = trim_safe(app, 2, -2),
-                    app_bin   = trim_safe(bin, 2, -2),
-                    app_icon  = trim_safe(icon, 2, -2),
-                }
-                if muted == "true" then sink_input.muted = true else sink_input.muted = false end
-                sink_inputs[idx] = sink_input
-                table.insert(sink_inputs, sink_input)
+                local app_name  = trim_safe(app, 2, -2)
+                local app_bin   = trim_safe(bin, 2, -2)
+                local key = app_name .. app_bin
+                local volume   = math.max(tonumber(trim_safe(mono, 2, -3)) or 0, tonumber(trim_safe(left, 2, -3)) or 0, tonumber(trim_safe(right, 2, -3)) or 0)
+                if not sinks[key] then
+                    sinks[key] = {
+                        indices  = { idx },
+                        volume   = volume,
+                        app_bin  = app_bin,
+                        app_name = app_name,
+                    }
+                    if muted == "true" then sinks[key].muted = true else sinks[key].muted = false end
+                else
+                    table.insert(sinks[key].indices, idx)
+                    sinks[key].muted = sinks[key].muted and muted == "true"
+                    if volume > sinks[key].volume then
+                        sinks[key].volume = volume
+                    end
+                end
             end
         end
-        callback(sink_inputs)
+        current_sink_inputs = sinks
+        callback(sinks)
     end)
 end
 
@@ -56,7 +68,16 @@ end
 local event_handlers = {
     change = function (id)
         get_all_sink_inputs(function (sink_inputs)
-            observer:emit_signal("sink_input_change_" .. id, sink_inputs[id])
+            local sink
+            local key
+            for k, value in pairs(sink_inputs) do
+                if helpers.table.contains(value.indices, id) then
+                    sink = value
+                    key = k
+                end
+            end
+            if not sink or not key then return end
+            observer:emit_signal("sink_input_change_" .. key, sink)
         end)
     end,
     new = full_refresh,
@@ -93,13 +114,17 @@ observer:connect_signal("volume", function (_, data)
 
     queued_volume = true
     gears.timer.delayed_call(function ()
-        awful.spawn("pactl set-sink-input-volume " .. data.index .. " " .. data.value .. "%")
+        for _, index in ipairs(current_sink_inputs[data.key].indices) do
+            awful.spawn("pactl set-sink-input-volume " .. index .. " " .. data.value .. "%")
+        end
         queued_volume = false
     end)
 end)
 
-observer:connect_signal("mute_toggle", function (_, index)
-    awful.spawn("pactl set-sink-input-mute " .. index .. " toggle")
+observer:connect_signal("mute_toggle", function (_, key)
+    for _, index in ipairs(current_sink_inputs[key].indices) do
+        awful.spawn("pactl set-sink-input-mute " .. index .. " toggle")
+    end
 end)
 
 observer:connect_signal("refresh", function ()

@@ -13,7 +13,7 @@ local widget = wibox.widget {
 
 daemon:connect_signal("sink_inputs", function (_, sinks)
     widget:reset()
-    for _, sink in ipairs(sinks) do
+    for key, sink in pairs(sinks) do
 
         local volume_slider = wibox.widget {
             widget = wibox.widget.slider,
@@ -30,7 +30,7 @@ daemon:connect_signal("sink_inputs", function (_, sinks)
             forced_height = 15,
             bar_height = 6,
             max_value = 100,
-            value = math.max(sink.vol_mono or 0, sink.vol_left or 0, sink.vol_rightor or 0),
+            value = sink.volume,
         }
 
         local mute_change = false
@@ -42,14 +42,14 @@ daemon:connect_signal("sink_inputs", function (_, sinks)
         end)
 
         volume_slider:connect_signal("property::value", function (_, val)
-            daemon:emit_signal("volume", { index = sink.index, value = val })
+            daemon:emit_signal("volume", { key = key, value = val })
         end)
 
-        daemon:connect_signal("sink_input_change_" .. sink.index, function (_, data)
+        daemon:connect_signal("sink_input_change_" .. key, function (_, data)
             if mute_change or not data then
                 return
             end
-            volume_slider._private.value = math.max(data.vol_mono or 0, data.vol_left or 0, data.vol_rightor or 0)
+            volume_slider._private.value = data.volume
             volume_slider:emit_signal("widget::redraw_needed")
         end)
 
@@ -69,7 +69,7 @@ daemon:connect_signal("sink_inputs", function (_, sinks)
                 forced_width = 40,
                 buttons = {
                     awful.button({}, 1, function ()
-                        daemon:emit_signal("mute_toggle", sink.index)
+                        daemon:emit_signal("mute_toggle", key)
                         daemon:emit_signal("refresh")
                     end)
                 }

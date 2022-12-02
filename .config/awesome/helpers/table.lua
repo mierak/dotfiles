@@ -9,6 +9,15 @@ function helpers.contains(table, element)
   return false
 end
 
+function helpers.contains_key(table, key)
+    for k, _ in pairs(table) do
+        if k == key then
+            return true
+        end
+    end
+    return false
+end
+
 function helpers.to_string(o)
    if type(o) == 'table' then
       local s = '{ '
