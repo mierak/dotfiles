@@ -40,19 +40,36 @@ local function on_metadata_changed(stdout)
         current.artist = artist
     end
 
-    local artUrl = gears.string.xml_escape(stdout:match(".*artUrl=*(.-),"))
-    if artUrl and string.len(artUrl) > 1 then
-        current.artUrl = artUrl
-    else
-        current.artUrl = default_cover
-    end
-
     local length = tonumber(stdout:match(".*length=*(.-),"))
     if length then
         current.length = length / 1000000
     end
 
-    observer:emit_signal("metadata", current)
+    -- TODO: Different (async) way to check existence of artUrl
+    local artUrl = gears.string.xml_escape(stdout:match(".*artUrl=*(.-),"))
+    -- Fix "file://" path, and check if the file exists
+    if artUrl and string.len(artUrl) > 1 and artUrl:match("^file:") then
+        local url = artUrl:gsub("file://", "")
+        awful.spawn.easy_async("test -f \"" .. url .. "\"", function (_, _, _, exit_code)
+            if exit_code == 0 then
+                current.artUrl = url
+            else
+                current.artUrl = default_cover
+            end
+            observer:emit_signal("metadata", current)
+        end)
+    -- Download HTTP image from the internet
+    elseif artUrl and string.len(artUrl) > 1 and artUrl:match("^http") then
+        local filePath = "/tmp/current_thumb.jpg"
+        awful.spawn.easy_async({ "curl", "-L", "-s", artUrl, "-o", filePath }, function ()
+            current.artUrl = filePath
+            observer:emit_signal("metadata", current)
+        end)
+    -- Default branch, we either have no URL or the file was not found on disk
+    else
+        current.artUrl = default_cover
+        observer:emit_signal("metadata", current)
+    end
 end
 
 local metadata_format = "'player={{playerName}},status={{status}},volume={{volume}},artist={{artist}},title={{title}},artUrl={{mpris:artUrl}},length={{mpris:length}},'"

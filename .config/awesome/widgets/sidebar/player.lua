@@ -1,6 +1,5 @@
 local wibox     = require("wibox")
 local gears     = require("gears")
-local awful     = require("awful")
 local beautiful = require("beautiful")
 
 local playerctl = require("daemon/playerctl")
@@ -103,14 +102,7 @@ playerctl:connect_signal("metadata", function (_, table)
     artist.markup = table.artist
     title.markup = table.title
 
-    if table.artUrl:match("^http") then
-        local filePath = "/tmp/current_thumb.jpg"
-        awful.spawn.easy_async({ "curl", "-L", "-s", table.artUrl, "-o", filePath }, function ()
-            art.image = gears.surface.load_uncached(filePath)
-        end)
-    else
-        art.image = gears.surface.load_uncached(table.artUrl:gsub("file://", ""))
-    end
+    art.image = gears.surface.load_uncached(table.artUrl)
 
     if table.status == "Playing" then
         play_pause.update_text("")
