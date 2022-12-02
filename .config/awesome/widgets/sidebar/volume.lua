@@ -80,29 +80,6 @@ daemon:connect_signal("sink_inputs", function (_, sinks)
                     end)
                 }
             }
-            local tooltip = awful.tooltip {
-                mode = "mouse",
-                visible = false,
-                ontop = true,
-                widget = wibox.widget {
-                        widget = wibox.container.background,
-                        bg = "#FF0000",
-                        forced_width = 400,
-                        forced_height = 200,
-                        ontop = true,
-                        {
-                            widget = wibox.widget.textbox,
-                            markup = helpers.colorize { text = sink.app_name, },
-                        },
-                    },
-            }
-            icon:connect_signal("mouse::enter", function (self, result)
-                print(result.y)
-                tooltip.visible = true
-            end)
-            icon:connect_signal("mouse::leave", function ()
-                tooltip.visible = false
-            end)
             if sink.muted then
                 icon.opacity = 0.5
             end
