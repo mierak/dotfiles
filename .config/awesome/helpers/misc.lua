@@ -3,6 +3,8 @@ local wibox     = require("wibox")
 local awful     = require("awful")
 local beautiful = require("beautiful")
 
+local config    = require("config")
+
 local helpers = {}
 
 function helpers.colorize(args)
@@ -81,16 +83,18 @@ function helpers.text_button(args)
     return button
 end
 
-local function tchelper(first, rest)
-   return first:upper()..rest:lower()
-end
-
-function helpers.title_case(str)
-    return str:gsub("(%a)([%w_']*)", tchelper)
-end
-
-function helpers.nil_or_empty(str)
-    return str == nil or str:match("%S") == nil
+function helpers.find_icon(app_binary, app_name)
+    return awful.util.geticonpath(
+        app_binary,
+        { "ico", "png", "svg" },
+        { "/usr/share/icons/hicolor/", "/usr/share/pixmaps/", config.dir.assets .. "/icons/", config.dir.data .. "/icons/", config.dir.data .. "/icons/hicolor/" },
+        "22"
+    ) or awful.util.geticonpath(
+        app_name,
+        { "ico", "png", "svg" },
+        { "/usr/share/icons/hicolor/", "/usr/share/pixmaps/", config.dir.assets .. "/icons/", config.dir.data .. "/icons/", config.dir.data .. "/icons/hicolor/" },
+        "22"
+    )
 end
 
 return helpers

@@ -3,7 +3,6 @@ local gears     = require("gears")
 local awful     = require("awful")
 local beautiful = require("beautiful")
 
-local config    = require("config")
 local helpers   = require("helpers")
 local daemon    = require("daemon/volume")
 
@@ -58,12 +57,7 @@ daemon:connect_signal("sink_inputs", function (_, sinks)
             layout = wibox.layout.fixed.horizontal,
         }
         widget:add(w)
-        local icon_path = awful.util.geticonpath(
-            sink.app_bin,
-            { "ico", "png" },
-            { "/usr/share/icons/hicolor/", "/usr/share/pixmaps/", config.dir.assets .. "/icons/", config.dir.data .. "/icons/", config.dir.data .. "/icons/hicolor/" },
-            "22"
-        )
+        local icon_path = helpers.misc.find_icon(sink.app_bin, sink.app_name)
         if icon_path then
             local icon = wibox.widget {
                 widget = wibox.widget.imagebox,
@@ -87,7 +81,7 @@ daemon:connect_signal("sink_inputs", function (_, sinks)
         else
             w:add(wibox.widget {
                 widget = wibox.widget.textbox,
-                text = sink.app_bin or "None",
+                text = sink.app_name or "None",
                 forced_width = 40,
                 halign = "center",
             })

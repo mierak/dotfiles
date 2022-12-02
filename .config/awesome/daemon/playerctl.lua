@@ -65,6 +65,14 @@ local function on_metadata_changed(stdout)
             current.artUrl = filePath
             observer:emit_signal("metadata", current)
         end)
+    -- Support Mopidy-local artUrl format
+    elseif artUrl and string.len(artUrl) > 1 and artUrl:match("^/local") then
+        current.artUrl = cfg.dir.data .. "/mopidy/local/images/" .. artUrl:match("/local/(.*)")
+        observer:emit_signal("metadata", current)
+    -- Support Mopidy-Youtube artUrl format
+    elseif artUrl and string.len(artUrl) > 1 and artUrl:match("^/youtube") then
+        current.artUrl = cfg.dir.cache .. "/mopidy" .. artUrl
+        observer:emit_signal("metadata", current)
     -- Default branch, we either have no URL or the file was not found on disk
     else
         current.artUrl = default_cover
@@ -72,15 +80,17 @@ local function on_metadata_changed(stdout)
     end
 end
 
+local players = cfg.playerctl.players
+
 local metadata_format = "'player={{playerName}},status={{status}},volume={{volume}},artist={{artist}},title={{title}},artUrl={{mpris:artUrl}},length={{mpris:length}},'"
 awful.spawn.easy_async({ "pkill", "--full", "--uid", os.getenv("USER"), "^playerctl -F" }, function ()
-    awful.spawn.with_line_callback("playerctl -F metadata -f " .. metadata_format, {
+    awful.spawn.with_line_callback("playerctl -p " .. table.concat(players, ",") .." -F metadata -f " .. metadata_format, {
         stdout = function (line)
             on_metadata_changed(line)
         end
     })
 
-    awful.spawn.with_line_callback("playerctl -F metadata -f '{{position}}'", {
+    awful.spawn.with_line_callback("playerctl -p " .. table.concat(players, ",") .." -F metadata -f '{{position}}'", {
         stdout = function (line)
             current.position = (tonumber(line) or 0) / 1000000
             observer:emit_signal("update_position", current)
@@ -94,31 +104,31 @@ observer:connect_signal("seek", function (_, value)
         return
     end
     current.position = value
-    awful.spawn("playerctl position " .. value)
+    awful.spawn("playerctl -p " .. table.concat(players, ",") .. " position " .. value)
 end)
 
 observer:connect_signal("play", function ()
-    awful.spawn("playerctl play")
+    awful.spawn("playerctl -p " .. table.concat(players, ",") .. " play")
 end)
 
 observer:connect_signal("stop", function ()
-    awful.spawn("playerctl stop")
+    awful.spawn("playerctl -p " .. table.concat(players, ",") .. " stop")
 end)
 
 observer:connect_signal("pause", function ()
-    awful.spawn("playerctl pause")
+    awful.spawn("playerctl -p " .. table.concat(players, ",") .. " pause")
 end)
 
 observer:connect_signal("play-pause", function ()
-    awful.spawn("playerctl play-pause")
+    awful.spawn("playerctl -p " .. table.concat(players, ",") .. " play-pause")
 end)
 
 observer:connect_signal("next", function ()
-    awful.spawn("playerctl next")
+    awful.spawn("playerctl -p " .. table.concat(players, ",") .. " next")
 end)
 
 observer:connect_signal("previous", function ()
-    awful.spawn("playerctl previous")
+    awful.spawn("playerctl -p " .. table.concat(players, ",") .. " previous")
 end)
 
 return observer

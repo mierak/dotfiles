@@ -8,6 +8,7 @@ return {
         assets = gears.filesystem.get_configuration_dir() .. "assets",
         data   = os.getenv("XDG_DATA_HOME") or os.getenv("HOME") .. "/.local/share",
         config = os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config",
+        cache  = os.getenv("XDG_CACHE_HOME") or os.getenv("HOME") .. "/.cache",
     },
     use_confirm_dialogs = true,
     enable_tagl_preview = false,
@@ -24,7 +25,9 @@ return {
     redshift = {
         update_interval = 60,
     },
-    playerctl = {},
+    playerctl = {
+        players = { "mopidy" }
+    },
     sidebar = {
         enabled = true,
         hide_on_mouse_leave = true,
