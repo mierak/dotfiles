@@ -82,20 +82,36 @@ end
 
 local players = cfg.playerctl.players
 
-local metadata_format = "'player={{playerName}},status={{status}},volume={{volume}},artist={{artist}},title={{title}},artUrl={{mpris:artUrl}},length={{mpris:length}},'"
+local metadata_format = "'status={{status}},volume={{volume}},artist={{artist}},title={{title}},artUrl={{mpris:artUrl}},length={{mpris:length}},'"
+local metadata_cmd = "playerctl -p " .. table.concat(players, ",") .." -F metadata -f " .. metadata_format
+local position_cmd = "playerctl -p " .. table.concat(players, ",") .." -F metadata -f '{{position}}'"
 awful.spawn.easy_async({ "pkill", "--full", "--uid", os.getenv("USER"), "^playerctl -F" }, function ()
-    awful.spawn.with_line_callback("playerctl -p " .. table.concat(players, ",") .." -F metadata -f " .. metadata_format, {
-        stdout = function (line)
-            on_metadata_changed(line)
+    local pids = {}
+    awful.spawn.with_line_callback("playerctl -F -p " .. table.concat(players, ",") .. " status", {
+        stdout = function (status)
+            if status == "Playing" and #pids == 0 then
+                local m_pid = awful.spawn.with_line_callback(metadata_cmd, {
+                    stdout = function (line)
+                        on_metadata_changed(line)
+                    end
+                })
+
+                local p_pid = awful.spawn.with_line_callback(position_cmd, {
+                    stdout = function (line)
+                        current.position = (tonumber(line) or 0) / 1000000
+                        observer:emit_signal("update_position", current)
+                    end
+                })
+                pids = { m_pid, p_pid }
+            elseif status == "Stopped" then
+                if #pids > 1 then
+                    awful.spawn("kill -9 " .. pids[1] .. " " .. pids[2])
+                end
+                pids = {}
+            end
         end
     })
 
-    awful.spawn.with_line_callback("playerctl -p " .. table.concat(players, ",") .." -F metadata -f '{{position}}'", {
-        stdout = function (line)
-            current.position = (tonumber(line) or 0) / 1000000
-            observer:emit_signal("update_position", current)
-        end
-    })
 end)
 
 -- Connect to signals for handling user inputs
