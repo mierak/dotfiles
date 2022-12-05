@@ -6,6 +6,7 @@ set ifs "\n"
 set icons
 set wrapscroll
 set hidden
+set autoquit on
 
 # Set image previews
 set previewer ctpv

@@ -27,8 +27,11 @@ require("onedarkpro").setup {
   colors = {
     onedark = {
       bg = "#1e222a"
-	}
-  }
+	},
+  },
+  options = {
+    transparency = true,
+  },
 }
 EOF
 colorscheme onedarkpro

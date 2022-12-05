@@ -17,10 +17,10 @@ return function(hotkeys_popup, main_menu)
     local term_scratch = bling.module.scratchpad {
         command = "alacritty --class scratch_term_" .. i,
         rule = { instance = "scratch_term_" .. i },
-        sticky = false,
-        autoclose = false,
+        sticky = true,
+        autoclose = true,
         floating = true,
-        geometry = { x = 100, y = 28, height = 900, width = 1720 },
+        geometry = { x = 100, y = 28, height = 680, width = 1720 },
         reapply = true,
         dont_focus_before_close  = false,
     }

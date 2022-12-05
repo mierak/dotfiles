@@ -7,6 +7,6 @@ Encoding=UTF-8
 [X-GNOME-Metatheme]
 GtkTheme=oomox-shiki-brave-dark-compact
 MetacityTheme=siduck-onedark
-IconTheme=Adwaita
-CursorTheme=Adwaita
+IconTheme=breeze-dark
+CursorTheme=Vanillza-DMZ
 CursorSize=24

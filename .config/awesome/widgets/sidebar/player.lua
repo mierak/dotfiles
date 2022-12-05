@@ -2,7 +2,14 @@ local wibox     = require("wibox")
 local gears     = require("gears")
 local beautiful = require("beautiful")
 
-local playerctl = require("daemon/playerctl")
+local config = require("config")
+
+local daemon
+if config.sidebar.widgets.player_backend == "mpc" then
+    daemon = require("daemon.mpc")
+else
+    daemon = require("daemon.playerctl")
+end
 
 local helpers   = require("helpers")
 
@@ -51,7 +58,7 @@ local next = helpers.misc.text_button {
         fg = beautiful.color4,
     },
     on_click     = function ()
-        playerctl:emit_signal("next")
+        daemon:emit_signal("next")
     end,
 }
 local prev = helpers.misc.text_button {
@@ -63,7 +70,7 @@ local prev = helpers.misc.text_button {
         fg = beautiful.color4,
     },
     on_click     = function ()
-        playerctl:emit_signal("previous")
+        daemon:emit_signal("previous")
     end,
 }
 local play_pause = helpers.misc.text_button {
@@ -75,7 +82,7 @@ local play_pause = helpers.misc.text_button {
         fg = beautiful.color4,
     },
     on_click     = function ()
-        playerctl:emit_signal("play-pause")
+        daemon:emit_signal("play-pause")
     end,
 }
 
@@ -98,13 +105,13 @@ local function format_seconds(seconds)
     return string.format("%d:%02d", minutes, sec)
 end
 
-playerctl:connect_signal("metadata", function (_, table)
+daemon:connect_signal("metadata", function (_, table)
     artist.markup = table.artist
     title.markup = table.title
 
     art.image = gears.surface.load_uncached(table.artUrl)
 
-    if table.status == "Playing" then
+    if table.status == "Playing" or table.status == "playing" then
         play_pause.update_text("")
     else
         play_pause.update_text("契")
@@ -119,7 +126,7 @@ playerctl:connect_signal("metadata", function (_, table)
     end
 end)
 
-playerctl:connect_signal("update_position", function (_, table)
+daemon:connect_signal("update_position", function (_, table)
     progress.value = table.position
     progress.skip_next_seek = true
     if not table.position or table.position < 1 then
@@ -131,7 +138,7 @@ end)
 
 progress:connect_signal("property::value", function (self, value)
     if not self.skip_seek then
-        playerctl:emit_signal("seek", value)
+        daemon:emit_signal("seek", value)
     end
 end)
 progress:connect_signal("mouse::enter", function (self)
@@ -159,7 +166,14 @@ local widget = wibox.widget {
         },
         {
             layout = wibox.layout.fixed.vertical,
-            artist,
+            {
+                layout = wibox.container.scroll.horizontal,
+                speed = 20,
+                extra_space = 20,
+                step_function = wibox.container.scroll.step_functions
+                           .linear_increase,
+                artist,
+            },
             {
                 layout = wibox.container.scroll.horizontal,
                 speed = 20,

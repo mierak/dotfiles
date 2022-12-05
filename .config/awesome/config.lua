@@ -9,6 +9,7 @@ return {
         data   = os.getenv("XDG_DATA_HOME") or os.getenv("HOME") .. "/.local/share",
         config = os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config",
         cache  = os.getenv("XDG_CACHE_HOME") or os.getenv("HOME") .. "/.cache",
+        music  = os.getenv("HOME") .. "/music",
     },
     use_confirm_dialogs = true,
     enable_tagl_preview = false,
@@ -26,12 +27,19 @@ return {
         update_interval = 60,
     },
     playerctl = {
-        players = { "mopidy" }
+        players = { "mpd" }
+    },
+    mpc = {
+        update_interval = 2,
+        enable_position_update = true,
     },
     sidebar = {
         enabled = true,
         show_on_focused_screen = true,
         hide_on_mouse_leave = true,
+        widgets = {
+            player_backend = "mpc", -- (mpc|playerctl)
+        },
     },
     bar = {
         right_widgets = {
