@@ -1,0 +1,65 @@
+mpd_music_dir = "~/music"
+lyrics_directory = ~/.local/share/lyrics
+
+# Visualizer
+visualizer_look = ●●
+#visualizer_data_source = "localhost:5555"
+visualizer_output_name = "my_fifo"
+visualizer_in_stereo = "yes"
+visualizer_type = "spectrum"
+visualizer_fps = 144
+visualizer_spectrum_smooth_look = no
+visualizer_spectrum_dft_size = 1
+visualizer_autoscale = yes
+
+# Album Covers
+startup_screen = visualizer
+startup_slave_screen = playlist
+startup_slave_screen_focus = yes
+locked_screen_width_part = 35
+
+
+# Interface & colors
+user_interface = alternative
+playlist_display_mode = columns
+song_columns_list_format = "(20)[]{a} (40)[]{t} (35)[]{b} (5)[]{l}"
+
+# Playlist
+playlist_disable_highlight_delay = 0
+playlist_separate_albums = no
+
+# Current song format
+current_item_prefix = $(blue)$r
+current_item_suffix = $/r$(end)
+now_playing_prefix = $(blue)$b
+now_playing_suffix = $/b$(end)
+
+# Statusbar
+statusbar_visibility = no
+statusbar_color = blue
+
+progressbar_look = 
+
+# Misc
+clock_display_seconds = yes
+search_engine_display_mode = classic
+mouse_support = yes
+autocenter_mode = yes
+header_visibility = no
+cyclic_scrolling = yes
+display_bitrate = yes
+lines_scrolled = 1
+execute_on_song_change="~/.config/ncmpcpp/ncmpcpp-ueberzug/ncmpcpp_cover_art.sh"
+
+#Borders
+active_window_border = blue
+
+# Colors
+#main_window_color = 253
+main_window_color = 253
+alternative_ui_separator_color = 253
+# Colors - progressbar
+progressbar_elapsed_color = blue:b
+progressbar_color = black:b
+statusbar_time_color = white
+volume_color = white
