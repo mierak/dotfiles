@@ -34,7 +34,7 @@ require("onedarkpro").setup {
   },
 }
 EOF
-colorscheme onedarkpro
+colorscheme onedark
 
 lua << EOF
   require("which-key").setup {
