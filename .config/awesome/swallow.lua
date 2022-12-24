@@ -11,6 +11,7 @@ beautiful.parent_filter_list = {
     "Skype",
     "Pcmanfm",
     "Virt%-manager",
+    "KeePassXC"
 }
 beautiful.dont_swallow_filter_activated  = true
 

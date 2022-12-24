@@ -42,7 +42,6 @@ local rules = {
         properties = {
             screen = screen[3],
             tag = "1",
-            focus = nil,
             callback = function (client)
                 client:to_secondary_section()
             end,
@@ -94,6 +93,27 @@ local rules = {
         properties = {
             screen = screen[1],
             floating = true,
+        }
+    },
+    {
+        id = "keepass-generate-prompt",
+        rule = {
+            class = "KeePassXC",
+            name = "Generate Password",
+        },
+        properties = {
+            placement = awful.placement.centered,
+        }
+    },
+    {
+        id = "awakened-poe-trade",
+        rule = {
+            class = "awakened-poe-trade",
+        },
+        properties = {
+            floating = true,
+            focusable = false,
+            ontop = false,
         }
     },
     {

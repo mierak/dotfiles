@@ -314,14 +314,14 @@ return function(hotkeys_popup, main_menu)
             on_press    = function() awful.layout.inc(-1) end,
         },]]--
         key {
-            modifiers   = M_C,
+            modifiers   = M,
             key         = "l",
             description = "Decrease Master Width",
             group       = "Layout",
             on_press    = function() awful.tag.incmwfact(0.05) end,
         },
         key {
-            modifiers   = M_C,
+            modifiers   = M,
             key         = "h",
             description = "Increase Master Width",
             group       = "Layout",
