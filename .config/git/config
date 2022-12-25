@@ -1,0 +1,11 @@
+[user]
+	email = mrkpwnz@gmail.com
+	name = MieraK
+[credential]
+	credentialStore = gpg
+	helper = 
+	helper = /usr/bin/git-credential-manager-core
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[diff]
+	tool = nvimdiff
