@@ -1,8 +1,9 @@
-local wibox = require("wibox")
-local awful = require("awful")
+local wibox     = require("wibox")
+local awful     = require("awful")
 local beautiful = require("beautiful")
+local gears     = require("gears")
 
-local helpers = require("helpers")
+local helpers   = require("helpers")
 
 local vol  = wibox.widget {
     widget = wibox.widget.textbox,
@@ -65,7 +66,9 @@ local function update_all()
     update_mic_status()
 end
 
-update_all()
+gears.timer.delayed_call(function ()
+    update_all()
+end)
 
 vol:add_button(
     awful.button({}, 1, function(_)

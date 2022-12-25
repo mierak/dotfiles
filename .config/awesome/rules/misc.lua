@@ -1,9 +1,8 @@
-local ruled = require("ruled")
 local awful = require("awful")
 
 local config = require("config")
 
-local rules = {
+return {
     {
         id = "global",
         rule = {},
@@ -93,7 +92,7 @@ local rules = {
             instance = "mpv-float",
         },
         properties = {
-            screen = screen[1],
+            screen = screen[config.screen.middle],
             floating = true,
         }
     },
@@ -119,74 +118,19 @@ local rules = {
         }
     },
     {
-        id = "awakened-poe-trade",
-        rule = {
-            class = "awakened-poe-trade",
-        },
-        properties = {
-            floating = true,
-            focusable = false,
-            ontop = false,
-        }
-    },
-    {
-        id = "vampire-survivors",
-        rule = {
-            class = "Vampire_Survivors",
-        },
-        properties = {
-            fullscreen = true,
-            maximized = true,
-        }
-    },
-    {
-        id = "dota",
-        rule = {
-            class = "dota2",
-        },
-        properties = {
-            fullscreen = true,
-        }
-    },
-    {
         id = "floating",
         rule_any = {
-            instance = {"copyq", "pinentry"},
-            class = {"Arandr", "Blueman-manager", "Gpick", "Kruler", "Sxiv"},
-            -- Note that the name property shown in xprop might be set slightly after creation of the client
-            -- and the name shown there might not match defined rules here.
+            instance = { "copyq", "pinentry" },
+            class = { "Arandr", "Blueman-manager", "Gpick", "Kruler", "Sxiv", "Lxpolkit" },
             name = {
                 "Event Tester" -- xev.
             },
             role = {
-                "AlarmWindow", -- Thunderbirds calendar.
-                "ConfigManager", -- Thunderbirds about:config.
                 "pop-up" -- e.g. Google Chromes (detached) Developer Tools.
             }
         },
-        properties = {floating = true}
-    }
-}
-
-return function()
-    function awful.rules.high_priority_properties.kill(c, value, props)
-        if value == true then
-            c.floating = true
-            c.hidden = true
-            c:kill()
-        end
-    end
-
-    ruled.client.connect_signal("request::rules", function()
-        ruled.client.append_rules(rules)
-
-    end)
-
-    ruled.notification.connect_signal('request::rules', function()
-        -- All notifications will match this rule.
-        ruled.notification.append_rule {
-            rule = {},
-            properties = {screen = awful.screen.preferred, implicit_timeout = 5}
+        properties = {
+            floating = true
         }
-    end)
-end
+    },
+}
