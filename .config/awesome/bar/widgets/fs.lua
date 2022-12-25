@@ -12,7 +12,7 @@ local fs = lain.widget.fs {
     },
     settings = function ()
         widget:set_markup(helpers.misc.colorize {
-            text = string.format(" %.1f/%.1f%s", fs_now["/"].used, fs_now["/"].size, fs_now["/"].units),
+            text = string.format(" %.1f/%.1f%s", fs_now["/home"].used, fs_now["/home"].size, fs_now["/home"].units),
             fg = beautiful.fg_normal
         })
     end

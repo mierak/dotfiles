@@ -45,8 +45,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
     create_bar_for_screen(s, main_menu)
 end)
 
-if screen and screen[3] then
-    screen[3].selected_tag.master_width_factor = 0.8
+if config.screen.right and screen and screen[config.screen.right] then
+    screen[config.screen.right].selected_tag.master_width_factor = 0.8
 end
 
 naughty.connect_signal("request::display", function(n) naughty.layout.box { notification = n } end)

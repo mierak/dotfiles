@@ -20,6 +20,11 @@ return {
         lock     = "sleep 1 && xset dpms force suspend && slock",
         logout   = 'loginctl kill-user "$USER"',
     },
+    screen = {
+        left   = 3,
+        middle = 1,
+        right  = 2,
+    },
     weather = {
         update_interval = 1600,
     },
@@ -44,8 +49,8 @@ return {
     bar = {
         right_widgets = {
             { "fs", "vol", "mem", "cpu", "time" }, -- Screen 1 - Middle
-            { "fs", "vol", "mem", "cpu", "time" }, -- Screen 2 - Left
-            { "fs", "vol", "mem", "cpu", "time" }, -- Screen 3 - Right
+            { "fs", "vol", "mem", "cpu", "time" }, -- Screen 2 - Right
+            { "fs", "vol", "mem", "cpu", "time" }, -- Screen 3 - Left
         },
     },
 }

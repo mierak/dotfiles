@@ -1,6 +1,8 @@
 local ruled = require("ruled")
 local awful = require("awful")
 
+local config = require("config")
+
 local rules = {
     {
         id = "global",
@@ -20,7 +22,7 @@ local rules = {
             class = "discord"
         },
         properties = {
-            screen = screen[3]
+            screen = screen[config.screen.right]
         }
     },
     {
@@ -29,7 +31,7 @@ local rules = {
             class = "Steam"
         },
         properties = {
-            screen = screen[1],
+            screen = screen[config.screen.middle],
             tag = "5",
         }
     },
@@ -40,7 +42,7 @@ local rules = {
             name = "Friends List",
         },
         properties = {
-            screen = screen[3],
+            screen = screen[config.screen.right],
             tag = "1",
             callback = function (client)
                 client:to_secondary_section()
@@ -56,7 +58,7 @@ local rules = {
             name = "Steam"
         },
         properties = {
-            screen = screen[3],
+            screen = screen[config.screen.right],
             tag = "1",
             callback = function (client)
                 client:to_secondary_section()
@@ -70,7 +72,7 @@ local rules = {
             name = "Steam %- News.*",
         },
         properties = {
-            screen = screen[1],
+            screen = screen[config.screen.middle],
             tag = "5",
             kill =  true,
         }
@@ -81,7 +83,7 @@ local rules = {
             class = "Microsoft Teams %- Preview",
         },
         properties = {
-            screen = screen[2],
+            screen = screen[config.screen.left],
             tag = "2",
         }
     },
@@ -103,6 +105,17 @@ local rules = {
         },
         properties = {
             placement = awful.placement.centered,
+        }
+    },
+    {
+        id = "keepass-favicons-dialog",
+        rule = {
+            class = "KeePassXC",
+            name = "Download Favicons",
+        },
+        properties = {
+            placement = awful.placement.centered,
+            floating = true,
         }
     },
     {

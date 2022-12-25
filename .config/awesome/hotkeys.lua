@@ -228,27 +228,6 @@ return function(hotkeys_popup, main_menu)
             on_press    = function() awful.screen.focus_relative(-1) end,
         },
         key {
-            modifiers   = M,
-            key         = ",",
-            description = "Focus Left Screen",
-            group       = "Screen",
-            on_press    = function() awful.screen.focus(screen[2]) end,
-        },
-        key {
-            modifiers   = M,
-            key         = ".",
-            description = "Focus Middle Screen",
-            group       = "Screen",
-            on_press    = function() awful.screen.focus(screen[1]) end,
-        },
-        key {
-            modifiers   = M,
-            key         = "/",
-            description = "Focus Right Screen",
-            group       = "Screen",
-            on_press    = function() awful.screen.focus(screen[3]) end,
-        },
-        key {
             modifiers   = M_C,
             key         = "n",
             description = "Restore Minimized",
@@ -261,6 +240,39 @@ return function(hotkeys_popup, main_menu)
             end,
         },
     })
+    if cfg.screen.left then
+        keyboard.append_global_keybindings({
+            key {
+                modifiers   = M,
+                key         = ",",
+                description = "Focus Left Screen",
+                group       = "Screen",
+                on_press    = function() awful.screen.focus(cfg.screen.left) end,
+            },
+        })
+    end
+    if cfg.screen.middle then
+        keyboard.append_global_keybindings({
+            key {
+                modifiers   = M,
+                key         = ".",
+                description = "Focus Middle Screen",
+                group       = "Screen",
+                on_press    = function() awful.screen.focus(cfg.screen.middle) end,
+            },
+        })
+    end
+    if cfg.screen.right then
+        keyboard.append_global_keybindings({
+            key {
+                modifiers   = M,
+                key         = "/",
+                description = "Focus Right Screen",
+                group       = "Screen",
+                on_press    = function() awful.screen.focus(cfg.screen.right) end,
+            },
+        })
+    end
 
     -- Layout related keybindings
     keyboard.append_global_keybindings({
@@ -396,6 +408,39 @@ return function(hotkeys_popup, main_menu)
     })
 
     client.connect_signal("request::default_keybindings", function()
+        if cfg.screen.left then
+            keyboard.append_client_keybindings({
+                key {
+                    modifiers   = M_S,
+                    key         = ",",
+                    description = "Move to Left Screen",
+                    group       = "Client",
+                    on_press    = function(c) c:move_to_screen(cfg.screen.left) end,
+                },
+            })
+        end
+        if cfg.screen.middle then
+            keyboard.append_client_keybindings({
+                key {
+                    modifiers   = M_S,
+                    key         = ".",
+                    description = "Move to Middle Screen",
+                    group       = "Client",
+                    on_press    = function(c) c:move_to_screen(cfg.screen.middle) end,
+                },
+            })
+        end
+        if cfg.screen.right then
+            keyboard.append_client_keybindings({
+                key {
+                    modifiers   = M_S,
+                    key         = "/",
+                    description = "Move to Right Screen",
+                    group       = "Client",
+                    on_press    = function(c) c:move_to_screen(cfg.screen.right) end,
+                },
+            })
+        end
         keyboard.append_client_keybindings({
             key {
                 modifiers   = M,
@@ -420,27 +465,6 @@ return function(hotkeys_popup, main_menu)
                 description = "Move to Master",
                 group       = "Client",
                 on_press    = function(c) c:swap(awful.client.getmaster()) end,
-            },
-            key {
-                modifiers   = M_S,
-                key         = ".",
-                description = "Move to Middle Screen",
-                group       = "Client",
-                on_press    = function(c) c:move_to_screen(screen[1]) end,
-            },
-            key {
-                modifiers   = M_S,
-                key         = ",",
-                description = "Move to Left Screen",
-                group       = "Client",
-                on_press    = function(c) c:move_to_screen(screen[2]) end,
-            },
-            key {
-                modifiers   = M_S,
-                key         = "/",
-                description = "Move to Right Screen",
-                group       = "Client",
-                on_press    = function(c) c:move_to_screen(screen[3]) end,
             },
             key {
                 modifiers   = M,
