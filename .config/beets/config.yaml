@@ -1,6 +1,6 @@
 directory: ~/music
 library: ~/.local/share/beet/musiclibrary.db
-plugins: web fetchart embedart fuzzy
+plugins: fetchart embedart fuzzy
 fetchart:
   auto: yes
   quality: 90
