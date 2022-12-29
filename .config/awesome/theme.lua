@@ -24,7 +24,7 @@ theme.bar_height    = 28
 theme.bar_padding   = 5
 
 theme.fonts = {}
-theme.fonts.base         = "monospace Bold "
+theme.fonts.base         = "JetBrainsMono Nerd Font Bold "
 theme.fonts.bar          = theme.fonts.base .. "9"
 theme.fonts.title        = theme.fonts.base .. "13"
 theme.fonts.symbols_base = "Symbols Nerd Font "

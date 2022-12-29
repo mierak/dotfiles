@@ -63,16 +63,20 @@ local function apply_cell_style(widget, props)
     }
 end
 
-local function decorate_cell(widget, flag, prev_button, next_button)
+local function decorate_cell(widget, flag, prev_button, next_button, reset)
     local props = styles[flag] or {}
     if props.markup and widget.get_text and widget.set_markup then
         widget:set_markup(props.markup(widget:get_text()))
     end
     if flag == "monthheader" or flag == "header" then
+        local w = apply_cell_style(widget, props)
+        w:connect_signal("button::press", function ()
+            reset()
+        end)
         return wibox.widget {
             layout = wibox.layout.align.horizontal,
             prev_button,
-            apply_cell_style(widget, props),
+            w,
             next_button,
         }
     end
@@ -107,17 +111,17 @@ local function create(args)
         end,
     }
 
+    function ret.reset()
+        ret.calendar.date = current_date
+    end
+
     ret.calendar     = wibox.widget {
         widget       = wibox.widget.calendar.month,
         forced_width = params.width or 350,
         date         = current_date,
         flex_height  = true,
-        fn_embed     = function (widget, flag, _) return decorate_cell(widget, flag, prev, next) end,
+        fn_embed     = function (widget, flag, _) return decorate_cell(widget, flag, prev, next, ret.reset)end,
     }
-
-    function ret.reset()
-        ret.calendar.date = current_date
-    end
 
     return ret
 end

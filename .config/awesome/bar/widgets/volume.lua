@@ -66,9 +66,15 @@ local function update_all()
     update_mic_status()
 end
 
-gears.timer.delayed_call(function ()
-    update_all()
-end)
+-- Wait for pipewire-pulse to initialize
+gears.timer {
+    timeout = 5,
+    autostart = true,
+    single_shot = true,
+    callback = function ()
+        update_all()
+    end
+}
 
 vol:add_button(
     awful.button({}, 1, function(_)

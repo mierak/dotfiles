@@ -2,8 +2,6 @@ local ruled = require("ruled")
 local awful = require("awful")
 local gears = require("gears")
 
-print(type(require("rules.misc")))
-
 local rules = gears.table.join(
     require("rules.games"),
     require("rules.misc"),
