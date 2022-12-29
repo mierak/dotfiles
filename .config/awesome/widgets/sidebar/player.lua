@@ -129,7 +129,7 @@ end)
 daemon:connect_signal("update_position", function (_, table)
     progress.value = table.position
     progress.skip_next_seek = true
-    if not table.position or table.position < 1 then
+    if not table.position or table.position < 0 then
         timer_current.markup = "N/A"
     else
         timer_current.markup = format_seconds(table.position)

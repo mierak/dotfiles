@@ -115,31 +115,31 @@ daemon:connect_signal("seek", function (self, value)
         return
     end
     self.data.position = value
-    awful.spawn("mpc seek " .. value)
+    awful.spawn.easy_async("mpc seek " .. value, function () end)
 end)
 
 daemon:connect_signal("play", function ()
-    awful.spawn("mpc play")
+    awful.spawn.easy_async("mpc play", function () end)
 end)
 
 daemon:connect_signal("stop", function ()
-    awful.spawn("mpc stop")
+    awful.spawn.easy_async("mpc stop", function () end)
 end)
 
 daemon:connect_signal("pause", function ()
-    awful.spawn("mpc pause")
+    awful.spawn.easy_async("mpc pause", function () end)
 end)
 
 daemon:connect_signal("play-pause", function ()
-    awful.spawn("mpc toggle")
+    awful.spawn.easy_async("mpc toggle", function () end)
 end)
 
 daemon:connect_signal("next", function ()
-    awful.spawn("mpc next")
+    awful.spawn.easy_async("mpc next", function () end)
 end)
 
 daemon:connect_signal("previous", function ()
-    awful.spawn("mpc prev")
+    awful.spawn.easy_async("mpc prev", function () end)
 end)
 
 return daemon
