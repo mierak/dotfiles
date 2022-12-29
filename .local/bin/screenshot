@@ -1,38 +1,51 @@
 #!/bin/sh
 
-choice=$(printf " Area| Screen| Window| Area and Upload| Screen and Upload| Window and Upload" | rofi -sep "|" -dmenu -p "What to screenshot?" -l 4)
+choice=$(printf " Area| Screen| Window" | rofi -sep "|" -dmenu -p "What to screenshot?" -l 4)
+image_type="png"
+temp_file="/tmp/screenshot.$image_type"
 
-area() {
-	maim -s -m 10 | xclip -selection clipboard -t image/png && notify-send "Area copied to clipboard"
+to_clipboard() {
+    xclip -sel clipboard -t image/$image_type -i "$temp_file"
+    notify-send "Image copied to clipboard"
 }
 
-area_upload() {
-	maim -s -m 10 /tmp/screenshot.png && puush /tmp/screenshot.png && rm -f /tmp/screenshot.png
+to_file() {
+    date="$(date '+%Y-%m-%d-%H-%M-%S')"
+    if [ -n "$ACTIVE_WINDOW" ]; then
+        filename="$date-$1-$(xdotool getwindowclassname "$ACTIVE_WINDOW")"
+    elif [ -n "$SCREEN" ]; then
+        filename="$date-$1-$SCREEN"
+    else
+        filename="$date-$1"
+    fi
+    path="${XDG_PICTURES_DIR:-$HOME/Pictures}/screenshots/$filename.$image_type"
+    cp "$temp_file" "$path"
+    notify-send "Image saved to '$path'"
 }
 
-screen() {
-	sel=$(xrandr | grep -Po '(?<= )\d+x\d+\+\d+\+\d+' | tr '\n' '|' | rofi -dmenu -sep "|" -p "Choose a screen" -l 3)
-	sleep 0.5 && maim -g "$sel" | xclip -selection clipboard -t image/png && notify-send "Screen copied to clipboard"
-}
-
-screen_upload() {
-	sel=$(xrandr | grep -Po '(?<= )\d+x\d+\+\d+\+\d+' | tr '\n' '|' | rofi -dmenu -sep "|" -p "Choose a screen" -l 3)
-	maim -g "$sel" /tmp/screenshot.png && puush /tmp/screenshot.png && rm -f /tmp/screenshot.png
-}
-
-window() {
-	maim -m 10 -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png && notify-send "Active window copied to clipboard"
-}
-
-window_upload() {
-	maim -m 10 -i "$(xdotool getactivewindow)" /tmp/screenshot.png && puush /tmp/screenshot.png && rm -f /tmp/screenshot.png
+prompt_destination() {
+    dest=$(printf " Clipboard|祝 Puush| File" | rofi -sep "|" -dmenu -p "Destination" -l 3)
+    case "$dest" in
+        " Clipboard") to_clipboard;;
+        "祝 Puush") puush "$temp_file";;
+        " File") to_file "$1";;
+    esac
+    rm -f "$temp_file"
 }
 
 case "$choice" in
-	" Area") area;;
-	" Screen") screen;;
-	" Window") window;;
-	" Area and Upload") area_upload;;
-	" Screen and Upload") screen_upload;;
-	" Window and Upload") window_upload;;
+	" Area")
+        maim -s -m 10 "$temp_file"
+        prompt_destination area
+        ;;
+	" Screen")
+        SCREEN=$(xrandr | grep -Po '(?<= )\d+x\d+\+\d+\+\d+' | tr '\n' '|' | rofi -dmenu -sep "|" -p "Choose a screen" -l 3)
+        sleep 0.5 && maim -g "$SCREEN" "$temp_file"
+        prompt_destination screen
+        ;;
+	" Window")
+        ACTIVE_WINDOW="$(xdotool getactivewindow)"
+        maim -m 10 -i "$ACTIVE_WINDOW" "$temp_file"
+        prompt_destination window
+        ;;
 esac
