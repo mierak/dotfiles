@@ -47,8 +47,9 @@ return {
         },
     },
     bar = {
+        right_widgets_pill_exclude = { "status" },
         right_widgets = {
-            { "fs", "vol", "mem", "cpu", "time" }, -- Screen 1 - Middle
+            { "status", "fs", "vol", "mem", "cpu", "time" }, -- Screen 1 - Middle
             { "fs", "vol", "mem", "cpu", "time" }, -- Screen 2 - Right
             { "fs", "vol", "mem", "cpu", "time" }, -- Screen 3 - Left
         },

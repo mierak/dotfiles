@@ -1,0 +1,17 @@
+#!/bin/sh
+# Serves as an abstraction to status widget in statusbar.
+# If WM ever changes, an appropriate way to set status should be implemented here.
+# For example, AwesomeWM uses awesome-client, dwmblocks uses signals to refresh.
+# This script is called from various other places, ie. record script sets
+# recording icon to signify that the screen is being recorded.
+#
+# USAGE: barstatus <set|clear> <text>
+
+set_status() {
+    awesome-client "require(\"bar/widgets/status\").set_text(\"$1\")"
+}
+
+case "$1" in
+    "set") set_status "$2" ;;
+    "clear") set_status "" ;;
+esac

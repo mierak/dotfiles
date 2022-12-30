@@ -13,6 +13,7 @@ record_icon=⏺️
 update_icon() {
 	echo "$1" > /tmp/recordingicon
     [ -n "$(pgrep -x dwmblocks)" ] && kill -40 "$(pidof dwmblocks)"
+    barstatus set "$1"
 }
 
 cache_filename() {
@@ -33,7 +34,7 @@ record_area() {
 		-qp 0 \
 		"$filename" > /dev/null 2>&1 & 
 			echo $! > /tmp/recordingpid
-	update_icon "$record_icon"
+	update_icon "$record_icon Live"
 }
 
 record_screen() {
@@ -47,7 +48,7 @@ record_screen() {
 		-qp 0 \
 		"$filename" > /dev/null 2>&1 & 
 			echo $! > /tmp/recordingpid
-	update_icon "$record_icon"
+	update_icon "$record_icon Live"
 }
 
 stop_recording() {

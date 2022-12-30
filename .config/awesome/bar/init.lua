@@ -1,5 +1,6 @@
 local wibox = require("wibox")
 local awful = require("awful")
+local gears = require("gears")
 local beautiful = require("beautiful")
 
 local create_launcher = require("bar/widgets/launcher")
@@ -11,15 +12,18 @@ local fs = require("bar/widgets/fs")
 local create_tag_list = require("bar/widgets/taglist")
 local create_layout_box = require("bar/widgets/layouts")
 local create_task_list = require("bar/widgets/tasklist")
+local status = require("bar/widgets/status")
+
 local helpers = require("helpers")
 local cfg = require("config")
 
 local widgets = {}
-widgets.cpu  = cpu.widget
-widgets.mem  = memory.widget
-widgets.fs   = fs.widget
-widgets.time = time.widget
-widgets.vol  = volume.widget
+widgets.cpu    = cpu.widget
+widgets.mem    = memory.widget
+widgets.fs     = fs.widget
+widgets.time   = time.widget
+widgets.vol    = volume.widget
+widgets.status = status.widget
 
 return function (screen, menu)
     local prompt_box = awful.widget.prompt { font = beautiful.fonts.bar }
@@ -35,7 +39,11 @@ return function (screen, menu)
     -- Init widgets from config as defined in config for given screen
     local widgets_for_screen = cfg.bar.right_widgets[screen.index] or {}
     for i=1,#widgets_for_screen do
-        table.insert(right_widgets, helpers.misc.to_pill { widget = widgets[widgets_for_screen[i]] })
+        if gears.table.hasitem(cfg.bar.right_widgets_pill_exclude, widgets_for_screen[i]) then
+            table.insert(right_widgets, widgets[widgets_for_screen[i]])
+        else
+            table.insert(right_widgets, helpers.misc.to_pill { widget = widgets[widgets_for_screen[i]] })
+        end
     end
     -- Append systray only on main screen
     if screen.index == 1 then
