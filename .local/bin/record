@@ -6,7 +6,7 @@ else
 	choice=$(printf " Area| Screen" | rofi -sep "|" -dmenu -p "What to record?" -l 2)
 fi
 framerate=60
-output_dir="$HOME"/video
+output_dir="$HOME"/Videos
 encoding="h264_nvenc"
 record_icon=⏺️
 

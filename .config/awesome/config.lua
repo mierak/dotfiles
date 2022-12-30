@@ -9,7 +9,7 @@ return {
         data   = os.getenv("XDG_DATA_HOME") or os.getenv("HOME") .. "/.local/share",
         config = os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config",
         cache  = os.getenv("XDG_CACHE_HOME") or os.getenv("HOME") .. "/.cache",
-        music  = os.getenv("HOME") .. "/music",
+        music  = os.getenv("HOME") .. "/Music",
     },
     use_confirm_dialogs = true,
     enable_tagl_preview = false,

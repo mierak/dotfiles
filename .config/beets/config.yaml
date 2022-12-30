@@ -1,4 +1,4 @@
-directory: ~/music
+directory: ~/Music
 library: ~/.local/share/beet/musiclibrary.db
 plugins: fetchart embedart fuzzy
 fetchart:

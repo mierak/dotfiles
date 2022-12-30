@@ -1,4 +1,4 @@
-mpd_music_dir = "~/music"
+mpd_music_dir = "~/Music"
 lyrics_directory = ~/.local/share/lyrics
 
 # Visualizer
