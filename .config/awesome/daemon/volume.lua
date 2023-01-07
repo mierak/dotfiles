@@ -4,7 +4,7 @@ local helpers = require("helpers")
 
 local observer = gears.object{}
 
--- CSV: index, vol_mono, vol_left, vol_right, muted, app_name, app_bin, app_icon
+-- CSV: index, vol_mono, vol_left, vol_right, muted, app_name, app_bin
 local cmd_list_sinks = "pactl --format=json list sink-inputs | jq -r '.[] | [.index, .volume.mono.value_percent, .volume.\"front-left\".value_percent, .volume.\"front-right\".value_percent, .mute, .properties.\"application.name\", .properties.\"application.process.binary\"] | @csv'"
 local csv_line_pattern = "%s*(.-),%s*(.-),%s*(.-),%s*(.-),%s*(.-),%s*(.-),%s*(.-)\n"
 
@@ -17,7 +17,7 @@ local function trim_safe(str, start_idx, end_idx)
     if str and #str > 0 then
         return str:sub(start_idx, end_idx)
     end
-    return nil
+    return ""
 end
 
 local current_sink_inputs = {}
@@ -28,7 +28,7 @@ local function get_all_sink_inputs(callback)
         for line in split_lines(out) do
             -- Group all sink sink inputs by key of "<app_bin><app_name>" and register all indices in the group
             local idx, mono, left, right, muted, app, bin = (line .. "\n"):match(csv_line_pattern)
-            if #bin > 0 and #app > 0 and #idx > 0 then
+            if #idx > 0 and (#bin > 0 or #app > 1) then
                 local app_name  = trim_safe(app, 2, -2)
                 local app_bin   = trim_safe(bin, 2, -2)
                 local key = app_name .. app_bin
