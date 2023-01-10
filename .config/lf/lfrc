@@ -7,21 +7,16 @@ set icons
 set wrapscroll
 set hidden
 set autoquit on
+set info size:time
+set drawbox
+set errorfmt "\033[7;31;40m%s\033[0m"
+set scrolloff 10
 
 # Set image previews
 set previewer ctpv
 set cleaner ctpvclear
 &ctpv -s $id
 &ctpvquit $id
-
-# Show time and size info
-set info size:time
-
-# Set borders
-set drawbox
-
-# leave some space at the top and the bottom of the screen
-set scrolloff 10
 
 # use enter for shell commands
 map <enter> shell
@@ -34,12 +29,45 @@ map X !$f
 map o &mimeopen $f
 map O $mimeopen --ask $f
 
+# Extract current file with extract function
+map E extract $f
+
+map u upload
+map w $setbg "$f"
+map W wal
+map <c-f> :fzf_jump
+map f :fzf_jump
+map zdi push :zi<space>
+
+# Map 'Q' to exit lf without changing cwd
+push m-
+map Q push '-q
+
+################################################
+#      _                _             _        #
+#  ___| |__   ___  _ __| |_ ___ _   _| |_ ___  #
+# / __| '_ \ / _ \| '__| __/ __| | | | __/ __| #
+# \__ \ | | | (_) | |  | || (__| |_| | |_\__ \ #
+# |___/_| |_|\___/|_|   \__\___|\__,_|\__|___/ #
+#                                              #
+################################################
+
+map gd cd ~/Downloads
+map gr cd ~/repos
+map gp cd ~/projects
+map gc cd ~/.config
+map gb cd ~/.local/bin
+map gs cd ~/.local/share
+map gm cd /mnt
+map ga cd /run/user/1000/gvfs
+
 # Define custom openers for mimetypes that should be swallowed (no setsid)
 cmd open ${{
     test -L $f && f=$(readlink -f $f)
     case $(file --mime-type $f -b) in
         pdf*) zathura $fx;;
         text/*) $EDITOR $fx;;
+        application/json) $EDITOR $fx;;
     	image*) sxivopendir $fx ; sleep 0.01;; # sleep as workaround for lf crash when closing an image
     	video*) mpv $fx;;
         *) for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done;;
@@ -105,12 +133,9 @@ cmd zip ${{
 cmd upload ${{
     setsid -f puush $f
 }}
-map u upload
-map w $setbg "$f"
 cmd wal ${{
     wal -i "$f"
 }}
-map W wal
 
 # Zoxide integration
 cmd z %{{
@@ -124,7 +149,7 @@ cmd zi ${{
 }}
 
 cmd fzf_jump ${{
-    res="$(find . -maxdepth 1 | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    res="$(find . -maxdepth 1 | fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
     if [ -d "$res" ] ; then
         cmd="cd"
     elif [ -f "$res" ] ; then
@@ -134,4 +159,3 @@ cmd fzf_jump ${{
     fi
     lf -remote "send $id $cmd \"$res\""
 }}
-map <c-f> :fzf_jump

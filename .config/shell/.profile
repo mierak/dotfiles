@@ -6,6 +6,7 @@ export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
 export EDITOR="nvim"
 export TERMINAL="alacritty"
 export BROWSER="firefox"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # ~/ Cleanup of home directory
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -31,4 +32,4 @@ export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 export PATH="$PATH:$GOPATH/bin"
 
 # Start graphical server on user's current tty if not already running.
-[ "$(tty)" = "/dev/tty1" ] && ! pidof -s Xorg >/dev/null 2>&1 && exec startx "$XINITRC"
+#[ "$(tty)" = "/dev/tty1" ] && ! pidof -s Xorg >/dev/null 2>&1 && exec startx "$XINITRC"

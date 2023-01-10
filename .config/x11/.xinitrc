@@ -11,6 +11,7 @@ xinput --set-prop 9 'libinput Accel Profile Enabled' 0, 1
 redshift &
 sxhkd &
 dunst &
+lxsession &
 #dwmblocks &
 #exec ~/.config/x11/dwmauto
 #exec xmonad

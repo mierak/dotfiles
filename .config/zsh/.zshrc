@@ -83,12 +83,12 @@ bindkey -M visual '^[[P' vi-delete
 
 eval "$(zoxide init zsh)"
 
-lfcd () {
+lf () {
     tmp="$(mktemp)"
-    lf -last-dir-path="$tmp" "$@"
+    command lf -last-dir-path="$tmp" "$@"
     if [ -f "$tmp" ]; then
         dir="$(cat "$tmp")"
-        rm -f "$tmp"
+        rm -f "$tmp" >/dev/null 2>&1
         if [ -d "$dir" ]; then
             if [ "$dir" != "$(pwd)" ]; then
                 cd "$dir"
