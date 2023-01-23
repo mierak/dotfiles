@@ -3,10 +3,12 @@
 choice=$(printf " Area| Screen| Window" | rofi -sep "|" -dmenu -p "What to screenshot?" -l 4)
 image_type="png"
 temp_file="/tmp/screenshot.$image_type"
+icon_path=/tmp/screenshot_icon.png
+[ ! -f "$icon_path" ] && font2png "" "$(xrdbcolor 4)" "$icon_path"
 
 to_clipboard() {
     xclip -sel clipboard -t image/$image_type -i "$temp_file"
-    notify-send "Image copied to clipboard"
+    notify-send "Screenshot" "Image copied to clipboard" -i "$icon_path" -a "Screenshot"
 }
 
 to_file() {
@@ -20,7 +22,7 @@ to_file() {
     fi
     path="${XDG_PICTURES_DIR:-$HOME/Pictures}/screenshots/$filename.$image_type"
     cp "$temp_file" "$path"
-    notify-send "Image saved to '$path'"
+    notify-send "Screenshot" "Image saved to '$path'" -i "$icon_path" -a "Screenshot"
 }
 
 prompt_destination() {

@@ -4,47 +4,58 @@
 # Shows dunst notification with volume bar
 # when "-sound" is passed as a second argument, also plays a sound
 
-play_sound=0
-if [ "$2" = "-sound" ]; then
-    play_sound=1
-fi
+icon_path=/tmp/volctl_icon.png
+icon_muted_path=/tmp/volctl_muted_icon.png
+icon_mic_path=/tmp/volctl_mic_icon.png
+icon_mic_muted_path=/tmp/volctl_mic_muted_icon.png
+notif_appname="Volume Control"
 
-play_sound() {
-    [ "$play_sound" = 0 ] && return 0
-    file="${XDG_DATA_HOME:-$HOME/.local/share}/systemsounds/pop.mp3"
-    if [ -f "$file" ]; then
-        ffplay "$file" -nodisp -autoexit > /dev/null 2>&1
-    fi
+create_icon() {
+    font2png "$1" "$(xrdbcolor 4)" "$2"
 }
 
 notify_mic_volume() {
-    [ "$(pgrep polybar)" ] && polybar-msg action mic-volume hook 0 > /dev/null 2>&1
 	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_mic_volume()'
-    dunstify -h int:value:$(($(pamixer --default-source --get-volume) / 2)) "Mic Volume" -r 101 "$(pamixer --default-source --get-volume)%"
-    play_sound
+    case $(dunstify -h int:value:"$(pamixer --default-source --get-volume)" "Mic Volume" -r 102 "$(pamixer --default-source --get-volume)%" -a "$notif_appname" -i "$icon_mic_path" -A "dec," -A "inc,") in
+        "dec") pamixer --default-source --allow-boost -d 3; notify_mic_volume ;;
+        "inc") pamixer --default-source --allow-boost -i 3; notify_mic_volume ;;
+    esac
 }
 notify_mic_icon() {
-    [ "$(pgrep polybar)" ] && polybar-msg action mic-volume-icon hook 0 > /dev/null 2>&1
 	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_mic_status()'
     status=""
-    [ "$(pamixer --default-source --get-mute)" = true ] && status="Muted" || status="Unmuted"
-    dunstify "Microphone $status" -r 101
-    play_sound
+    if [ "$(pamixer --default-source --get-mute)" = true ]; then
+        status="Muted"
+        dunstify "Microphone" "$status" -r 103 -a "$notif_appname" -i "$icon_mic_muted_path"
+    else
+        status="Unmuted"
+        dunstify "Microphone" "$status" -r 103 -a "$notif_appname" -i "$icon_mic_path"
+    fi
 }
 notify_volume() {
-    [ "$(pgrep polybar)" ] && polybar-msg action volume hook 0 > /dev/null 2>&1
 	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_volume()'
-    dunstify -h int:value:"$(pamixer --get-volume)" "Volume" -r 100 "$(pamixer --get-volume)%"
-    play_sound
+    
+    case $(dunstify -h int:value:"$(pamixer --get-volume)" "Volume" -r 100 "$(pamixer --get-volume)%" -A "dec," -A "inc," -a "$notif_appname" -i "$icon_path") in
+        "dec") pamixer --allow-boost -d 3; notify_volume;;
+        "inc") pamixer --allow-boost -i 3; notify_volume;;
+    esac
 }
 notify_icon() {
-    [ "$(pgrep polybar)" ] && polybar-msg action volume-icon hook 0 > /dev/null 2>&1
 	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_status()'
     status=""
-    [ "$(pamixer --get-mute)" = true ] && status="Muted" || status="Unmuted"
-    dunstify "Speakers $status" -r 100
-    play_sound
+    if [ "$(pamixer --get-mute)" = true ]; then
+        status="Muted"
+        dunstify "Spakers" "$status" -r 101 -a "$notif_appname" -i "$icon_muted_path"
+    else
+        status="Unmuted"
+        dunstify "Spakers" "$status" -r 101 -a "$notif_appname" -i "$icon_path"
+    fi
 }
+
+[ ! -f "$icon_path" ] && create_icon "" "$icon_path"
+[ ! -f "$icon_muted_path" ] && create_icon "婢" "$icon_muted_path"
+[ ! -f "$icon_mic_path" ] && create_icon "󰍬" "$icon_mic_path"
+[ ! -f "$icon_mic_muted_path" ] && create_icon "󰍭" "$icon_mic_muted_path"
 
 case $1 in
     "status")         if [ "$(pamixer --get-mute)" = "true" ]; then echo "婢"; else echo ""; fi ;;
