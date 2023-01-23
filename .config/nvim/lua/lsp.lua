@@ -50,9 +50,9 @@ require'lspconfig'.sumneko_lua.setup {
         enable = true,
         globals = {
           -- VIM
-          "vim", "use", -- Packer use keyword
+          "vim", "use", "require", -- Packer use keyword
           -- AwesomeWM
-          "awesome", "client", "root", "screen"
+          "awesome", "client", "root", "screen", "mouse", "tag"
         }
       }
     }
