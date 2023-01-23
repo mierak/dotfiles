@@ -1,29 +1,35 @@
-local wibox = require("wibox")
-local awful = require("awful")
-local gears = require("gears")
+local wibox     = require("wibox")
+local awful     = require("awful")
+local gears     = require("gears")
 local beautiful = require("beautiful")
 
-local create_launcher = require("bar/widgets/launcher")
-local volume = require("bar/widgets/volume")
-local memory = require("bar/widgets/memory")
-local cpu = require("bar/widgets/cpu")
-local time = require("bar/widgets/time")
-local fs = require("bar/widgets/fs")
-local create_tag_list = require("bar/widgets/taglist")
-local create_layout_box = require("bar/widgets/layouts")
-local create_task_list = require("bar/widgets/tasklist")
-local status = require("bar/widgets/status")
-
 local helpers = require("helpers")
-local cfg = require("config")
+local cfg     = require("config")
+
+local create_launcher   = require("bar/widgets/launcher")
+local create_tag_list   = require("bar/widgets/taglist")
+local create_layout_box = require("bar/widgets/layouts")
+local create_task_list  = require("bar/widgets/tasklist")
 
 local widgets = {}
-widgets.cpu    = cpu.widget
-widgets.mem    = memory.widget
-widgets.fs     = fs.widget
-widgets.time   = time.widget
-widgets.vol    = volume.widget
-widgets.status = status.widget
+
+-- Gets all widgets that appear in right_widgets config. Rest is ignored.
+local function get_all_enabled_widgets()
+    local result = {}
+    for _, v in ipairs(cfg.bar.right_widgets) do
+        for _, w in ipairs(v) do
+            if not helpers.table.contains(result, w) then
+                table.insert(result, w)
+            end
+        end
+    end
+    return result
+end
+
+-- Only load widgets if they appear anywhere in the bar to avoid starting their daemons needlessly
+for _, v in ipairs(get_all_enabled_widgets()) do
+    widgets[v] = require("bar/widgets/" .. v).widget
+end
 
 return function (screen, menu)
     local prompt_box = awful.widget.prompt { font = beautiful.fonts.bar }

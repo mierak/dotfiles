@@ -11,9 +11,42 @@ return {
         cache  = os.getenv("XDG_CACHE_HOME") or os.getenv("HOME") .. "/.cache",
         music  = os.getenv("HOME") .. "/Music",
     },
-    use_confirm_dialogs = true,
-    enable_tagl_preview = false,
-    focus_follows_mouse = true,
+    modules = {
+        restore_tags_on_restart = true,
+        smart_borders           = true,
+        scratchpad              = {
+            enabled              = true,
+            close_on_focus_lost  = true,
+            reapply_props        = true,
+        },
+        window_swallow = {
+            active = true,
+            parent_filter_list_active = true,
+            parent_filter_list = {
+                "Vivaldi%-stable",
+                "code-oss",
+                "code",
+                "discord",
+                "firefox",
+                "Microsoft Teams %- Preview",
+                "krita",
+                "Skype",
+                "Pcmanfm",
+                "Virt%-manager",
+                "KeePassXC",
+            },
+        },
+    },
+    daemon = {
+        cpu_update_interval_sec = 2,
+        mem_update_interval_sec = 5,
+        fs = {
+            update_interval_sec = 1600,
+            locations = { "/", "/home", "/boot" },
+        },
+    },
+    use_confirm_dialogs     = true,
+    focus_follows_mouse     = true,
     command  = {
         reboot   = "systemctl reboot",
         poweroff = "systemctl poweroff",
@@ -38,6 +71,7 @@ return {
         update_interval = 2,
         enable_position_update = true,
     },
+    layout_switcher = true,
     sidebar = {
         enabled = true,
         show_on_focused_screen = true,

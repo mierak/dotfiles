@@ -3,7 +3,6 @@ local beautiful       = require("beautiful")
 local key             = awful.key
 local keyboard        = awful.keyboard
 
-local bling           = require("bling")
 local cfg             = require("config")
 local show_gaps_popup = require("widgets/gaps_popup")
 
@@ -12,29 +11,6 @@ return function(hotkeys_popup, main_menu)
     local M_S    = { cfg.modkey, "Shift" }
     local M_C    = { cfg.modkey, "Control" }
     local M_S_C  = { cfg.modkey, "Shift", "Control" }
-
-    for i=1,4,1 do
-    local term_scratch = bling.module.scratchpad {
-        command = "alacritty --class scratch_term_" .. i,
-        rule = { instance = "scratch_term_" .. i },
-        sticky = true,
-        autoclose = true,
-        floating = true,
-        geometry = { x = 100, y = 28, height = 680, width = 1720 },
-        reapply = true,
-        dont_focus_before_close  = false,
-    }
-
-    keyboard.append_global_keybindings({
-        key {
-            modifiers   = M,
-            key         = "F" .. i,
-            description = "Empty Terminal",
-            group       = "Scratchpad",
-            on_press    = function() term_scratch:toggle() end,
-        },
-    })
-    end
 
     -- General Awesome keys
     keyboard.append_global_keybindings({

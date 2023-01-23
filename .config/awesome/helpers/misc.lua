@@ -27,6 +27,25 @@ function helpers.vertical_spacer(height)
     }
 end
 
+function helpers.add_hover_cursor(widget)
+    widget:connect_signal("mouse::enter", function ()
+       local w = mouse.current_wibox
+       if w then
+           widget.backup_cursor = w.cursor
+           w.cursor = "hand1"
+       end
+    end)
+
+    widget:connect_signal("mouse::leave", function ()
+       local w = mouse.current_wibox
+       if w then
+           w.cursor = widget.backup_cursor
+       end
+    end)
+
+    return widget
+end
+
 --- Creates a text button
 -- @param args A table
 function helpers.text_button(args)
@@ -92,8 +111,8 @@ local icon_paths = {
     config.dir.data .. "/icons/hicolor/"
 }
 local icon_formats = { "ico", "svg", "png", "jpg" }
-local icon_size = "22"
-function helpers.find_icon(app_binary, app_name)
+function helpers.find_icon(app_binary, app_name, size)
+    local icon_size = size or "22"
     return awful.util.geticonpath(app_binary, icon_formats, icon_paths, icon_size)
         or awful.util.geticonpath(app_name, icon_formats, icon_paths, icon_size)
 end

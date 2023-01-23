@@ -1,11 +1,6 @@
----------------------------
--- Default awesome theme --
----------------------------
-
 local awesome = awesome
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
-local rnotification = require("ruled.notification")
 local gears = require("gears")
 local dpi = xresources.apply_dpi
 local xrdb = xresources.get_current_theme()
@@ -24,8 +19,9 @@ theme.bar_height    = 28
 theme.bar_padding   = 5
 
 theme.fonts = {}
-theme.fonts.base         = "JetBrainsMono Nerd Font Bold "
-theme.fonts.bar          = theme.fonts.base .. "9"
+theme.fonts.base         = "JetBrainsMono Nerd Font "
+theme.fonts.base_bold    = theme.fonts.base .. "Bold "
+theme.fonts.bar          = theme.fonts.base_bold .. "9"
 theme.fonts.title        = theme.fonts.base .. "13"
 theme.fonts.symbols_base = "Symbols Nerd Font "
 theme.fonts.symbols      = theme.fonts.symbols_base .. "20"
@@ -190,14 +186,6 @@ theme.awesome_icon = theme_assets.awesome_icon(
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
 theme.icon_theme = nil
-
--- Set different colors for urgent notifications.
-rnotification.connect_signal('request::rules', function()
-    rnotification.append_rule {
-        rule       = { urgency = 'critical' },
-        properties = { bg = '#ff0000', fg = '#ffffff' }
-    }
-end)
 
 return theme
 

@@ -1,6 +1,6 @@
 local wibox = require("wibox")
 
-local helpers = require("helpers/misc")
+local helpers = require("helpers.misc")
 
 local ret = {}
 

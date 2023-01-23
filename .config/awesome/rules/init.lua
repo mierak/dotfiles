@@ -19,13 +19,15 @@ return function()
 
     ruled.client.connect_signal("request::rules", function()
         ruled.client.append_rules(rules)
-
     end)
 
     ruled.notification.connect_signal('request::rules', function()
         ruled.notification.append_rule {
             rule = {},
-            properties = {screen = awful.screen.preferred, implicit_timeout = 5}
+            properties = {
+                screen = awful.screen.preferred,
+                implicit_timeout = 10,
+            }
         }
     end)
 end

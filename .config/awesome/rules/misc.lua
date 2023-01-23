@@ -1,4 +1,5 @@
 local awful = require("awful")
+local gears = require("gears")
 
 local config = require("config")
 
@@ -24,57 +25,25 @@ return {
             screen = screen[config.screen.right]
         }
     },
-    {
-        id = "steam",
+    { -- A very hacky rule. Wait for two seconds after firefox starts and then check WM_NAME and move to left monitor if applicable.
+        id = "firefox-wait-name-change",
         rule = {
-            class = "Steam"
+            class = "firefox",
         },
-        properties = {
-            screen = screen[config.screen.middle],
-            tag = "5",
-        }
-    },
-    {
-        id = "steam-friendlist",
-        rule = {
-            class = "Steam",
-            name = "Friends List",
-        },
-        properties = {
-            screen = screen[config.screen.right],
-            tag = "1",
-            callback = function (client)
-                client:to_secondary_section()
-            end,
-        }
-    },
-    {
-        id = "steam-chat",
-        rule = {
-            class = "Steam",
-        },
-        except = {
-            name = "Steam"
-        },
-        properties = {
-            screen = screen[config.screen.right],
-            tag = "1",
-            callback = function (client)
-                client:to_secondary_section()
-            end,
-        }
-    },
-    {
-        id = "steam-news",
-        rule = {
-            class = "Steam",
-            name = "Steam %- News.*",
-        },
-        properties = {
-            screen = screen[config.screen.middle],
-            tag = "5",
-            kill =  true,
-        }
+        callback = function (client)
+            gears.timer {
+                timeout = 3,
+                single_shot = true,
+                autostart = true,
+                call_now = false,
+                callback = function ()
+                    if client and client.name:match("%[Left Mon].*") then
+                        client.screen = screen[config.screen.left]
+                        client.tag = "1"
+                    end
+                end
+            }
+        end
     },
     {
         id = "teams",
@@ -94,6 +63,7 @@ return {
         properties = {
             screen = screen[config.screen.middle],
             floating = true,
+            ontop = true,
         }
     },
     {
@@ -130,6 +100,7 @@ return {
             }
         },
         properties = {
+            ontop = true,
             floating = true
         }
     },

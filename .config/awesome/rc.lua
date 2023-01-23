@@ -1,6 +1,20 @@
+--  __  __      _  ___ ____       ___        _______ ____   ___  __  __ _____ 
+-- |  \/  |_ __| |/ ( ) ___|     / \ \      / / ____/ ___| / _ \|  \/  | ____|
+-- | |\/| | '__| ' /|/\___ \    / _ \ \ /\ / /|  _| \___ \| | | | |\/| |  _|  
+-- | |  | | |  | . \   ___) |  / ___ \ V  V / | |___ ___) | |_| | |  | | |___ 
+-- |_|  |_|_|  |_|\_\ |____/  /_/   \_\_/\_/  |_____|____/ \___/|_|  |_|_____|
+
 pcall(require, "luarocks.loader")
 local naughty = require("naughty")
 local config  = require("config")
+local awful         = require("awful")
+local beautiful     = require("beautiful")
+local hotkeys_popup = require("awful.hotkeys_popup")
+require("awful.autofocus")
+require("notification")
+
+beautiful.init(config.dir.config .. "/awesome/theme.lua")
+awful.spawn.easy_async("setbg", function () end)
 
 naughty.connect_signal("request::display_error", function(message, startup)
     naughty.notification {
@@ -10,36 +24,18 @@ naughty.connect_signal("request::display_error", function(message, startup)
     }
 end)
 
-local awful         = require("awful")
-local beautiful     = require("beautiful")
-local hotkeys_popup = require("awful.hotkeys_popup")
-
-require("awful.autofocus")
-require("awful.hotkeys_popup.keys")
-require("swallow") -- Has to be called before any other module initializes bling!
-
-beautiful.init(config.dir.config .. "/awesome/theme.lua")
-awful.spawn("setbg")
-
 local create_bar_for_screen = require("bar")
 local create_hotkeys        = require("hotkeys")
 local create_rules          = require("rules")
-local init_smart_borders    = require("smart_borders")
 local crete_tags_for_screen = require("tags")
 local create_main_menu      = require("main_menu")
 local create_layouts        = require("layouts")
-if config.sidebar.enabled then
-    require("widgets/sidebar")
-end
-require("widgets/layout_switcher")
-
 
 local main_menu = create_main_menu(hotkeys_popup)
 local layouts = create_layouts()
 
 create_hotkeys(hotkeys_popup, main_menu)
 create_rules()
-init_smart_borders(awful, beautiful)
 screen.connect_signal("request::desktop_decoration", function(s)
     crete_tags_for_screen(s, layouts, awful.tag)
     create_bar_for_screen(s, main_menu)
@@ -49,10 +45,102 @@ if config.screen.right and screen and screen[config.screen.right] then
     screen[config.screen.right].selected_tag.master_width_factor = 0.8
 end
 
-naughty.connect_signal("request::display", function(n) naughty.layout.box { notification = n } end)
-
 if config.focus_follows_mouse then
     client.connect_signal("mouse::enter", function(c)
         c:activate{context = "mouse_enter", raise = false}
     end)
+end
+
+-- __        _____ ____   ____ _____ _____ ____  
+-- \ \      / /_ _|  _ \ / ___| ____|_   _/ ___| 
+--  \ \ /\ / / | || | | | |  _|  _|   | | \___ \ 
+--   \ V  V /  | || |_| | |_| | |___  | |  ___) |
+--    \_/\_/  |___|____/ \____|_____| |_| |____/ 
+--                                               
+if config.sidebar.enabled then
+    require("widgets/sidebar")
+end
+if config.layout_switcher then
+    require("widgets/layout_switcher")
+end
+
+--  __  __  ___  ____  _   _ _     _____ ____  
+-- |  \/  |/ _ \|  _ \| | | | |   | ____/ ___| 
+-- | |\/| | | | | | | | | | | |   |  _| \___ \ 
+-- | |  | | |_| | |_| | |_| | |___| |___ ___) |
+-- |_|  |_|\___/|____/ \___/|_____|_____|____/ 
+
+local init_smart_borders    = require("modules.smart_borders")
+local init_tags_restore     = require("modules.restore_tags")
+local init_window_swallow   = require("modules.window_swallow")
+local scratchpad = require("modules.scratchpad")
+if config.modules.window_swallow.active then
+    init_window_swallow()
+end
+
+if config.modules.restore_tags_on_restart then
+    init_tags_restore()
+end
+
+if config.modules.smart_borders then
+    init_smart_borders(awful, beautiful)
+end
+
+if config.modules.scratchpad.enabled then
+    scratchpad:init {
+        close_on_focus_lost = config.modules.scratchpad.close_on_focus_lost,
+        reapply_props       = config.modules.scratchpad.reapply_props,
+    }
+
+    local commands = { "ncmpcpp-ueberzug", "" }
+    for i=1,2 do
+        local command
+        if #commands[i] > 0 then
+            command = config.terminal .. " --class scratch_term_" .. i .. " -e " .. commands[i]
+        else
+            command = config.terminal .. " --class scratch_term_" .. i
+        end
+        scratchpad:add {
+                class               = "scratch_term_" .. i,
+                command             = command,
+                client_props = {
+                    floating  = true,
+                    sticky    = false,
+                    geometry  = {
+                        width   = 1720,
+                        height  = 680,
+                        x       = 100,
+                        y       = 28,
+                    },
+                },
+                hotkey        = {
+                    modifiers   = { config.modkey },
+                    key         = "F" .. i,
+                    description = "Empty Terminal " .. i,
+                    group       = "Scratchpad",
+                },
+            }
+    end
+
+    for i=3,4 do
+        scratchpad:add_temp {
+            client_props = {
+                floating  = true,
+                sticky    = false,
+                geometry  = {
+                    width   = 1720,
+                    height  = 680,
+                    x       = 100,
+                    y       = 28,
+                },
+            },
+            hotkey        = {
+                modifiers               = { config.modkey },
+                client_toggle_modifiers = { config.modkey, "Shift" },
+                key                     = "F" .. i,
+                description             = "Temporary Scratchpad " .. i - 2,
+                group                   = "Scratchpad",
+            },
+        }
+    end
 end

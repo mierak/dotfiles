@@ -18,7 +18,7 @@ local thumb_size = 110
 
 local artist = wibox.widget {
     widget = wibox.widget.textbox,
-    font = beautiful.fonts.base .. "11",
+    font = beautiful.fonts.base_bold .. "11",
 }
 
 local title = wibox.widget {
