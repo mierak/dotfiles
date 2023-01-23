@@ -39,9 +39,10 @@ map <c-f> :fzf_jump
 map f :fzf_jump
 map zdi push :zi<space>
 
-# Map 'Q' to exit lf without changing cwd
+# Map 'a' to exit lf without changing cwd and Q to exit and change cwd
 push m-
-map Q push '-q
+map q push '-Q
+map Q quit
 
 ################################################
 #      _                _             _        #
@@ -53,13 +54,15 @@ map Q push '-q
 ################################################
 
 map gd cd ~/Downloads
-map gr cd ~/repos
-map gp cd ~/projects
+map gr cd ~/Repos
+map gp cd ~/Projects
 map gc cd ~/.config
 map gb cd ~/.local/bin
 map gs cd ~/.local/share
 map gm cd /mnt
 map ga cd /run/user/1000/gvfs
+map g/ cd /
+map gt cd /tmp
 
 # Define custom openers for mimetypes that should be swallowed (no setsid)
 cmd open ${{
