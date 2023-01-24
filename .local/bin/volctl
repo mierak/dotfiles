@@ -15,14 +15,14 @@ create_icon() {
 }
 
 notify_mic_volume() {
-	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_mic_volume()'
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/vol").update_mic_volume()'
     case $(dunstify -h int:value:"$(pamixer --default-source --get-volume)" "Mic Volume" -r 102 "$(pamixer --default-source --get-volume)%" -a "$notif_appname" -i "$icon_mic_path" -A "dec," -A "inc,") in
         "dec") pamixer --default-source --allow-boost -d 3; notify_mic_volume ;;
         "inc") pamixer --default-source --allow-boost -i 3; notify_mic_volume ;;
     esac
 }
 notify_mic_icon() {
-	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_mic_status()'
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/vol").update_mic_status()'
     status=""
     if [ "$(pamixer --default-source --get-mute)" = true ]; then
         status="Muted"
@@ -33,7 +33,7 @@ notify_mic_icon() {
     fi
 }
 notify_volume() {
-	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_volume()'
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/vol").update_volume()'
     
     case $(dunstify -h int:value:"$(pamixer --get-volume)" "Volume" -r 100 "$(pamixer --get-volume)%" -A "dec," -A "inc," -a "$notif_appname" -i "$icon_path") in
         "dec") pamixer --allow-boost -d 3; notify_volume;;
@@ -41,7 +41,7 @@ notify_volume() {
     esac
 }
 notify_icon() {
-	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/volume").update_status()'
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/vol").update_status()'
     status=""
     if [ "$(pamixer --get-mute)" = true ]; then
         status="Muted"
