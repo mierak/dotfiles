@@ -14,6 +14,7 @@ function TemporaryScratchpad:backup_props()
         },
         floating = self.client.floating,
         sticky = self.client.sticky,
+        skip_taskbar = self.client.skip_taskbar,
         first_tag = self.client.first_tag,
     }
     self._apply_props(self.props_backup)

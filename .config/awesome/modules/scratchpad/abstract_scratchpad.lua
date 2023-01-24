@@ -23,6 +23,7 @@ function Scratchpad:_apply_props(props)
 
     self.client.floating = props.floating or false
     self.client.sticky = props.sticky or false
+    self.client.skip_taskbar = (function() if props.skip_taskbar ~= nil then return props.skip_taskbar else return true end end)()
     if self.client.floating then
         self.client:geometry {
             x = awful.screen.focused().geometry.x + props.geometry.x,

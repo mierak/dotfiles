@@ -1,22 +1,25 @@
 local wibox     = require("wibox")
 local awful     = require("awful")
-local gears     = require("gears")
 local beautiful = require("beautiful")
 
 local helpers   = require("helpers")
 
-local function get_underline_bg(selected_tags, index, widget_screen)
-    local focused = false
-    for _, t in pairs(selected_tags) do
-        if t.index == index and t.screen.index == widget_screen.index then
-            focused = true
-            break
+local function update_tag_icon(self, tag)
+    local tagicon = self:get_children_by_id('icon_role')[1]
+    local is_screen_focused = awful.screen.focused() == tag.screen
+    if tag.selected then
+        tagicon.text = ""
+        if is_screen_focused then
+            self.fg = beautiful.fg_normal
+        else
+            self.fg = "#6a738d"
         end
-    end
-    if focused then
-        return beautiful.fg_normal
+    elseif #tag:clients() == 0 then
+        tagicon.text = ""
+            self.fg = "#6a738d"
     else
-        return beautiful.bg
+        tagicon.text = ""
+        self.fg = "#6a738d"
     end
 end
 
@@ -30,7 +33,7 @@ return function(screen)
         style = {
             fg_focus    = beautiful.fg_normal,
             bg_focus    = beautiful.bg_alt,
-            fg_empty    = "#6a738d",
+            fg_empty    = beautiful.active,
             bg_empty    = beautiful.bg_alt,
             fg_occupied = beautiful.foreground,
             bg_occupied = beautiful.bg_alt,
@@ -43,54 +46,23 @@ return function(screen)
         },
         widget_template = {
             {
-                widget = wibox.container.margin,
-                left = 3,
-                right = 3,
+                widget = wibox.container.constraint,
+                forced_width = 24,
                 {
-                    widget = wibox.layout.fixed.vertical,
-                    spacing = -2,
-                    {
-                        widget = wibox.container.margin,
-                        left = 4,
-                        top = 1,
-                        {
-                            id     = 'text_role',
-                            widget = wibox.widget.textbox,
-                        },
-                    },
-                    {
-                        {
-                            widget = wibox.container.margin,
-                            left = 7,
-                            right = 8,
-                            top = 2,
-                        },
-                        id = "underline",
-                        bg = beautiful.fg_normal,
-                        shape = gears.shape.rectangle,
-                        widget = wibox.container.background,
-                    }
+                    id     = 'icon_role',
+                    font   = beautiful.fonts.symbols_base .. "13",
+                    widget = wibox.widget.textbox,
+                    halign = "center",
+                    valign = "center"
                 }
             },
             id     = 'background_role',
             widget = wibox.container.background,
-            create_callback = function(self, tag, index, tags) --luacheck: no unused args
-                local underline = self:get_children_by_id("underline")[1]
-                underline.bg = get_underline_bg(awful.screen.focused().selected_tags, index, screen)
-
-                self:connect_signal('mouse::enter', function()
-                    if #tag:clients() > 0 then
-                        awesome.emit_signal("bling::tag_preview::update", tag)
-                        awesome.emit_signal("bling::tag_preview::visibility", s, true)
-                    end
-                end)
-                self:connect_signal('mouse::leave', function()
-                    awesome.emit_signal("bling::tag_preview::visibility", s, false)
-                end)
+            create_callback = function(self, tag, _, _)
+                update_tag_icon(self, tag)
             end,
-            update_callback = function(self, _, index, _)
-                local underline = self:get_children_by_id("underline")[1]
-                underline.bg = get_underline_bg(awful.screen.focused().selected_tags, index, screen)
+            update_callback = function(self, tag, _, _)
+                update_tag_icon(self, tag)
             end
         }
     }
