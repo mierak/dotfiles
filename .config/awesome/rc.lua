@@ -8,6 +8,7 @@ pcall(require, "luarocks.loader")
 local naughty = require("naughty")
 local config  = require("config")
 local awful         = require("awful")
+local wibox         = require("wibox")
 local beautiful     = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.autofocus")
@@ -38,6 +39,23 @@ create_rules()
 screen.connect_signal("request::desktop_decoration", function(s)
     crete_tags_for_screen(s, layouts, awful.tag)
     create_bar_for_screen(s, main_menu)
+end)
+screen.connect_signal("request::wallpaper", function (s)
+    awful.wallpaper {
+        screen = s,
+        widget = {
+            {
+                image     = beautiful.wallpaper,
+                upscale   = true,
+                downscale = true,
+                widget    = wibox.widget.imagebox,
+            },
+            valign = "center",
+            halign = "center",
+            tiled  = false,
+            widget = wibox.container.tile,
+        },
+    }
 end)
 
 if config.screen.right and screen and screen[config.screen.right] then

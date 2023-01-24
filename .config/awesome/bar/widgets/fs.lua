@@ -1,18 +1,12 @@
-local wibox     = require("wibox")
 local naughty   = require("naughty")
-local beautiful = require("beautiful")
 
-local helpers = require("helpers")
 local daemon  = require("daemon.fs")
 local config  = require("config")
 
-local fs = wibox.widget {
-    widget = wibox.widget.textbox,
-    font   = beautiful.fonts.bar,
-}
+local fs = require("modules.bar_widgets." .. config.bar.fs.style):new(config.bar.fs)
 
 function fs:show()
-    fs.notification = naughty.notification {
+    self.notification = naughty.notification {
         timeout = 0,
         text    = self:to_notification_text(),
         title   = "Disk Statistics",
@@ -21,45 +15,40 @@ function fs:show()
 end
 
 function fs:hide()
-    if not fs.notification then
+    if not self.notification then
         return
     end
 
-    fs.notification:destroy()
-    fs.notification = nil
+    self.notification:destroy()
+    self.notification = nil
 end
 
 function fs:to_notification_text()
     local text = ""
-    for path, values in pairs(fs.stats) do
+    for path, values in pairs(self.stats) do
         local vals = values:toGiB()
         text = text .. "\n" .. string.format("%s\t%6.2f\t%6.2f\t%6.2f GiB", path ,vals.used, vals.available, vals.size)
     end
     return text
 end
 
-fs:connect_signal("mouse::enter", function ()
+fs.widget:connect_signal("mouse::enter", function ()
     daemon:emit_signal("update_now")
     fs:hide()
     fs:show()
 end)
 
-fs:connect_signal("mouse::leave", function ()
+fs.widget:connect_signal("mouse::leave", function ()
     fs:hide()
 end)
 
 daemon:connect_signal("update", function (_, values)
     fs.stats = values
     local stats = values["/home"]:toGiB()
-    fs.markup = helpers.misc.colorize {
-        text = string.format(" %.0f/%.0f GiB", stats.used, stats.size),
-        fg   = beautiful.fg_normal
-    }
+    fs:update(stats.used / stats.size * 100, function () return string.format(config.bar.fs.icon .. "%.0f/%.0f GiB", stats.used, stats.size) end)
     if fs.notification then
         fs.notification.text = fs:to_notification_text()
     end
 end)
 
-return {
-    widget = fs,
-}
+return fs

@@ -16,7 +16,7 @@ daemon.position_timer = gears.timer {
     autostart = false,
     call_now = false,
     single_shot = false,
-    timeout = config.mpc.update_interval,
+    timeout = config.daemon.mpc.update_interval,
     callback = function ()
         awful.spawn.easy_async("mpc status '%currenttime%'", function (stdout)
             daemon.data.position = helpers.string.time_to_seconds(stdout)
@@ -70,7 +70,7 @@ function daemon:update()
         self.data.volume = stdout_status:match(".*volume=*(.-)@@@")
 
         if self.data.status == "playing" then
-            if config.mpc.enable_position_update then
+            if config.daemon.mpc.enable_position_update then
                 self.position_timer:again()
             end
             awful.spawn.easy_async("mpc -f 'artist=%artist%@@@title=%title%@@@length=%time%@@@file=%file%@@@'", function (stdout)

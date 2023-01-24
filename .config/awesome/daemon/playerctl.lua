@@ -80,7 +80,7 @@ local function on_metadata_changed(stdout)
     end
 end
 
-local players = cfg.playerctl.players
+local players = cfg.daemon.playerctl.players
 
 local metadata_format = "'status={{status}},volume={{volume}},artist={{artist}},title={{title}},artUrl={{mpris:artUrl}},length={{mpris:length}},'"
 local metadata_cmd = "playerctl -p " .. table.concat(players, ",") .." -F metadata -f " .. metadata_format

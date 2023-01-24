@@ -1,22 +1,10 @@
-local wibox = require("wibox")
-local beautiful = require("beautiful")
-
-local helpers = require("helpers")
-
+local config = require("config")
 local daemon = require("daemon.mem")
 
-local mem = wibox.widget {
-    widget = wibox.widget.textbox,
-    font = beautiful.fonts.bar,
-}
+local mem = require("modules.bar_widgets." .. config.bar.mem.style):new(config.bar.mem)
 
 daemon:connect_signal("update", function (_, values)
-    mem.markup = helpers.misc.colorize {
-        text = " " .. values.used .. "/" .. values.total .. "MiB",
-        fg = beautiful.color3
-    }
+    mem:update(tonumber(values.used / values.total * 100), function () return config.bar.mem.icon .. values.used .. "/" .. values.total .. "MiB" end)
 end)
 
-return {
-    widget = mem,
-}
+return mem

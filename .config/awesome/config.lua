@@ -44,6 +44,13 @@ return {
             update_interval_sec = 1600,
             locations = { "/", "/home", "/boot" },
         },
+        mpc = {
+            update_interval = 2,
+            enable_position_update = true,
+        },
+        playerctl = {
+            players = { "mpd" }
+        },
     },
     use_confirm_dialogs     = true,
     focus_follows_mouse     = true,
@@ -64,13 +71,6 @@ return {
     redshift = {
         update_interval = 60,
     },
-    playerctl = {
-        players = { "mpd" }
-    },
-    mpc = {
-        update_interval = 2,
-        enable_position_update = true,
-    },
     layout_switcher = true,
     sidebar = {
         enabled = true,
@@ -83,9 +83,27 @@ return {
     bar = {
         right_widgets_pill_exclude = { "status" },
         right_widgets = {
-            { "status", "fs", "vol", "mem", "cpu", "time" }, -- Screen 1 - Middle
-            { "fs", "vol", "mem", "cpu", "time" }, -- Screen 2 - Right
-            { "fs", "vol", "mem", "cpu", "time" }, -- Screen 3 - Left
+            { "status", "vol", "fs", "mem", "cpu", "time" }, -- Screen 1 - Middle
+            { "vol", "fs", "mem", "cpu", "time" }, -- Screen 2 - Right
+            { "vol", "fs", "mem", "cpu", "time" }, -- Screen 3 - Left
+        },
+        cpu = {
+            style     = "text_bar", -- (text_bar|bar|text)
+            fg        = "color1",
+            icon      = " ",
+            bar_width = 70,
+        },
+        mem = {
+            style     = "bar", -- (text_bar|bar|text)
+            fg        = "color3",
+            icon      = " ",
+            bar_width = 70,
+        },
+        fs = {
+            style     = "bar", -- (text_bar|bar|text)
+            fg        = "fg_normal",
+            icon      = " ",
+            bar_width = 70,
         },
     },
 }

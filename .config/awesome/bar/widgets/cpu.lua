@@ -1,25 +1,10 @@
-local wibox = require("wibox")
-local beautiful = require("beautiful")
-
-local helpers = require("helpers")
+local config = require("config")
 local daemon = require("daemon.cpu")
 
-local cpu = wibox.widget {
-    widget = wibox.widget.textbox,
-    font = beautiful.fonts.bar,
-    markup = helpers.misc.colorize {
-        text = string.format(" %2d%%", daemon.last_usage),
-        fg = beautiful.color1
-    }
-}
+local cpu = require("modules.bar_widgets." .. config.bar.cpu.style):new(config.bar.cpu)
 
 daemon:connect_signal("update", function (_, value)
-    cpu.markup = helpers.misc.colorize {
-        text = string.format(" %2d%%", value),
-        fg = beautiful.color1
-    }
+    cpu:update(value)
 end)
 
-return {
-    widget = cpu,
-}
+return cpu
