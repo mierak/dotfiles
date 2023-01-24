@@ -7,20 +7,23 @@ local helpers   = require("helpers")
 local function update_tag_icon(self, tag)
     local tagicon = self:get_children_by_id('icon_role')[1]
     local is_screen_focused = awful.screen.focused() == tag.screen
+    local fg
+    if tag.urgent then
+        fg = beautiful.color1
+    elseif tag.selected and is_screen_focused then
+        fg = beautiful.fg_normal
+    else
+        fg = "#6a738d"
+    end
+
     if tag.selected then
         tagicon.text = ""
-        if is_screen_focused then
-            self.fg = beautiful.fg_normal
-        else
-            self.fg = "#6a738d"
-        end
     elseif #tag:clients() == 0 then
         tagicon.text = ""
-            self.fg = "#6a738d"
     else
         tagicon.text = ""
-        self.fg = "#6a738d"
     end
+    self.fg = fg
 end
 
 return function(screen)
@@ -37,6 +40,7 @@ return function(screen)
             bg_empty    = beautiful.bg_alt,
             fg_occupied = beautiful.foreground,
             bg_occupied = beautiful.bg_alt,
+            bg_urgent   = beautiful.bg_alt,
             font        = beautiful.fonts.bar,
         },
         buttons = {
