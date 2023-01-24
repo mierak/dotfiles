@@ -14,7 +14,6 @@ require("awful.autofocus")
 require("notification")
 
 beautiful.init(config.dir.config .. "/awesome/theme.lua")
-awful.spawn.easy_async("setbg", function () end)
 
 naughty.connect_signal("request::display_error", function(message, startup)
     naughty.notification {

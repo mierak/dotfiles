@@ -7,6 +7,7 @@ local xrdb = xresources.get_current_theme()
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
+local config = require("config")
 
 local theme = {}
 
@@ -17,6 +18,8 @@ local bg_alt_dark = awesome.xrdb_get_value("", "background-alt-dark")
 
 theme.bar_height    = 28
 theme.bar_padding   = 5
+
+theme.wallpaper = config.dir.data .. "/wallpaper/current"
 
 theme.fonts = {}
 theme.fonts.base         = "JetBrainsMono Nerd Font "
@@ -103,27 +106,6 @@ theme.calendar_long_weekdays = true
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
-theme.hotkeys_font = theme.font
-theme.hotkeys_description_font = theme.font
-
--- Generate taglist squares:
---[[local taglist_square_size = dpi(4)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
-    taglist_square_size, theme.fg_normal
-)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-    taglist_square_size, theme.fg_normal
-)]]--
-
--- Variables set for theming notifications:
--- notification_font
--- notification_[bg|fg]
--- notification_[width|height|margin]
--- notification_[border_color|border_width|shape|opacity]
-
--- Variables set for theming the menu:
--- menu_[bg|fg]_[normal|focus]
--- menu_[border_color|border_width]
 theme.menu_submenu_icon = themes_path.."default/submenu.png"
 theme.menu_height       = dpi(25)
 theme.menu_width        = dpi(250)
@@ -158,7 +140,6 @@ theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = themes_path.."default/background.png"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
