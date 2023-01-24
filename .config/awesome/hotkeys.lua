@@ -1,22 +1,13 @@
 local awful           = require("awful")
 local beautiful       = require("beautiful")
-local key             = awful.key
-local keyboard        = awful.keyboard
 
 local cfg             = require("config")
 local show_gaps_popup = require("widgets/gaps_popup")
+local ezhk            = require("modules.ezhk"):new(cfg.modkey)
 
 local Hotkeys = {}
 function Hotkeys:init(hotkeys_popup, main_menu)
-    self.key_to_mod = {
-        M = cfg.modkey,
-        S = "Shift",
-        C = "Control",
-    }
-    self.hotkeys_popup = hotkeys_popup
-    self.main_menu = main_menu
-
-    self:global_keybind_group("Awesome", {
+    ezhk:global_keybind_group("Awesome", {
         { "M-S-q",        "Quit Awesome",                          awesome.quit },
         { "M-S-r",        "Restart Awesome",                       awesome.restart },
         { "M-Return",     "Open a Terminal",                       function() awful.spawn(cfg.terminal) end },
@@ -26,7 +17,7 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-`",          "Toggle Sidebar",                        function() awesome.emit_signal("sidebar::toggle") end,     cfg.sidebar.enabled },
     })
 
-    self:global_keybind_group("Tag", {
+    ezhk:global_keybind_group("Tag", {
         { "M-Left",       "View Previous",                         awful.tag.viewprev },
         { "M-Right",      "View Next",                             awful.tag.viewnext },
         { "M-Escape",     "View Last",                             awful.tag.history.restore },
@@ -36,7 +27,7 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-S-C-numrow", "Toggle Focused Client on Tag",          self.toggle_on_tag },
     })
 
-    self:global_keybind_group("Layout", {
+    ezhk:global_keybind_group("Layout", {
         { "M-S-l",        "Increase Number of Clients in Master",  function() awful.tag.incnmaster(1, nil, true) end },
         { "M-S-h",        "Decrease Number of Clients in Master",  function() awful.tag.incnmaster(-1, nil, true) end },
         { "M-S-C-l",      "Increase Number of Columns",            function() awful.tag.incncol(1, nil, true) end },
@@ -46,12 +37,12 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-numpad",     "Select Layout Directly",                self.select_layout_by_idx }
     })
 
-    self:global_keybind_group("Gaps", {
+    ezhk:global_keybind_group("Gaps", {
         { "M-p",          "Toggle Single Client Gaps",             self.toggle_single_client_gaps },
         { "M-o",          "Toggle All Gaps",                       self.toggle_all_gaps },
     })
 
-    self:global_keybind_group("Screen", {
+    ezhk:global_keybind_group("Screen", {
         { "M-,",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left) end,   cfg.screen.left },
         { "M-.",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle) end, cfg.screen.middle },
         { "M-/",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right) end,  cfg.screen.right },
@@ -59,7 +50,7 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-C-k",        "Focus Previous Screen",                 function() awful.screen.focus_relative(-1) end },
     })
 
-    self:global_keybind_group("Client", {
+    ezhk:global_keybind_group("Client", {
         { "M-u",          "Jump to Urgent Client",                 awful.client.urgent.jumpto },
         { "M-C-Tab",      "Jump to Previous Client on Screen",     self.jump_to_previous_client },
         { "M-C-n",        "Restore Minimized",                     self.restore_minimized },
@@ -69,7 +60,7 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-S-k",        "Swap Client With Next/Previous Client", function() awful.client.swap.byidx(-1) end },
     })
 
-    self:client_keybind_group("Client", {
+    ezhk:client_keybind_group("Client", {
         { "M-S-,",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left) end,   cfg.screen.left },
         { "M-S-.",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle) end, cfg.screen.middle },
         { "M-S-/",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right) end,  cfg.screen.right },
@@ -102,65 +93,8 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         awful.button({}, 4, awful.tag.viewprev),
         awful.button({}, 5, awful.tag.viewnext)
     })
-end
 
-function Hotkeys:parse_keybind_string(keybind)
-    local keys = {}
-    for k in keybind:gmatch("[^%-]+") do
-        table.insert(keys, k)
-    end
-    local index = 1
-    local modkeys = {}
-    local k
-    for _, v in ipairs(keys) do
-        if index < #keys then
-            table.insert(modkeys, self.key_to_mod[v])
-        else
-            k = v
-        end
-        index = index + 1
-    end
-    return { mod = modkeys, key = k }
-end
-
-function Hotkeys:keybind(keys, group, description, on_press)
-    local ks = self:parse_keybind_string(keys)
-    if ks.key == "numrow" or ks.key == "arrows" or ks.key == "fkeys" or ks.key == "numpad" then
-        return key {
-            modifiers = ks.mod,
-            keygroup = ks.key,
-            group = group,
-            description = description,
-            on_press = on_press
-        }
-    end
-    return key {
-        modifiers = ks.mod,
-        key = ks.key,
-        group = group,
-        description = description,
-        on_press = on_press
-    }
-end
-
-function Hotkeys:global_keybind_group(group_name, keybinds)
-    local result = {}
-    for _, kb in ipairs(keybinds) do
-        if kb[4] ~= false then
-            table.insert(result, self:keybind(kb[1], group_name, kb[2], kb[3]))
-        end
-    end
-    keyboard.append_global_keybindings(result)
-end
-
-function Hotkeys:client_keybind_group(group_name, keybinds)
-    local result = {}
-    for _, kb in ipairs(keybinds) do
-        if kb[4] ~= false then
-            table.insert(result, self:keybind(kb[1], group_name, kb[2], kb[3]))
-        end
-    end
-    keyboard.append_client_keybindings(result)
+    ezhk:finalize()
 end
 
 function Hotkeys.lua_execute_prompt()
