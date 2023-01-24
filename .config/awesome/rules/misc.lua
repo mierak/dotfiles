@@ -22,7 +22,8 @@ return {
             class = "discord"
         },
         properties = {
-            screen = screen[config.screen.right]
+            screen = screen[config.screen.right],
+            tag    = "1"
         }
     },
     { -- A very hacky rule. Wait for two seconds after firefox starts and then check WM_NAME and move to left monitor if applicable.
@@ -39,7 +40,7 @@ return {
                 callback = function ()
                     if client and client.name:match("%[Left Mon].*") then
                         client.screen = screen[config.screen.left]
-                        client.tag = "1"
+                        client:tags({ screen[config.screen.left].tags[1] })
                     end
                 end
             }
