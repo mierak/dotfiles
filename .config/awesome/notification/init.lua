@@ -19,7 +19,6 @@ naughty.connect_signal("added", function (n)
     n.resident = true
     n.title = notifhelpers.modify_title(n.title)
     n.app_name = notifhelpers.modify_app_name(n)
-    n.screen = screen[config.screen.middle]
 end)
 
 naughty.connect_signal("request::icon", function (notification, context, hints)

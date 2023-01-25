@@ -2,6 +2,8 @@ local ruled = require("ruled")
 local awful = require("awful")
 local gears = require("gears")
 
+local config = require("config")
+
 local rules = gears.table.join(
     require("rules.games"),
     require("rules.misc"),
@@ -25,7 +27,7 @@ return function()
         ruled.notification.append_rule {
             rule = {},
             properties = {
-                screen = awful.screen.preferred,
+                screen = screen[config.screen.middle],
                 implicit_timeout = 10,
             }
         }
