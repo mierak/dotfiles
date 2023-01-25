@@ -27,7 +27,7 @@ return function()
         ruled.notification.append_rule {
             rule = {},
             properties = {
-                screen = screen[config.screen.middle],
+                screen = screen[config.screen.middle.index],
                 implicit_timeout = 10,
             }
         }

@@ -7,7 +7,7 @@ return {
             class = "Steam"
         },
         properties = {
-            screen = screen[config.screen.middle],
+            screen = screen[config.screen.middle.index],
             tag = "5",
         }
     },
@@ -18,7 +18,7 @@ return {
             name = "Friends List",
         },
         properties = {
-            screen = screen[config.screen.right],
+            screen = screen[config.screen.right.index],
             tag = "1",
             callback = function (client)
                 client:to_secondary_section()
@@ -34,7 +34,7 @@ return {
             name = "Steam"
         },
         properties = {
-            screen = screen[config.screen.right],
+            screen = screen[config.screen.right.index],
             tag = "1",
             callback = function (client)
                 client:to_secondary_section()
@@ -48,7 +48,7 @@ return {
             name = "Steam %- News.*",
         },
         properties = {
-            screen = screen[config.screen.middle],
+            screen = screen[config.screen.middle.index],
             tag = "5",
             kill =  true,
         }

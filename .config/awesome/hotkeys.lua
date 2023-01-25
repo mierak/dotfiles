@@ -43,9 +43,9 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     })
 
     ezhk:global_keybind_group("Screen", {
-        { "M-,",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left) end,   cfg.screen.left },
-        { "M-.",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle) end, cfg.screen.middle },
-        { "M-/",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right) end,  cfg.screen.right },
+        { "M-,",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   cfg.screen.left},
+        { "M-.",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, cfg.screen.middle },
+        { "M-/",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  cfg.screen.right },
         { "M-C-j",        "Focus Next Screen",                     function() awful.screen.focus_relative(1) end },
         { "M-C-k",        "Focus Previous Screen",                 function() awful.screen.focus_relative(-1) end },
     })
@@ -61,9 +61,9 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     })
 
     ezhk:client_keybind_group("Client", {
-        { "M-S-,",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left) end,   cfg.screen.left },
-        { "M-S-.",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle) end, cfg.screen.middle },
-        { "M-S-/",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right) end,  cfg.screen.right },
+        { "M-S-,",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   cfg.screen.left },
+        { "M-S-.",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, cfg.screen.middle },
+        { "M-S-/",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  cfg.screen.right },
         { "M-f",          "Toggle Fullscreen",                     function(c) c.fullscreen = not c.fullscreen; c:raise() end },
         { "M-q",          "Kill Client",                           function(c) c:kill() end },
         { "M-S-Return",   "Move to Master",                        function(c) c:swap(awful.client.getmaster()) end },

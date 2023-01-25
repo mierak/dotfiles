@@ -36,10 +36,12 @@ local layouts = create_layouts()
 
 Hotkeys:init(hotkeys_popup, main_menu)
 create_rules()
+
 screen.connect_signal("request::desktop_decoration", function(s)
-    crete_tags_for_screen(s, layouts, awful.tag)
+    crete_tags_for_screen(s, layouts)
     create_bar_for_screen(s, main_menu)
 end)
+
 screen.connect_signal("request::wallpaper", function (s)
     awful.wallpaper {
         screen = s,
@@ -57,10 +59,6 @@ screen.connect_signal("request::wallpaper", function (s)
         },
     }
 end)
-
-if config.screen.right and screen and screen[config.screen.right] then
-    screen[config.screen.right].selected_tag.master_width_factor = 0.8
-end
 
 if config.focus_follows_mouse then
     client.connect_signal("mouse::enter", function(c)

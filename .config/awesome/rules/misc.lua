@@ -22,7 +22,7 @@ return {
             class = "discord"
         },
         properties = {
-            screen = screen[config.screen.right],
+            screen = screen[config.screen.right.index],
             tag    = "1"
         }
     },
@@ -39,8 +39,8 @@ return {
                 call_now = false,
                 callback = function ()
                     if client and client.name:match("%[Left Mon].*") then
-                        client.screen = screen[config.screen.left]
-                        client:tags({ screen[config.screen.left].tags[1] })
+                        client.screen = screen[config.screen.left.index]
+                        client:tags({ screen[config.screen.left.index].tags[1] })
                     end
                 end
             }
@@ -52,7 +52,7 @@ return {
             class = "Microsoft Teams %- Preview",
         },
         properties = {
-            screen = screen[config.screen.left],
+            screen = screen[config.screen.left.index],
             tag = "2",
         }
     },
@@ -62,7 +62,7 @@ return {
             instance = "mpv-float",
         },
         properties = {
-            screen = screen[config.screen.middle],
+            screen = screen[config.screen.middle.index],
             floating = true,
             ontop = true,
         }

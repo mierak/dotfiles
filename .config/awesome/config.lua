@@ -61,9 +61,27 @@ return {
         logout   = 'loginctl kill-user "$USER"',
     },
     screen = {
-        left   = 3,
-        middle = 1,
-        right  = 2,
+        left   = {
+            index = 3,
+            tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
+            tag_property_override = {
+                ["1"] = { gap_single_client = false }
+            }
+        },
+        middle = {
+            index = 1,
+            tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
+            tag_property_override = {
+                ["1"] = { gap_single_client = false }
+            }
+        },
+        right  = {
+            index = 2,
+            tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
+            tag_property_override = {
+                ["1"] = { master_width_factor = 0.8, }
+            },
+        },
     },
     weather = {
         update_interval = 1600,
