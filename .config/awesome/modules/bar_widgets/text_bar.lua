@@ -3,34 +3,14 @@ local beautiful = require("beautiful")
 local gears     = require("gears")
 
 local helpers   = require("helpers")
+local BaseBar   = require("modules.bar_widgets.bar_base")
 
 local TextBar = {}
 
 function TextBar:new(args)
-    local obj = {}
+    local obj = BaseBar:new(args)
     setmetatable(obj, self)
     self.__index = self
-
-    obj.fg = beautiful[args.fg]
-    obj.icon = args.icon
-    obj.bar = wibox.widget {
-        widget = wibox.widget.progressbar,
-        shape = gears.shape.rounded_bar,
-        max_value = 100,
-        min_value = 0,
-        margins = 1,
-        value = 0,
-        forced_width = args.bar_width,
-        background_color = beautiful.bg_alt,
-        color = obj.fg,
-        border_color = beautiful.active,
-    }
-
-    obj.icon = wibox.widget {
-        widget = wibox.widget.textbox,
-        font = beautiful.fonts.bar,
-        markup = helpers.misc.colorize { text = args.icon, fg = obj.fg }
-    }
 
     obj.text = wibox.widget {
         widget = wibox.widget.textbox,
@@ -57,13 +37,12 @@ function TextBar:new(args)
             },
         },
     }
-    obj:update(args.init_val or 0)
 
     return obj
 end
 
 function TextBar:update(value)
-    self.bar.value = value
+    BaseBar.update(self, value)
     self.text.markup = helpers.misc.colorize {
         text = string.format("%2d%%", value),
         fg = self.fg

@@ -3,7 +3,7 @@ local naughty   = require("naughty")
 local daemon  = require("daemon.fs")
 local config  = require("config")
 
-local fs = require("modules.bar_widgets." .. config.bar.fs.style):new(config.bar.fs)
+local fs = require("modules.bar_widgets")(config.bar.fs)
 
 function fs:show()
     self.notification = naughty.notification {
