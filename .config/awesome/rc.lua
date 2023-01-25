@@ -100,7 +100,7 @@ if config.modules.restore_tags_on_restart then
 end
 
 if config.modules.smart_borders then
-    init_smart_borders(awful, beautiful)
+    init_smart_borders()
 end
 
 if config.modules.scratchpad.enabled then
