@@ -11,7 +11,7 @@ return function ()
         end
         awful.spawn.easy_async_with_shell("echo '" .. str .. "' > /tmp/awm_tags", function () end)
     end)
-    awesome.connect_signal("startup", function (    )
+    awesome.connect_signal("startup", function ()
         local index = 1
         awful.spawn.with_line_callback("cat /tmp/awm_tags", {
             stdout = function (line)

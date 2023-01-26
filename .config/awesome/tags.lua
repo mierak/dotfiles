@@ -17,10 +17,13 @@ return function(screen, layouts)
     local screen_config = find_screen_config(screen)
     assert(screen_config, "Screen idx: " .. screen.index .. " was not found in config. Make sure to change config.lua!")
 
-    for _, v in ipairs(screen_config.tags) do
+    for i, v in ipairs(screen_config.tags) do
+        local selected
+        if i == 1 then selected = true else selected = false end
         local t = {
             layout = layouts[1],
             screen = screen,
+            selected = selected,
         }
 
         if screen_config.tag_property_override and screen_config.tag_property_override[v] then
