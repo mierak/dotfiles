@@ -19,4 +19,15 @@ function helpers.time_to_seconds(time)
     return minutes * 60 + seconds
 end
 
+function helpers.trim(str)
+    return str:match("^%s*(.-)%s*$"):gsub("[ ]+", " "):gsub("\n+", "\n")
+end
+
+function helpers.ellipsize(str, max_length)
+    if #str > max_length then
+        return str:sub(1, max_length - 3) .. "..."
+    end
+    return str
+end
+
 return helpers

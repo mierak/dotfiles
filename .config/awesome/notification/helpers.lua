@@ -24,7 +24,7 @@ end
 
 function ret.modify_title(title)
     if not title or #title == 0 then
-        return ""
+        return "No title"
     end
     return title
 end
@@ -38,6 +38,11 @@ function ret.modify_app_name(notification)
         result = "(A) " .. result
     end
     return result
+end
+
+function ret.modify_message(notif_text, max_length)
+    local trimmed = helpers.string.trim(notif_text)
+    return helpers.string.ellipsize(trimmed, max_length)
 end
 
 function ret.safe_timeout(timeout)

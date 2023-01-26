@@ -2,7 +2,6 @@ local naughty      = require("naughty")
 
 local notifbox     = require("notification.box")
 
-local config       = require("config")
 local notifhelpers = require("notification.helpers")
 
 naughty.auto_reset_timeout = true
@@ -19,6 +18,7 @@ naughty.connect_signal("added", function (n)
     n.resident = true
     n.title = notifhelpers.modify_title(n.title)
     n.app_name = notifhelpers.modify_app_name(n)
+    n.text = notifhelpers.modify_message(n.text, 150)
 end)
 
 naughty.connect_signal("request::icon", function (notification, context, hints)
