@@ -1,10 +1,9 @@
 local awful     = require("awful")
 local wibox     = require("wibox")
-local gears     = require("gears")
 local beautiful = require("beautiful")
 
+local daemon    = require("daemon.weather")
 local helpers   = require("helpers")
-local cfg       = require("config")
 
 local icons = {
     -- Day
@@ -29,26 +28,6 @@ local icons = {
     ["50n"] = { icon = "", color = beautiful.color4 },
 }
 
-local function call_api(cb)
-    awful.spawn.easy_async_with_shell("openweather", function (out, _, _, exit_code)
-        if exit_code ~= 0 or helpers.string.nil_or_empty(out) then
-            cb()
-            return
-        end
-        cb(out)
-    end)
-end
-
-local function parse_response(response)
-    local ret = {}
-    ret.timestamp  = tonumber(response:match("timestamp=(.-)\n"))
-    ret.icon_value = string.sub(response:match("icon=(.-)\n" or ""), 1, 3)
-    ret.desc_value = response:match("desc=(.-)\n")
-    ret.temp_value = string.gsub(response:match("temp=(.-)\n"), "%-0", "0")
-    ret.city_value = response:match("city=(.-)\n")
-    return ret
-end
-
 local description = wibox.widget {
     widget = wibox.widget.textbox,
     font   = beautiful.fonts.base .. "12",
@@ -61,20 +40,6 @@ local icon  = wibox.widget {
     halign = "center",
 }
 
-local function read_cached(cb)
-    awful.spawn.easy_async_with_shell("cat /tmp/awm_weather", function (out, _, _, exit_code)
-        if exit_code ~= 0 then
-            cb()
-            return
-        end
-        if not helpers.string.nil_or_empty(out) then
-            local data = parse_response(out)
-            cb(data)
-        else
-            cb()
-        end
-    end)
-end
 
 local function update_widget(data)
     icon.markup = helpers.misc.colorize { text = icons[data.icon_value].icon, fg = icons[data.icon_value].color } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. data.temp_value .. '°C</span>'
@@ -86,45 +51,20 @@ local function set_no_data()
     description.markup = "No Data"
 end
 
-local function call_api_and_update_widget()
-    call_api(function (out)
-        if not out then
-            set_no_data()
-            return
-        end
-        awful.spawn.with_shell('echo "' .. out .. '" > /tmp/awm_weather')
-        local data = parse_response(out)
-        update_widget(data)
-    end)
-end
-
 icon.buttons = {
     awful.button({}, 1, function ()
         description.markup = "Updating"
-        call_api_and_update_widget()
+        daemon:emit_signal("update_now")
     end),
 }
 
-if cfg.weather.update_interval > 0 then
-    gears.timer {
-        timeout     = cfg.weather.update_interval,
-        call_now    = true,
-        autostart   = true,
-        single_shot = false,
-        callback    = function ()
-            read_cached(function (data)
-                awful.spawn.easy_async("date +%s", function (current_timestamp)
-                    if not data or data.timestamp + cfg.weather.update_interval - 1 < tonumber(current_timestamp) then
-                        call_api_and_update_widget()
-                    else
-                        update_widget(data)
-                    end
-                end)
-            end)
-        end
-    }
-end
-
+daemon:connect_signal("update", function (_, data)
+    if not data then
+        set_no_data()
+        return
+    end
+    update_widget(data)
+end)
 
 local widget = wibox.widget {
     layout  = wibox.layout.fixed.vertical,

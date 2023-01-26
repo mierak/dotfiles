@@ -54,6 +54,9 @@ return {
         redshift = {
             update_interval_sec = 60,
         },
+        weather = {
+            update_interval_sec = 1600,
+        },
     },
     use_confirm_dialogs     = true,
     focus_follows_mouse     = true,
@@ -85,9 +88,6 @@ return {
                 ["1"] = { master_width_factor = 0.8, }
             },
         },
-    },
-    weather = {
-        update_interval = 1600,
     },
     layout_switcher = true,
     sidebar = {
