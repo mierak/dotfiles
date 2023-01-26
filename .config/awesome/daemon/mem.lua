@@ -22,6 +22,15 @@ function daemon:update()
     end)
 end
 
+local timer = gears.timer {
+    autostart = true,
+    timeout = config.daemon.mem_update_interval_sec,
+    call_now = true,
+    callback = function ()
+        daemon:update()
+    end
+}
+
 daemon:connect_signal("stop", function ()
     timer:stop()
 end)
@@ -33,14 +42,5 @@ end)
 daemon:connect_signal("update_now", function ()
     daemon:update()
 end)
-
-gears.timer {
-    autostart = true,
-    timeout = config.daemon.mem_update_interval_sec,
-    call_now = true,
-    callback = function ()
-        daemon:update()
-    end
-}
 
 return daemon

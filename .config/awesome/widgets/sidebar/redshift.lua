@@ -1,10 +1,8 @@
-local awful     = require("awful")
 local wibox     = require("wibox")
-local gears     = require("gears")
 local beautiful = require("beautiful")
 
+local daemon    = require("daemon.redshift")
 local helpers   = require("helpers")
-local cfg       = require("config")
 
 local period = wibox.widget {
     widget = wibox.widget.textbox,
@@ -37,27 +35,13 @@ local widget = wibox.widget {
     },
 }
 
-gears.timer {
-    timeout     = cfg.redshift.update_interval,
-    call_now    = true,
-    single_shot = false,
-    autostart   = true,
-    callback    = function ()
-        awful.spawn.easy_async("pgrep -x redshift", function (_, _, _, exit_code)
-            if exit_code == 0 then
-                awful.spawn.easy_async("redshift -p", function (stdout)
-                    local temp_value = stdout:match("Color temperature: (.-)\n")
-                    local period_value = stdout:match("Period: (.-)\n")
-                    period.markup = period_value
-                    if period_value == "Night" then
-                        icon.markup = helpers.misc.colorize { text = "ﯧ", fg = beautiful.color3 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
-                    else
-                        icon.markup = helpers.misc.colorize { text = "", fg = beautiful.color4 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
-                    end
-                end)
-            end
-        end)
+daemon:connect_signal("update", function (_, temp_value, period_value)
+    period.markup = period_value
+    if period_value == "Night" then
+        icon.markup = helpers.misc.colorize { text = "ﯧ", fg = beautiful.color3 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
+    else
+        icon.markup = helpers.misc.colorize { text = "", fg = beautiful.color4 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
     end
-}
+end)
 
 return widget

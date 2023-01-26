@@ -51,6 +51,9 @@ return {
         playerctl = {
             players = { "mpd" }
         },
+        redshift = {
+            update_interval_sec = 60,
+        },
     },
     use_confirm_dialogs     = true,
     focus_follows_mouse     = true,
@@ -85,9 +88,6 @@ return {
     },
     weather = {
         update_interval = 1600,
-    },
-    redshift = {
-        update_interval = 60,
     },
     layout_switcher = true,
     sidebar = {
