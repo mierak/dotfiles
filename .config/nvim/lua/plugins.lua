@@ -29,4 +29,5 @@ return require('packer').startup(function (use)
         requires = { {'nvim-lua/plenary.nvim'} }
     }
     use 'petertriho/nvim-scrollbar'
+    use 'mbbill/undotree'
 end)
