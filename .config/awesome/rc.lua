@@ -85,9 +85,10 @@ end
 -- | |  | | |_| | |_| | |_| | |___| |___ ___) |
 -- |_|  |_|\___/|____/ \___/|_____|_____|____/ 
 
-local init_smart_borders    = require("modules.smart_borders")
-local init_tags_restore     = require("modules.restore_tags")
-local init_window_swallow   = require("modules.window_swallow")
+local init_smart_borders      = require("modules.smart_borders")
+local init_tags_restore       = require("modules.restore_tags")
+local init_window_swallow     = require("modules.window_swallow")
+local init_focus_center_mouse = require("modules.focus_center_mouse")
 local scratchpad = require("modules.scratchpad")
 if config.modules.window_swallow.active then
     init_window_swallow()
@@ -99,6 +100,10 @@ end
 
 if config.modules.smart_borders then
     init_smart_borders()
+end
+
+if config.modules.focus_center_mouse then
+    init_focus_center_mouse()
 end
 
 if config.modules.scratchpad.enabled then

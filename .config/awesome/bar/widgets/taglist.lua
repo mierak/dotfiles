@@ -35,12 +35,8 @@ return function(screen)
         },
         style = {
             fg_focus    = beautiful.fg_normal,
-            bg_focus    = beautiful.bg_alt,
-            fg_empty    = beautiful.active,
-            bg_empty    = beautiful.bg_alt,
             fg_occupied = beautiful.foreground,
-            bg_occupied = beautiful.bg_alt,
-            bg_urgent   = beautiful.bg_alt,
+            bg_urgent   = beautiful.bg_normal,
             font        = beautiful.fonts.bar,
         },
         buttons = {
@@ -71,5 +67,5 @@ return function(screen)
         }
     }
 
-    return helpers.misc.to_pill { widget = taglist }
+    return taglist
 end

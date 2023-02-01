@@ -11,6 +11,7 @@ local create_tag_list   = require("bar/widgets/taglist")
 local create_layout_box = require("bar/widgets/layouts")
 local create_task_list  = require("bar/widgets/tasklist")
 
+local create_clienticon_taglist = require("bar.widgets.clienticon_taglist")
 local widgets = {}
 
 -- Gets all widgets that appear in right_widgets config. Rest is ignored.
@@ -32,11 +33,15 @@ for _, v in ipairs(get_all_enabled_widgets()) do
 end
 
 return function (screen, menu)
-    local prompt_box = awful.widget.prompt { font = beautiful.fonts.bar }
     local logo_menu   = create_launcher(menu)
-    local tag_list   = create_tag_list(screen)
+    local tag_list
     local layout_box = create_layout_box(screen)
     local task_list  = create_task_list(screen)
+    if cfg.bar.taglist_style == "classic" then
+        tag_list = create_tag_list(screen)
+    else
+        tag_list = create_clienticon_taglist(screen)
+    end
 
     local right_widgets = {
         layout = wibox.layout.fixed.horizontal,
@@ -59,7 +64,6 @@ return function (screen, menu)
     -- Layoutbox on every screen
     table.insert(right_widgets, layout_box)
 
-    screen.prompt = prompt_box
     screen.mywibox = awful.wibar {
         position = "top",
         screen = screen,
@@ -72,12 +76,20 @@ return function (screen, menu)
                     spacing = beautiful.margin,
                     logo_menu,
                     tag_list,
-                    prompt_box,
                 },
-                task_list,
+                {
+                    widget = wibox.container.margin,
+                    left = beautiful.margin, right = beautiful.margin,
+                    {
+                        widget = wibox.container.place,
+                        halign = "center",
+                        task_list,
+                    },
+                },
                 right_widgets,
             },
-            margins = beautiful.bar_padding,
+            top = beautiful.bar_padding, bottom = beautiful.bar_padding,
+            left = beautiful.margin, right = beautiful.margin,
             widget = wibox.container.margin
         }
     }

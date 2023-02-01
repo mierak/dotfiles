@@ -14,6 +14,7 @@ return {
     modules = {
         restore_tags_on_restart = true,
         smart_borders           = true,
+        focus_center_mouse      = true,
         scratchpad              = {
             enabled              = true,
             close_on_focus_lost  = true,
@@ -99,6 +100,7 @@ return {
         },
     },
     bar = {
+        taglist_style = "clienticon", -- (classic|clienticon)
         right_widgets_pill_exclude = { "status" },
         right_widgets = {
             { "status", "vol", "fs", "mem", "cpu", "time" }, -- Screen 1 - Middle
@@ -106,19 +108,19 @@ return {
             { "vol", "fs", "mem", "cpu", "time" }, -- Screen 3 - Left
         },
         cpu = {
-            style     = "text_bar", -- (text_bar|bar|text)
+            style     = "text_bar", -- (text_bar|segment_bar|bar|text)
             fg        = "color1",
             icon      = " ",
             bar_width = 70,
         },
         mem = {
-            style     = "bar", -- (text_bar|bar|text)
+            style     = "bar", -- (text_bar|segment_bar|bar|text)
             fg        = "color3",
             icon      = " ",
             bar_width = 70,
         },
         fs = {
-            style     = "bar", -- (text_bar|bar|text)
+            style     = "bar", -- (text_bar|segment_bar|bar|text)
             fg        = "fg_normal",
             icon      = " ",
             bar_width = 70,

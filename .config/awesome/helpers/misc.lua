@@ -27,6 +27,13 @@ function helpers.vertical_spacer(height)
     }
 end
 
+function helpers.horizontal_spacer(width)
+    return wibox.widget {
+        forced_width = width,
+        layout = wibox.layout.fixed.horizontal,
+    }
+end
+
 function helpers.add_hover_cursor(widget)
     widget:connect_signal("mouse::enter", function ()
        local w = mouse.current_wibox

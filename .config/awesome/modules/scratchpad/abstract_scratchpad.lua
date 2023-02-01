@@ -35,14 +35,14 @@ function Scratchpad:_apply_props(props)
 end
 
 function Scratchpad:hide()
-    if self.client then
+    if self.client and self.client.first_tag then
         self.client.sticky = false
         self.client:tags({})
     end
 end
 
 function Scratchpad:show()
-    if self.client then
+    if self.client and not self.client.first_tag then
         local focused_screen = awful.screen.focused()
 
         self.client.sticky = self.props.sticky or false -- sticky has to be reapplied as it is set to false in hide
@@ -63,7 +63,9 @@ end
 function Scratchpad:connect_signals()
     if self.close_on_focus_lost and self.client then
         local fn = function ()
-            self:hide()
+            if self.client.first_tag then
+                self:hide()
+            end
         end
         self.client:connect_signal("unfocus", fn)
     end

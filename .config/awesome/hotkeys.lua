@@ -69,7 +69,7 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-S-Return",   "Move to Master",                        function(c) c:swap(awful.client.getmaster()) end },
         { "M-t",          "Toggle Floating",                       awful.client.floating.toggle },
         { "M-n",          "Minimize Client",                       function(c) c.minimized = true end },
-        { "M-m",          "(Un)maximize",                          function(c) c.maximized = not c.maximized; c:raise() end },                       -- Remove? I use fullscreen instead anyway
+        { "M-m",          "(Un)maximize",                          self.un_maximize },                                                               -- Remove? I use fullscreen instead anyway
         { "M-C-m",        "(Un)maximize Vertically",               function(c) c.maximized_vertical = not c.maximized_vertical; c:raise() end },     -- Remove? I use fullscreen instead anyway
         { "M-S-m",        "(Un)maximize Horizontally",             function(c) c.maximized_horizontal = not c.maximized_horizontal; c:raise() end }, -- Remove? I use fullscreen instead anyway
         { "M-C-space",    "Toggle Keep on Top",                    function(c) c.ontop = not c.ontop end },
@@ -95,6 +95,16 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     })
 
     ezhk:finalize()
+end
+
+function Hotkeys.un_maximize(c)
+    c.maximized = not c.maximized
+    if c.maximized then
+        c.border_width = 0
+    else
+        c.border_width = beautiful.border_width
+    end
+    c:raise()
 end
 
 function Hotkeys.lua_execute_prompt()

@@ -16,8 +16,8 @@ local inactive    = awesome.xrdb_get_value("", "inactive")
 local bg_alt      = awesome.xrdb_get_value("", "background-alt")
 local bg_alt_dark = awesome.xrdb_get_value("", "background-alt-dark")
 
-theme.bar_height    = 28
-theme.bar_padding   = 5
+theme.bar_height    = dpi(28)
+theme.bar_padding   = dpi(5)
 
 theme.wallpaper = config.dir.data .. "/wallpaper/current"
 
