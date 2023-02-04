@@ -3,7 +3,10 @@ local beautiful       = require("beautiful")
 
 local cfg             = require("config")
 local show_gaps_popup = require("widgets/gaps_popup")
-local ezhk            = require("modules.ezhk"):new(cfg.modkey)
+local Ezhk            = require("modules.ezhk")
+local helpers         = require("helpers")
+
+local ezhk = Ezhk:new(cfg.modkey)
 
 local Hotkeys = {}
 function Hotkeys:init(hotkeys_popup, main_menu)
@@ -23,7 +26,7 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-Escape",     "View Last",                             awful.tag.history.restore },
         { "M-numrow",     "Only View Tag",                         self.only_view_tag },
         { "M-C-numrow",   "Toggle Tag",                            self.toggle_tag },
-        { "M-S-numrow",   "Move Focused Client to Tag and View",   self.move_client_and_view },
+        { "M-S-numrow",   "Move Focused Client to Ta` and View",   self.move_client_and_view },
         { "M-S-C-numrow", "Toggle Focused Client on Tag",          self.toggle_on_tag },
     })
 
@@ -43,9 +46,9 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     })
 
     ezhk:global_keybind_group("Screen", {
-        { "M-,",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   cfg.screen.left},
-        { "M-.",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, cfg.screen.middle },
-        { "M-/",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  cfg.screen.right },
+        { "M-,",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   not not cfg.screen.left},
+        { "M-.",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        { "M-/",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  not not cfg.screen.right },
         { "M-C-j",        "Focus Next Screen",                     function() awful.screen.focus_relative(1) end },
         { "M-C-k",        "Focus Previous Screen",                 function() awful.screen.focus_relative(-1) end },
     })
@@ -61,9 +64,9 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     })
 
     ezhk:client_keybind_group("Client", {
-        { "M-S-,",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   cfg.screen.left },
-        { "M-S-.",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, cfg.screen.middle },
-        { "M-S-/",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  cfg.screen.right },
+        { "M-S-,",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   not not cfg.screen.left },
+        { "M-S-.",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        { "M-S-/",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  not not cfg.screen.right },
         { "M-f",          "Toggle Fullscreen",                     function(c) c.fullscreen = not c.fullscreen; c:raise() end },
         { "M-q",          "Kill Client",                           function(c) c:kill() end },
         { "M-S-Return",   "Move to Master",                        function(c) c:swap(awful.client.getmaster()) end },
@@ -73,6 +76,12 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-C-m",        "(Un)maximize Vertically",               function(c) c.maximized_vertical = not c.maximized_vertical; c:raise() end },     -- Remove? I use fullscreen instead anyway
         { "M-S-m",        "(Un)maximize Horizontally",             function(c) c.maximized_horizontal = not c.maximized_horizontal; c:raise() end }, -- Remove? I use fullscreen instead anyway
         { "M-C-space",    "Toggle Keep on Top",                    function(c) c.ontop = not c.ontop end },
+    })
+
+    ezhk:global_keybind_group("Run or Raise", {
+        { "M-e d",        "Discord",                               function () helpers.run.run_or_raise("discord", { class = "discord" }) end, },
+        { "M-e s",        "Steam"  ,                               function () helpers.run.run_or_raise("steam",   { class = "Steam", name = "Steam" }) end, },
+        { "M-e t",        "Teams"  ,                               function () helpers.run.run_or_raise("teams",   { class = "Microsoft Teams %- Preview" }) end, },
     })
 
     awful.mouse.append_client_mousebindings({
