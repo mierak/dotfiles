@@ -1,8 +1,8 @@
-local awful           = require("awful")
-local hotkeys_popup   = require("awful.hotkeys_popup")
-local gears           = require("gears")
-local key             = awful.key
-local keyboard        = awful.keyboard
+local awful = require("awful")
+local hotkeys_popup = require("awful.hotkeys_popup")
+local gears = require("gears")
+local key = awful.key
+local keyboard = awful.keyboard
 
 ---@class ModalHotkey
 ---@field private handlers table
@@ -24,7 +24,7 @@ function ModalHotkey:new(args)
     obj.key = args.key
     obj.keygrabber = awful.keygrabber {
         timeout = args.timeout or 0.5,
-        stop_callback = function (_, stop_key, _, _)
+        stop_callback = function(_, stop_key, _, _)
             local handler = obj.handlers[stop_key]
             if not handler then
                 return
@@ -33,15 +33,15 @@ function ModalHotkey:new(args)
             handler.fn()
         end,
         allowed_keys = gears.table.join(gears.table.keys(obj.handlers), { args.key }),
-        stop_key = gears.table.join(gears.table.keys(obj.handlers), args.modifiers ),
+        stop_key = gears.table.join(gears.table.keys(obj.handlers), args.modifiers),
         stop_event = "release",
         root_keybindings = {
             awful.key {
-                modifiers   = args.modifiers,
-                key         = args.key,
-                on_press    = function() end
+                modifiers = args.modifiers,
+                key = args.key,
+                on_press = function() end,
             },
-        }
+        },
     }
 
     return obj
@@ -51,12 +51,14 @@ function ModalHotkey:add(k, group, description, on_press)
         description = description,
         fn = on_press,
     }
-    hotkeys_popup.widget.add_hotkeys({
-        [group] = {{
-            modifiers = self.modifiers,
-            keys = { [self.key .. " " .. k] = description }
-        }},
-    })
+    hotkeys_popup.widget.add_hotkeys {
+        [group] = {
+            {
+                modifiers = self.modifiers,
+                keys = { [self.key .. " " .. k] = description },
+            },
+        },
+    }
 end
 
 ---@class Hotkeys
@@ -109,7 +111,7 @@ function Hotkeys:_add_to_key_groups(group, hotkey, mods, description)
     if not self.key_groups[group] then
         self.key_groups[group] = {}
     end
-    self.key_groups[group][#self.key_groups[group]+1] = { key = hotkey, mods = mods, description = description }
+    self.key_groups[group][#self.key_groups[group] + 1] = { key = hotkey, mods = mods, description = description }
 end
 
 function Hotkeys:keybind(keys, group, description, on_press)
@@ -122,7 +124,7 @@ function Hotkeys:keybind(keys, group, description, on_press)
             keygroup = ks.key,
             group = group,
             description = description,
-            on_press = on_press
+            on_press = on_press,
         }
     end
     return key {
@@ -130,7 +132,7 @@ function Hotkeys:keybind(keys, group, description, on_press)
         key = ks.key,
         group = group,
         description = description,
-        on_press = on_press
+        on_press = on_press,
     }
 end
 
