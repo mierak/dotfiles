@@ -30,4 +30,6 @@ return require('packer').startup(function (use)
     }
     use 'petertriho/nvim-scrollbar'
     use 'mbbill/undotree'
+    use 'windwp/nvim-autopairs'
+    use 'mhartington/formatter.nvim'
 end)
