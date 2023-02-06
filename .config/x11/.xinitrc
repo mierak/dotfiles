@@ -12,6 +12,7 @@ redshift &
 sxhkd &
 #dunst &
 lxsession &
+unclutter -b
 #dwmblocks &
 #exec ~/.config/x11/dwmauto
 #exec xmonad
