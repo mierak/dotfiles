@@ -10,6 +10,7 @@ local themes_path = gfs.get_themes_dir()
 local config = require("config")
 
 local theme = {}
+theme.dpi = dpi
 
 local active      = awesome.xrdb_get_value("", "active")
 local inactive    = awesome.xrdb_get_value("", "inactive")
@@ -72,7 +73,7 @@ theme.color13 = xrdb.color13
 theme.color14 = xrdb.color14
 theme.color15 = xrdb.color15
 
-theme.margin = 10
+theme.margin = dpi(10)
 theme.screen_margin = dpi(5)
 
 -- Notifications

@@ -101,7 +101,7 @@ return {
     },
     bar = {
         taglist_style = "clienticon", -- (classic|clienticon)
-        right_widgets_pill_exclude = { "status" },
+        right_widgets_background_exclude = { "status" },
         right_widgets = {
             { "status", "vol", "fs", "mem", "cpu", "time" }, -- Screen 1 - Middle
             { "vol", "fs", "mem", "cpu", "time" }, -- Screen 2 - Right

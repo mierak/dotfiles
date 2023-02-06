@@ -7,7 +7,7 @@ return function(hotkeys_popup)
     local awesome_menu = {
         {
             "hotkeys",
-            function() hotkeys_popup.show_help(nil, awful.screen.focused()) end
+            function() hotkeys_popup:toggle() end
         },
         { "manual", cfg.terminal .. " -e man awesome" },
         { "edit config", cfg.terminal .. " -e " .. cfg.editor .. " " .. awesome.conffile },

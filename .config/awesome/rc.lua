@@ -10,7 +10,6 @@ local config  = require("config")
 local awful         = require("awful")
 local wibox         = require("wibox")
 local beautiful     = require("beautiful")
-local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.autofocus")
 require("notification")
 
@@ -26,21 +25,26 @@ end)
 
 local create_bar_for_screen = require("bar")
 local Hotkeys               = require("hotkeys")
+local HotkeysPopup          = require("widgets.hotkeys")
 local create_rules          = require("rules")
 local crete_tags_for_screen = require("tags")
 local create_main_menu      = require("main_menu")
 local create_layouts        = require("layouts")
 
+local hotkeys_popup = HotkeysPopup.default_instance
+
 local main_menu = create_main_menu(hotkeys_popup)
 local layouts = create_layouts()
-
 Hotkeys:init(hotkeys_popup, main_menu)
+
 create_rules()
 
 screen.connect_signal("request::desktop_decoration", function(s)
     crete_tags_for_screen(s, layouts)
     create_bar_for_screen(s, main_menu)
 end)
+
+awesome.register_xproperty("_NET_WM_BYPASS_COMPOSITOR", "boolean")
 
 screen.connect_signal("request::wallpaper", function (s)
     awful.wallpaper {

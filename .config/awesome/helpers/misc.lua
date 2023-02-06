@@ -7,8 +7,11 @@ local config    = require("config")
 
 local helpers = {}
 
+---Wraps text in pango markup
+---@param args { fg: string, text: string, bg: string }
+---@return string
 function helpers.colorize(args)
-    return string.format('<span color="%s">%s</span>', args.fg or beautiful.fg_normal, args.text)
+    return string.format('<span color="%s" bgcolor="%s" bgalpha="%s">%s</span>', args.fg or beautiful.fg_normal, args.bg or "black", args.bg and "65535" or "1", args.text)
 end
 
 function helpers.to_pill(args)
@@ -19,6 +22,20 @@ function helpers.to_pill(args)
     )
 end
 
+function helpers.rounded_rect(cr, width, height)
+    return gears.shape.rounded_rect(cr, width, height, 4)
+end
+
+---Places rounded rectangle background around the widget
+---@param args { widget: table, bg: string? }
+---@return table The widget with background as a rounded rect
+function helpers.to_rounded_rect(args)
+    return wibox.container.background(
+        wibox.container.margin(args.widget, 10, 10),
+        args.bg or beautiful.bg_alt,
+        helpers.rounded_rect
+    )
+end
 
 function helpers.vertical_spacer(height)
     return wibox.widget {

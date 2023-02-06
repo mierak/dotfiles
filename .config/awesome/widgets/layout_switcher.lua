@@ -3,8 +3,9 @@ local beautiful = require("beautiful")
 local wibox     = require("wibox")
 local gears     = require("gears")
 
-local cfg       = require("config")
-local helpers   = require("helpers")
+local cfg          = require("config")
+local helpers      = require("helpers")
+local HotkeysPopup = require("widgets.hotkeys").default_instance
 
 local size = 4
 
@@ -70,7 +71,6 @@ local layout_popup = awful.popup {
         },
     },
 }
-
 
 awful.keygrabber {
     start_callback = function()
@@ -147,3 +147,22 @@ awful.keygrabber {
         },
     }
 }
+HotkeysPopup:add_keygroups({
+    ["Layout Switcher"] = {
+        {
+            key = "space",
+            description = "Open and Switch to Next",
+            mods = { cfg.modkey },
+        },
+        {
+            key = "space",
+            description = "Open and Switch to Previous",
+            mods = { cfg.modkey, "Shift" },
+        },
+        {
+            key = "vimotion",
+            description = "Move Around",
+            mods = { cfg.modkey },
+        },
+    },
+})

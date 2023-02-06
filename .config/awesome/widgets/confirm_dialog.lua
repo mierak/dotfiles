@@ -68,6 +68,8 @@ return function (args)
         placement = awful.placement.centered,
         minimum_width = params.min_width or 250,
         maximum_width = params.max_width or 400,
+        border_width = beautiful.dpi(1),
+        border_color = beautiful.active,
         widget = {
             widget  = wibox.container.margin,
             margins = beautiful.margin,

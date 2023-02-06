@@ -50,10 +50,10 @@ return function (screen, menu)
     -- Init widgets from config as defined in config for given screen
     local widgets_for_screen = cfg.bar.right_widgets[screen.index] or {}
     for i=1,#widgets_for_screen do
-        if gears.table.hasitem(cfg.bar.right_widgets_pill_exclude, widgets_for_screen[i]) then
+        if gears.table.hasitem(cfg.bar.right_widgets_background_exclude, widgets_for_screen[i]) then
             table.insert(right_widgets, widgets[widgets_for_screen[i]])
         else
-            table.insert(right_widgets, helpers.misc.to_pill { widget = widgets[widgets_for_screen[i]] })
+            table.insert(right_widgets, helpers.misc.to_rounded_rect { widget = widgets[widgets_for_screen[i]] })
         end
     end
     -- Append systray only on main screen

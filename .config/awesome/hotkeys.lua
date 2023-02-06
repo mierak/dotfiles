@@ -9,12 +9,15 @@ local helpers         = require("helpers")
 local ezhk = Ezhk:new(cfg.modkey)
 
 local Hotkeys = {}
+---comment
+---@param hotkeys_popup HotkeysPopup
+---@param main_menu any
 function Hotkeys:init(hotkeys_popup, main_menu)
     ezhk:global_keybind_group("Awesome", {
         { "M-S-q",        "Quit Awesome",                          awesome.quit },
         { "M-S-r",        "Restart Awesome",                       awesome.restart },
         { "M-Return",     "Open a Terminal",                       function() awful.spawn(cfg.terminal) end },
-        { "M-s",          "Show Help",                             hotkeys_popup.show_help },
+        { "M-s",          "Show Help",                             function () hotkeys_popup:toggle() end, hotkeys_popup ~= nil },
         { "M-w",          "Show Main Menu",                        function () main_menu:show() end },
         { "M-x",          "Lua Execute Prompt",                    self.lua_execute_prompt },
         { "M-`",          "Toggle Sidebar",                        function() awesome.emit_signal("sidebar::toggle") end,     cfg.sidebar.enabled },
@@ -26,7 +29,7 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-Escape",     "View Last",                             awful.tag.history.restore },
         { "M-numrow",     "Only View Tag",                         self.only_view_tag },
         { "M-C-numrow",   "Toggle Tag",                            self.toggle_tag },
-        { "M-S-numrow",   "Move Focused Client to Ta` and View",   self.move_client_and_view },
+        { "M-S-numrow",   "Move Focused Client to Tag and View",   self.move_client_and_view },
         { "M-S-C-numrow", "Toggle Focused Client on Tag",          self.toggle_on_tag },
     })
 
@@ -64,9 +67,6 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     })
 
     ezhk:client_keybind_group("Client", {
-        { "M-S-,",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   not not cfg.screen.left },
-        { "M-S-.",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, not not cfg.screen.middle },
-        { "M-S-/",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  not not cfg.screen.right },
         { "M-f",          "Toggle Fullscreen",                     function(c) c.fullscreen = not c.fullscreen; c:raise() end },
         { "M-q",          "Kill Client",                           function(c) c:kill() end },
         { "M-S-Return",   "Move to Master",                        function(c) c:swap(awful.client.getmaster()) end },
@@ -78,10 +78,17 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-C-space",    "Toggle Keep on Top",                    function(c) c.ontop = not c.ontop end },
     })
 
+    ezhk:client_keybind_group("Client > Screen", {
+        { "M-S-,",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   not not cfg.screen.left },
+        { "M-S-.",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        { "M-S-/",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  not not cfg.screen.right },
+    })
+
     ezhk:global_keybind_group("Run or Raise", {
         { "M-e d",        "Discord",                               function () helpers.run.run_or_raise("discord", { class = "discord" }) end, },
-        { "M-e s",        "Steam"  ,                               function () helpers.run.run_or_raise("steam",   { class = "Steam", name = "Steam" }) end, },
-        { "M-e t",        "Teams"  ,                               function () helpers.run.run_or_raise("teams",   { class = "Microsoft Teams %- Preview" }) end, },
+        { "M-e s",        "Steam",                                 function () helpers.run.run_or_raise("steam",   { class = "Steam", name = "Steam" }) end, },
+        { "M-e t",        "Teams",                                 function () helpers.run.run_or_raise("teams",   { class = "Microsoft Teams %- Preview" }) end, },
+        { "M-e k",        "KeePassXC",                             function () helpers.run.run_or_raise("keepassxc",   { class = "KeePassXC" }) end, },
     })
 
     awful.mouse.append_client_mousebindings({
@@ -103,7 +110,9 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         awful.button({}, 5, awful.tag.viewnext)
     })
 
-    ezhk:finalize()
+    if hotkeys_popup then
+        hotkeys_popup:add_keygroups(ezhk.key_groups)
+    end
 end
 
 function Hotkeys.un_maximize(c)

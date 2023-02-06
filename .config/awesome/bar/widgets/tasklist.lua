@@ -1,10 +1,10 @@
 local awful     = require("awful")
 local wibox     = require("wibox")
-local gears     = require("gears")
+
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
-local helpers   = require("helpers.string")
+local helpers   = require("helpers")
 
 return function(screen)
     return awful.widget.tasklist {
@@ -15,7 +15,7 @@ return function(screen)
             bg_normal = beautiful.bg_alt_dark,
             bg_focus = beautiful.bg_alt,
             bg_urgent = beautiful.color1,
-            shape = gears.shape.rounded_bar,
+            shape = helpers.misc.rounded_rect,
             shape_border_width = dpi(1),
             shape_border_color =  beautiful.bg_alt,
         },
@@ -59,12 +59,12 @@ return function(screen)
             },
             update_callback = function (self, _, _, _)
                 local textbox = self:get_children_by_id("text_role")[1]
-                textbox.text = helpers.ellipsize(textbox.text, 10)
+                textbox.text = helpers.string.ellipsize(textbox.text, 10)
                 textbox.text = "test"
             end,
             create_callback = function (self, _, _, _)
                 local textbox = self:get_children_by_id("text_role")[1]
-                textbox.text = helpers.ellipsize(textbox.text, 10)
+                textbox.text = helpers.string.ellipsize(textbox.text, 10)
                 textbox.text = "test"
             end,
         },

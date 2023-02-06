@@ -30,4 +30,15 @@ function helpers.ellipsize(str, max_length)
     return str
 end
 
+---Pads a string with character from both sides
+---@param str string String to pad
+---@param char string Character to use for padding
+---@param length integer How long should the string be after padding
+---@return string
+function helpers.pad(str, char, length)
+    local pad_size = math.floor((length - #str) / 2)
+    local pad_str = string.rep(char, pad_size)
+    return pad_str .. str .. pad_str
+end
+
 return helpers
