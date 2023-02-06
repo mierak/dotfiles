@@ -4,13 +4,16 @@
 window:
   opacity: 0.90
   padding:
-    x: 5
-    y: 5
+    x: 0
+    y: 0
   decorations: none
   dynamic_title: true
 
 font:
   size: 10
+  offset:
+    x: 0
+    y: 0
 key_bindings:
   - { key: PageUp,   mods: Control|Shift, action: IncreaseFontSize }
   - { key: PageDown, mods: Control|Shift, action: DecreaseFontSize }
