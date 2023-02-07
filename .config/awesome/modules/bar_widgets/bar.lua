@@ -1,7 +1,7 @@
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local gears     = require("gears")
 
+local helpers = require("helpers")
 local BaseBar   = require("modules.bar_widgets.bar_base")
 
 local BarOnly = {}
@@ -17,7 +17,7 @@ function BarOnly:new(args)
             top = 4, bottom = 4,
             {
                 widget = wibox.container.background,
-                shape = gears.shape.rounded_bar,
+                shape = helpers.misc.rounded_rect,
                 bg = beautiful.active,
                 obj.bar,
             },

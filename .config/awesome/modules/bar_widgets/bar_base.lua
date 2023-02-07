@@ -13,7 +13,7 @@ function BarBase:new(args)
     obj.fg = beautiful[args.fg]
     obj.bar = wibox.widget {
         widget = wibox.widget.progressbar,
-        shape = gears.shape.rounded_bar,
+        shape = helpers.misc.rounded_rect,
         max_value = 100,
         min_value = 0,
         margins = 1,

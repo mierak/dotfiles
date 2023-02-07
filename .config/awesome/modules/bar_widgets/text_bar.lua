@@ -27,7 +27,7 @@ function TextBar:new(args)
             top = 4, bottom = 4,
             {
                 widget = wibox.container.background,
-                shape = gears.shape.rounded_bar,
+                shape = helpers.misc.rounded_rect,
                 bg = beautiful.active,
                 {
                     layout = wibox.layout.stack,

@@ -2,6 +2,7 @@ local wibox     = require("wibox")
 local awful     = require("awful")
 local gears     = require("gears")
 
+local helpers   = require("helpers")
 local theme     = require("theme")
 
 local create_icon = function (c)
@@ -63,7 +64,6 @@ return function (screen)
         },
         widget_template = {
             widget = wibox.container.margin,
-            top    = -theme.bar_padding + 2, bottom = -theme.bar_padding + 2, -- Remove bar padding to get as much space as possible on the bar
             {
                 {
                     widget = wibox.container.margin,
@@ -83,7 +83,7 @@ return function (screen)
                     }
                 },
                 id           = "bg_role",
-                shape        = tag_shape,
+                shape        = helpers.misc.rounded_rect,
                 border_width = 1,
                 border_color = theme.bg_alt,
                 widget       = wibox.container.background,

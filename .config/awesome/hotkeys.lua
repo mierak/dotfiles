@@ -1,15 +1,15 @@
-local awful           = require("awful")
-local beautiful       = require("beautiful")
+local awful = require("awful")
+local beautiful = require("beautiful")
 
-local cfg             = require("config")
+local cfg = require("config")
 local show_gaps_popup = require("widgets/gaps_popup")
-local Ezhk            = require("modules.ezhk")
-local helpers         = require("helpers")
+local Ezhk = require("modules.ezhk")
+local helpers = require("helpers")
 
 local ezhk = Ezhk:new(cfg.modkey)
 
 local Hotkeys = {}
----comment
+--stylua: ignore
 ---@param hotkeys_popup HotkeysPopup
 ---@param main_menu any
 function Hotkeys:init(hotkeys_popup, main_menu)
@@ -34,12 +34,12 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     })
 
     ezhk:global_keybind_group("Layout", {
-        { "M-S-l",        "Increase Number of Clients in Master",  function() awful.tag.incnmaster(1, nil, true) end },
-        { "M-S-h",        "Decrease Number of Clients in Master",  function() awful.tag.incnmaster(-1, nil, true) end },
-        { "M-S-C-l",      "Increase Number of Columns",            function() awful.tag.incncol(1, nil, true) end },
-        { "M-S-C-h",      "Decrease Number of Columns",            function() awful.tag.incncol(-1, nil, true) end },
-        { "M-l",          "Increase Master Width",                 function() awful.tag.incmwfact(0.05) end },
-        { "M-h",          "Decrease Master Width",                 function() awful.tag.incmwfact(-0.05) end },
+        { "M-S-l",        "Inc/Dec Number of Clients in Master",   function() awful.tag.incnmaster(1, nil, true) end },
+        { "M-S-h",        "Inc/Dec Number of Clients in Master",   function() awful.tag.incnmaster(-1, nil, true) end },
+        { "M-S-C-l",      "Inc/Dec Number of Columns",             function() awful.tag.incncol(1, nil, true) end },
+        { "M-S-C-h",      "Inc/Dec Number of Columns",             function() awful.tag.incncol(-1, nil, true) end },
+        { "M-l",          "Inc/Dec Master Width",                  function() awful.tag.incmwfact(0.05) end },
+        { "M-h",          "Inc/Dec Master Width",                  function() awful.tag.incmwfact(-0.05) end },
         { "M-numpad",     "Select Layout Directly",                self.select_layout_by_idx }
     })
 
@@ -52,8 +52,8 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-,",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   not not cfg.screen.left},
         { "M-.",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, not not cfg.screen.middle },
         { "M-/",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  not not cfg.screen.right },
-        { "M-C-j",        "Focus Next Screen",                     function() awful.screen.focus_relative(1) end },
-        { "M-C-k",        "Focus Previous Screen",                 function() awful.screen.focus_relative(-1) end },
+        { "M-C-j",        "Focus Next/Previous Screen",            function() awful.screen.focus_relative(1) end },
+        { "M-C-k",        "Focus Next/Previous Screen",            function() awful.screen.focus_relative(-1) end },
     })
 
     ezhk:global_keybind_group("Client", {
@@ -130,7 +130,7 @@ function Hotkeys.lua_execute_prompt()
         prompt = "Run Lua code: ",
         textbox = awful.screen.focused().prompt.widget,
         exe_callback = awful.util.eval,
-        history_path = awful.util.get_cache_dir() .. "/history_eval"
+        history_path = awful.util.get_cache_dir() .. "/history_eval",
     }
 end
 
@@ -146,7 +146,9 @@ end
 function Hotkeys.toggle_tag(index)
     local screen = awful.screen.focused()
     local tag = screen.tags[index]
-    if tag then awful.tag.viewtoggle(tag) end
+    if tag then
+        awful.tag.viewtoggle(tag)
+    end
 end
 
 function Hotkeys.move_client_and_view(index)
@@ -163,20 +165,28 @@ end
 function Hotkeys.toggle_on_tag(index)
     if client.focus then
         local tag = client.focus.screen.tags[index]
-        if tag then client.focus:toggle_tag(tag) end
+        if tag then
+            client.focus:toggle_tag(tag)
+        end
     end
 end
 
 function Hotkeys.select_layout_by_idx(index)
     local t = awful.screen.focused().selected_tag
-    if t then t.layout = t.layouts[index] or t.layout end
+    if t then
+        t.layout = t.layouts[index] or t.layout
+    end
 end
 
 function Hotkeys.toggle_single_client_gaps()
     local screen = awful.screen.focused()
-    if not screen then return end
+    if not screen then
+        return
+    end
     local selected_tag = screen.selected_tag
-    if not selected_tag then return end
+    if not selected_tag then
+        return
+    end
 
     selected_tag.gap_single_client = not selected_tag.gap_single_client
     awful.layout.arrange(screen)
@@ -185,9 +195,13 @@ end
 
 function Hotkeys.toggle_all_gaps()
     local screen = awful.screen.focused()
-    if not screen then return end
+    if not screen then
+        return
+    end
     local selected_tag = screen.selected_tag
-    if not selected_tag then return end
+    if not selected_tag then
+        return
+    end
 
     if selected_tag.gap == 0 then
         selected_tag.gap = beautiful.useless_gap
@@ -199,13 +213,15 @@ end
 
 function Hotkeys.jump_to_previous_client()
     awful.client.focus.history.previous()
-    if client.focus then client.focus:raise() end
+    if client.focus then
+        client.focus:raise()
+    end
 end
 
 function Hotkeys.restore_minimized()
     local c = awful.client.restore()
     if c then
-        c:activate{raise = true, context = "key.unminimize"}
+        c:activate { raise = true, context = "key.unminimize" }
     end
 end
 

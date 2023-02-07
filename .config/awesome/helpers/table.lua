@@ -31,4 +31,20 @@ function helpers.to_string(o)
    end
 end
 
+---Shallow compares two arrays for equality
+---@param table1 any[]
+---@param table2 any[]
+---@return boolean true if arrays are equal, false otherwise
+function helpers.array_equals(table1, table2)
+    if table1 == nil or table2 == nil then return false end
+    if #table1 ~= #table2 then return false end
+
+    for index, val in ipairs(table1) do
+        if val ~= table2[index] then
+            return false
+        end
+    end
+    return true
+end
+
 return helpers
