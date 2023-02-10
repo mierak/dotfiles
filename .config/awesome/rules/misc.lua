@@ -23,7 +23,7 @@ return {
         },
         properties = {
             screen = screen[config.screen.right.index],
-            tag    = "1"
+            tag    = "1",
         }
     },
     { -- A very hacky rule. Wait for two seconds after firefox starts and then check WM_NAME and move to left monitor if applicable.
@@ -65,6 +65,16 @@ return {
             screen = screen[config.screen.middle.index],
             floating = true,
             ontop = true,
+        }
+    },
+    {
+        id = "keepass",
+        rule = {
+            class = "KeePassXC"
+        },
+        properties = {
+            screen = screen[config.screen.middle.index],
+            tag    = "9",
         }
     },
     {

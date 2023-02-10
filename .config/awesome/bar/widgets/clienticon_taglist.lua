@@ -1,27 +1,22 @@
-local wibox     = require("wibox")
-local awful     = require("awful")
-local gears     = require("gears")
+local wibox = require("wibox")
+local awful = require("awful")
 
-local helpers   = require("helpers")
-local theme     = require("theme")
+local helpers = require("helpers")
+local theme = require("theme")
 
-local create_icon = function (c)
+local create_icon = function(c)
     local icon = awful.widget.clienticon(c)
-    icon.forced_width = 16
-    icon.forced_heaight = 16
+    icon.forced_width = theme.client_icon_size
+    icon.forced_height = theme.client_icon_size
     return wibox.widget {
         widget = wibox.container.place,
         halign = "center",
         valign = "center",
-        icon
+        icon,
     }
 end
 
-local tag_shape = function (cr, width, height)
-    return gears.shape.rounded_rect(cr, width, height, 6)
-end
-
-local update_icons = function (self, tag)
+local update_icons = function(self, tag)
     local icons = self:get_children_by_id("icons_role")[1]
     icons:reset()
     for _, c in ipairs(tag:clients()) do
@@ -31,7 +26,7 @@ local update_icons = function (self, tag)
     end
 end
 
-local update_background_style = function (self, tag)
+local update_background_style = function(self, tag)
     local bg = self:get_children_by_id("bg_role")[1]
     if tag.selected then
         bg.bg = theme.bg_alt
@@ -40,54 +35,58 @@ local update_background_style = function (self, tag)
     end
     if tag.urgent then
         bg.border_color = theme.color1
-        bg.bg           = theme.color1
+        bg.bg = theme.color1
     else
         bg.border_color = theme.bg_alt
     end
 end
 
-return function (screen)
+return function(screen)
     local taglist = awful.widget.taglist {
         screen = screen,
         filter = awful.widget.taglist.filter.noempty,
         layout = {
-            layout  = wibox.layout.fixed.horizontal,
+            layout = wibox.layout.fixed.horizontal,
             spacing = theme.margin / 2,
         },
         style = {
             font = theme.fonts.bar,
         },
         buttons = {
-            awful.button({}, 1, function(t) t:view_only() end),
-            awful.button({}, 4, function(t) awful.tag.viewprev(t.screen) end),
-            awful.button({}, 5, function(t) awful.tag.viewnext(t.screen) end)
+            awful.button({}, 1, function(t)
+                t:view_only()
+            end),
+            awful.button({}, 4, function(t)
+                awful.tag.viewprev(t.screen)
+            end),
+            awful.button({}, 5, function(t)
+                awful.tag.viewnext(t.screen)
+            end),
         },
         widget_template = {
-            widget = wibox.container.margin,
             {
+                widget = wibox.container.margin,
+                left = theme.margin,
+                right = theme.margin,
                 {
-                    widget = wibox.container.margin,
-                    left   = theme.margin, right = theme.margin,
+                    layout = wibox.layout.fixed.horizontal,
+                    spacing = theme.margin,
                     {
-                        layout  = wibox.layout.fixed.horizontal,
-                        spacing = theme.margin,
-                        {
-                            widget = wibox.widget.textbox,
-                            id     = "text_role",
-                        },
-                        {
-                            layout  = wibox.layout.fixed.horizontal,
-                            spacing = theme.margin / 2,
-                            id      = 'icons_role',
-                        },
-                    }
+                        widget = wibox.widget.textbox,
+                        id = "text_role",
+                    },
+                    {
+                        layout = wibox.layout.fixed.horizontal,
+                        spacing = theme.margin / 2,
+                        id = "icons_role",
+                    },
                 },
-                id           = "bg_role",
-                shape        = helpers.misc.rounded_rect,
-                border_width = 1,
-                border_color = theme.bg_alt,
-                widget       = wibox.container.background,
             },
+            id = "bg_role",
+            shape = helpers.misc.rounded_rect,
+            border_width = 1,
+            border_color = theme.bg_alt,
+            widget = wibox.container.background,
             create_callback = function(self, tag)
                 update_icons(self, tag)
                 update_background_style(self, tag)
@@ -95,8 +94,8 @@ return function (screen)
             update_callback = function(self, tag)
                 update_icons(self, tag)
                 update_background_style(self, tag)
-            end
-        }
+            end,
+        },
     }
     return taglist
 end

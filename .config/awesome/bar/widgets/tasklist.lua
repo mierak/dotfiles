@@ -1,72 +1,65 @@
-local awful     = require("awful")
-local wibox     = require("wibox")
+local awful = require("awful")
+local wibox = require("wibox")
 
-local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local theme = require("theme")
 
-local helpers   = require("helpers")
+local helpers = require("helpers")
 
 return function(screen)
     return awful.widget.tasklist {
         screen = screen,
         filter = awful.widget.tasklist.filter.currenttags,
         style = {
-            font = beautiful.fonts.bar,
-            bg_normal = beautiful.bg_alt_dark,
-            bg_focus = beautiful.bg_alt,
-            bg_urgent = beautiful.color1,
+            font = theme.fonts.bar,
+            bg_focus = theme.bg_alt,
+            bg_urgent = theme.color1,
             shape = helpers.misc.rounded_rect,
-            shape_border_width = dpi(1),
-            shape_border_color =  beautiful.bg_alt,
+            shape_border_width = theme.dpi(1),
+            shape_border_color = theme.bg_alt,
         },
         layout = {
             layout = wibox.layout.flex.horizontal,
-            spacing = beautiful.margin,
+            spacing = theme.margin,
         },
         widget_template = {
             widget = wibox.container.place,
             halign = "center",
             {
                 widget = wibox.container.constraint,
-                width = 600,
+                width = theme.dpi(600),
+                height = theme.bar_height - theme.bar_padding,
                 strategy = "exact",
                 {
                     id = "background_role",
                     halign = "center",
                     widget = wibox.container.background,
-                    bg = beautiful.bg_alt,
+                    bg = theme.bg_alt,
                     {
                         widget = wibox.container.margin,
-                        left = 10, right = 10,
+                        left = theme.margin,
+                        right = theme.margin,
                         {
                             widget = wibox.container.place,
+                            valign = "center",
                             halign = "center",
                             {
                                 layout = wibox.layout.fixed.horizontal,
-                                spacing = beautiful.margin,
+                                spacing = theme.margin,
                                 {
-                                    id = "icon_role",
-                                    widget = wibox.widget.imagebox,
+                                    id = "clienticon",
+                                    widget = awful.widget.clienticon,
+                                    forced_width = theme.client_icon_size,
+                                    forced_height = theme.client_icon_size,
                                 },
                                 {
                                     id = "text_role",
                                     widget = wibox.widget.textbox,
                                 },
                             },
-                        }
+                        },
                     },
                 },
             },
-            update_callback = function (self, _, _, _)
-                local textbox = self:get_children_by_id("text_role")[1]
-                textbox.text = helpers.string.ellipsize(textbox.text, 10)
-                textbox.text = "test"
-            end,
-            create_callback = function (self, _, _, _)
-                local textbox = self:get_children_by_id("text_role")[1]
-                textbox.text = helpers.string.ellipsize(textbox.text, 10)
-                textbox.text = "test"
-            end,
         },
         buttons = {
             awful.button({}, 3, function()
@@ -77,8 +70,7 @@ return function(screen)
             end),
             awful.button({}, 5, function()
                 awful.client.focus.byidx(1)
-            end)
-        }
+            end),
+        },
     }
 end
-
