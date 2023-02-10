@@ -2,8 +2,10 @@ configuration {
 //	modes: "window,drun,run,combi,calc";
 	modi: "run,drun,window,calc";
 	show-icons: true;
-	terminal: "st";
-	drun-display-format: "{icon} {name}";
+	terminal: "alacritty";
+	//drun-display-format: "{icon} {name}";
+    window-format: "<span fgalpha='65%'>[{w:-1}] </span><b>{c:-1}</b> <span weight='light' fgalpha='65%' size='small'>{t:-1}</span>";
+    drun-display-format: "<b>{name}</b>[ <span weight='light' size='small'><i>({generic})</i></span>][ <span weight='light' fgalpha='65%' size='small'>{exec}</span>]";
 	window-format: "{icon} {title}";
 	location: 0;
 	display-drun: "   Apps ";
@@ -31,4 +33,5 @@ configuration {
   }
 }
 
-@theme "catppuccin-macchiato"
+// @theme "catppuccin-macchiato"
+@theme "singlecol"
