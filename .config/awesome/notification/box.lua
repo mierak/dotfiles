@@ -78,7 +78,7 @@ end
 function notification_box:create_message(notification)
     local w = wibox.widget {
         widget = wibox.widget.textbox,
-        text   = notification.message,
+        markup = notification.message,
         font   = beautiful.font,
     }
     notification:connect_signal("property::message", function (_, value)
