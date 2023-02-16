@@ -41,6 +41,7 @@ return {
     daemon = {
         cpu_update_interval_sec = 2,
         mem_update_interval_sec = 5,
+        net_update_interval_sec = 5,
         fs = {
             update_interval_sec = 1600,
             locations = { "/", "/home", "/boot" },
@@ -103,27 +104,40 @@ return {
         taglist_style = "clienticon", -- (classic|clienticon)
         right_widgets_background_exclude = { "status" },
         right_widgets = {
-            { "status", "vol", "fs", "mem", "cpu", "time" }, -- Screen 1 - Middle
-            { "vol", "fs", "mem", "cpu", "time" }, -- Screen 2 - Right
-            { "vol", "fs", "mem", "cpu", "time" }, -- Screen 3 - Left
+            { "status", "net", "vol", "fs", "mem", "cpu", "time" }, -- Screen 1 - Middle
+            { "net", "vol", "fs", "mem", "cpu", "time" }, -- Screen 2 - Right
+            { "net", "vol", "fs", "mem", "cpu", "time" }, -- Screen 3 - Left
         },
+        ---@type widget_config
         cpu = {
-            style     = "text_bar", -- (text_bar|segment_bar|bar|text)
+            style     = "text_bar",
             fg        = "color1",
             icon      = " ",
             bar_width = 70,
         },
+        ---@type widget_config
         mem = {
-            style     = "bar", -- (text_bar|segment_bar|bar|text)
+            style     = "bar",
             fg        = "color3",
             icon      = " ",
             bar_width = 70,
         },
+        ---@type widget_config
         fs = {
-            style     = "bar", -- (text_bar|segment_bar|bar|text)
+            style     = "bar",
             fg        = "fg_normal",
             icon      = " ",
             bar_width = 70,
         },
+        ---@type text_widget_config
+        net = {
+            style     = "text",
+            fg        = "color2",
+            icon      = nil,
+        }
     },
 }
+
+---@alias color_value "color0" | "color1" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "color10" | "color11" | "color12" | "color13" | "color14" | "color15" | "fg_normal"
+---@alias text_widget_config { fg: color_value, icon: string | nil, style: "text" }
+---@alias widget_config { fg: color_value, icon: string, bar_wiwdth: number, style: "text_bar" | "segment_bar" | "bar" | "text" }

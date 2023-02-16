@@ -59,7 +59,7 @@ return function (screen, menu)
     -- Append systray only on main screen
     if screen.index == 1 then
         local tray = wibox.widget.systray()
-        table.insert(right_widgets, helpers.misc.to_pill { widget = tray })
+        table.insert(right_widgets, helpers.misc.to_rounded_rect { widget = tray })
     end
     -- Layoutbox on every screen
     table.insert(right_widgets, layout_box)

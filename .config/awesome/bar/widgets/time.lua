@@ -1,13 +1,13 @@
 local wibox = require("wibox")
-local beautiful = require("beautiful")
+local theme = require("theme")
 
 local helpers = require("helpers")
 
 local clock = wibox.widget {
     widget = wibox.widget.textclock,
-    format = helpers.misc.colorize { text = "%H:%M:%S", fg = beautiful.fg_normal },
+    format = helpers.misc.colorize { text = string.format('<span font="%s">󱑁</span>', theme.fonts.symbols_bar) .. " %H:%M:%S", fg = theme.fg_normal },
     refresh = 1,
-    font = beautiful.fonts.bar,
+    font = theme.fonts.bar,
 }
 
 return {

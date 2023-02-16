@@ -29,6 +29,7 @@ theme.fonts.base_bold    = theme.fonts.base .. "Bold "
 theme.fonts.bar          = theme.fonts.base_bold .. "9"
 theme.fonts.title        = theme.fonts.base .. "13"
 theme.fonts.symbols_base = "Symbols Nerd Font "
+theme.fonts.symbols_bar  = theme.fonts.symbols_base .. "12"
 theme.fonts.symbols      = theme.fonts.symbols_base .. "20"
 
 theme.font          = theme.fonts.base .. "11"

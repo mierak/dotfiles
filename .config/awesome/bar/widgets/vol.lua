@@ -1,17 +1,17 @@
-local wibox     = require("wibox")
-local awful     = require("awful")
-local beautiful = require("beautiful")
-local gears     = require("gears")
+local wibox = require("wibox")
+local awful = require("awful")
+local theme = require("theme")
+local gears = require("gears")
 
-local helpers   = require("helpers")
+local helpers = require("helpers")
 
-local vol  = wibox.widget {
+local vol = wibox.widget {
     widget = wibox.widget.textbox,
-    font   = beautiful.fonts.bar,
+    font = theme.fonts.bar,
 }
 local mic_vol = wibox.widget {
-    widget    = wibox.widget.textbox,
-    font      = beautiful.fonts.bar,
+    widget = wibox.widget.textbox,
+    font = theme.fonts.bar,
 }
 
 local state = {
@@ -24,39 +24,63 @@ local state = {
 local function set_text()
     vol.markup = helpers.misc.colorize {
         text = string.gsub(
-            string.format("%s %s%%", state.volume_icon, state.volume),
+            string.format(
+                '<span font="%s">%s</span><span font="%s"> %s%%</span>',
+                theme.fonts.symbols_bar,
+                state.volume_icon,
+                theme.fonts.bar,
+                state.volume
+            ),
             "\n",
             ""
         ),
-        fg = beautiful.color4,
+        fg = theme.color4,
     }
 end
 
 local function set_mic_text()
     mic_vol.markup = helpers.misc.colorize {
         text = string.gsub(
-            string.format("%s %s%%", state.mic_icon, state.mic_volume),
+            string.format(
+                '<span font="%s">%s</span><span font="%s"> %s%%</span>',
+                theme.fonts.symbols_bar,
+                state.mic_icon,
+                theme.fonts.bar,
+                state.mic_volume
+            ),
             "\n",
             ""
         ),
-        fg = beautiful.color4,
+        fg = theme.color4,
     }
 end
 
 local function update_volume()
-    awful.spawn.easy_async("volctl volume", function(str) state.volume = str set_text() end)
+    awful.spawn.easy_async("volctl volume", function(str)
+        state.volume = str
+        set_text()
+    end)
 end
 
 local function update_status()
-    awful.spawn.easy_async("volctl status", function(str) state.volume_icon = str set_text() end)
+    awful.spawn.easy_async("volctl status", function(str)
+        state.volume_icon = str
+        set_text()
+    end)
 end
 
 local function update_mic_volume()
-    awful.spawn.easy_async("volctl mic-volume", function(str) state.mic_volume = str set_mic_text() end)
+    awful.spawn.easy_async("volctl mic-volume", function(str)
+        state.mic_volume = str
+        set_mic_text()
+    end)
 end
 
 local function update_mic_status()
-    awful.spawn.easy_async("volctl mic-status", function(str) state.mic_icon = str set_mic_text() end)
+    awful.spawn.easy_async("volctl mic-status", function(str)
+        state.mic_icon = str
+        set_mic_text()
+    end)
 end
 
 local function update_all()
@@ -71,42 +95,30 @@ gears.timer {
     timeout = 5,
     autostart = true,
     single_shot = true,
-    callback = function ()
+    callback = function()
         update_all()
-    end
+    end,
 }
 
-vol:add_button(
-    awful.button({}, 1, function(_)
-        awful.spawn("volctl toggle")
-    end)
-)
-vol:add_button(
-    awful.button({}, 4, function(_)
-        awful.spawn("volctl inc-volume")
-    end)
-)
-vol:add_button(
-    awful.button({}, 5, function(_)
-        awful.spawn("volctl dec-volume")
-    end)
-)
+vol:add_button(awful.button({}, 1, function(_)
+    awful.spawn("volctl toggle")
+end))
+vol:add_button(awful.button({}, 4, function(_)
+    awful.spawn("volctl inc-volume")
+end))
+vol:add_button(awful.button({}, 5, function(_)
+    awful.spawn("volctl dec-volume")
+end))
 
-mic_vol:add_button(
-    awful.button({}, 1, function(_)
-        awful.spawn("volctl mic-toggle")
-    end)
-)
-mic_vol:add_button(
-    awful.button({}, 4, function(_)
-        awful.spawn("volctl mic-inc-volume")
-    end)
-)
-mic_vol:add_button(
-    awful.button({}, 5, function(_)
-        awful.spawn("volctl mic-dec-volume")
-    end)
-)
+mic_vol:add_button(awful.button({}, 1, function(_)
+    awful.spawn("volctl mic-toggle")
+end))
+mic_vol:add_button(awful.button({}, 4, function(_)
+    awful.spawn("volctl mic-inc-volume")
+end))
+mic_vol:add_button(awful.button({}, 5, function(_)
+    awful.spawn("volctl mic-dec-volume")
+end))
 
 return {
     widget = wibox.widget {

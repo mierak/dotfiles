@@ -1,8 +1,7 @@
-local wibox     = require("wibox")
-local gears     = require("gears")
-local beautiful = require("beautiful")
+local wibox = require("wibox")
+local theme = require("theme")
 
-local helpers   = require("helpers")
+local helpers = require("helpers")
 
 local BarBase = {}
 function BarBase:new(args)
@@ -10,7 +9,7 @@ function BarBase:new(args)
     setmetatable(obj, self)
     self.__index = self
 
-    obj.fg = beautiful[args.fg]
+    obj.fg = theme[args.fg]
     obj.bar = wibox.widget {
         widget = wibox.widget.progressbar,
         shape = helpers.misc.rounded_rect,
@@ -19,15 +18,15 @@ function BarBase:new(args)
         margins = 1,
         value = 0,
         forced_width = args.bar_width,
-        background_color = beautiful.bg_alt,
+        background_color = theme.bg_alt,
         color = obj.fg,
-        border_color = beautiful.active,
+        border_color = theme.active,
     }
 
     obj.icon = wibox.widget {
         widget = wibox.widget.textbox,
-        font   = beautiful.fonts.bar,
-        markup = helpers.misc.colorize { text = args.icon, fg = obj.fg }
+        font = theme.fonts.symbols_bar,
+        markup = helpers.misc.colorize { text = args.icon, fg = obj.fg },
     }
 
     obj:update(args.init_val or 0)

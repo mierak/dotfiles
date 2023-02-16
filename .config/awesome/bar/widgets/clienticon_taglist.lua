@@ -55,12 +55,15 @@ return function(screen)
         buttons = {
             awful.button({}, 1, function(t)
                 t:view_only()
+                t:emit_signal("request::activate", t)
             end),
             awful.button({}, 4, function(t)
                 awful.tag.viewprev(t.screen)
+                t:emit_signal("request::activate", t)
             end),
             awful.button({}, 5, function(t)
                 awful.tag.viewnext(t.screen)
+                t:emit_signal("request::activate", t)
             end),
         },
         widget_template = {

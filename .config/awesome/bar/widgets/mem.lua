@@ -4,7 +4,11 @@ local daemon = require("daemon.mem")
 local mem = require("modules.bar_widgets")(config.bar.mem)
 
 daemon:connect_signal("update", function (_, values)
-    mem:update(tonumber(values.used / values.total * 100), function () return config.bar.mem.icon .. values.used .. "/" .. values.total .. "MiB" end)
+    if config.bar.mem.style == "text" then
+        mem:update(config.bar.mem.icon .. values.used .. "/" .. values.total .. "MiB")
+    else
+        mem:update(tonumber(values.used / values.total * 100))
+    end
 end)
 
 return mem

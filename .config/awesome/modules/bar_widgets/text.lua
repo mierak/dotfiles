@@ -1,5 +1,5 @@
-local wibox     = require("wibox")
-local beautiful = require("beautiful")
+local wibox = require("wibox")
+local theme = require("theme")
 
 local helpers = require("helpers")
 
@@ -10,27 +10,33 @@ function TextOnly:new(args)
     setmetatable(obj, self)
     self.__index = self
 
-    obj.icon = args.icon
-    obj.fg = beautiful[args.fg]
+    obj.icon = args.icon or ""
+    obj.fg = theme[args.fg]
     obj.widget = wibox.widget {
         widget = wibox.widget.textbox,
-        font = beautiful.fonts.bar,
+        font = theme.fonts.bar,
     }
     obj:update(args.init_val or 0)
 
     return obj
 end
 
-function TextOnly:update(value, format_fn)
-    if type(format_fn) == "function" then
+function TextOnly:update(value)
+    if type(value) == "string" then
         self.widget.markup = helpers.misc.colorize {
-            text = format_fn(),
-            fg = self.fg
+            text = value,
+            fg = self.fg,
         }
     else
         self.widget.markup = helpers.misc.colorize {
-            text = string.format(self.icon .. "%2d%%", value),
-            fg = self.fg
+            text = string.format(
+                '<span font="%s">%s</span><span font="%s">%2d%%</span>',
+                theme.fonts.symbols_bar,
+                self.icon,
+                theme.fonts.bar,
+                value
+            ),
+            fg = self.fg,
         }
     end
 end
