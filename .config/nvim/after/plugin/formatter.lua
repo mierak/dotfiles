@@ -1,10 +1,10 @@
 require("formatter").setup {
-    logging = false,
+    logging = true,
     filetype = {
         lua = {
             require("formatter.filetypes.lua").stylua,
         },
-        ts = {
+        typescript = {
             require("formatter.filetypes.typescript").prettier,
         },
         rs = {

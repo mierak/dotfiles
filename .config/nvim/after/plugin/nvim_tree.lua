@@ -1,63 +1,64 @@
-
 -- disable netrw at the very start of your init.lua (strongly advised)
 
 local bg = "#191d24"
-vim.api.nvim_set_hl(0, "NvimTreeNormal", {  bg = bg, })
-vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", {  bg = bg, })
+vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = bg })
+vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { bg = bg })
 require("nvim-tree").setup({
-    disable_netrw = true,
-	open_on_tab = true,
-    hijack_cursor = true,
-    diagnostics = {
-        enable = true,
-        show_on_dirs = true,
-        show_on_open_dirs = true,
-    },
-	filters = {
-		custom = { "^.git$", "^.github$", "^node_modules" }
+	disable_netrw = true,
+	open_on_tab = false,
+	open_on_setup = false,
+	hijack_cursor = true,
+	diagnostics = {
+		enable = true,
+		show_on_dirs = true,
+		show_on_open_dirs = true,
 	},
-    git = {
-        enable = true,
-        show_on_dirs = true,
-        show_on_open_dirs = true,
-    },
-    modified = {
-        enable = true,
-        show_on_dirs = true,
-        show_on_open_dirs = true,
-    },
-    update_focused_file = {
-        enable = true,
-        update_root = true,
-        update_cwd = true,
-        ignore_list = {},
-    },
-    renderer = {
-        indent_markers = { enable = true },
-    },
+	filters = {
+		custom = { "^.git$", "^.github$", "^node_modules" },
+	},
+	git = {
+		enable = true,
+		show_on_dirs = true,
+		show_on_open_dirs = true,
+	},
+	modified = {
+		enable = true,
+		show_on_dirs = true,
+		show_on_open_dirs = true,
+	},
+	update_focused_file = {
+		enable = true,
+		update_root = true,
+		update_cwd = true,
+		ignore_list = {},
+	},
+	renderer = {
+		indent_markers = { enable = true },
+	},
+	view = {
+		width = 35,
+	},
 })
 
 local function open_nvim_tree(data)
+	-- buffer is a directory
+	local directory = vim.fn.isdirectory(data.file) == 1
 
-  -- buffer is a directory
-  local directory = vim.fn.isdirectory(data.file) == 1
+	if not directory then
+		return
+	end
 
-  if not directory then
-    return
-  end
+	-- create a new, empty buffer
+	vim.cmd.enew()
 
-  -- create a new, empty buffer
-  vim.cmd.enew()
+	-- wipe the directory buffer
+	vim.cmd.bw(data.buf)
 
-  -- wipe the directory buffer
-  vim.cmd.bw(data.buf)
+	-- change to the directory
+	vim.cmd.cd(data.file)
 
-  -- change to the directory
-  vim.cmd.cd(data.file)
-
-  -- open the tree
-  require("nvim-tree.api").tree.open()
+	-- open the tree
+	require("nvim-tree.api").tree.open()
 end
 -- Open NvimTree if startup buffer is directory
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
-

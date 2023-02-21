@@ -27,10 +27,35 @@ vim.keymap.set("n", "<leader>tf", "<cmd>NvimTreeFocus<cr>")
 vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope live_grep<cr>")
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
+vim.keymap.set("n", "<C-e>", "<cmd>Telescope buffers<cr>")
 vim.keymap.set("n", "<leader>fg", "<cmd>Telescope help_tags<cr>")
 vim.keymap.set("n", "<leader>fo", "<cmd>Telescope treesitter<cr>")
 
 vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<cr>")
+
+-- Snippets
+local ls = require("luasnip")
+-- Move to the next item within snippet
+vim.keymap.set({ "i", "s" }, "<C-k>", function()
+	if ls.expand_or_jumpable() then
+		ls.expand_or_jump()
+	end
+end, { silent = true })
+-- Move to the previous item within snippet
+vim.keymap.set({ "i", "s" }, "<c-j>", function()
+	if ls.jumpable(-1) then
+		ls.jump(-1)
+	end
+end, { silent = true })
+-- Cycle choices
+vim.keymap.set("i", "<c-l>", function()
+  if ls.choice_active() then
+    ls.change_choice(1)
+  end
+end)
+
+-- Select snippet choice directly
+vim.keymap.set("i", "<c-u>", require "luasnip.extras.select_choice")
 
 -- Disallow movement with arrow keys
 vim.keymap.set("n", "<Up>", "<NOP>")
