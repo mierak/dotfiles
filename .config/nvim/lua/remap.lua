@@ -47,15 +47,6 @@ vim.keymap.set({ "i", "s" }, "<c-j>", function()
 		ls.jump(-1)
 	end
 end, { silent = true })
--- Cycle choices
-vim.keymap.set("i", "<c-l>", function()
-  if ls.choice_active() then
-    ls.change_choice(1)
-  end
-end)
-
--- Select snippet choice directly
-vim.keymap.set("i", "<c-u>", require "luasnip.extras.select_choice")
 
 -- Disallow movement with arrow keys
 vim.keymap.set("n", "<Up>", "<NOP>")
