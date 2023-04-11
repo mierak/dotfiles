@@ -74,7 +74,7 @@ function Hotkeys:new(modkey)
     local obj = {}
     setmetatable(obj, self)
     self.__index = self
-    obj.key_to_mod = { M = modkey, S = "Shift", C = "Control" }
+    obj.key_to_mod = { M = modkey, S = "Shift", C = "Control", A = "Mod1" }
     obj.modal_hotkeys = {}
     obj.key_groups = {}
 
@@ -114,6 +114,12 @@ function Hotkeys:_add_to_key_groups(group, hotkey, mods, description)
     self.key_groups[group][#self.key_groups[group] + 1] = { key = hotkey, mods = mods, description = description }
 end
 
+---Construct an awful.key instance
+---@param keys any
+---@param group string
+---@param description any
+---@param on_press any
+---@return table awful.key
 function Hotkeys:keybind(keys, group, description, on_press)
     local ks = self:parse_keybind_string(keys)
 
@@ -156,6 +162,7 @@ end
 ---@param group_name string
 ---@param keybinds { [1]: string, [2]: string, [3]: function, [4]: boolean? }[]
 function Hotkeys:global_keybind_group(group_name, keybinds)
+    ---@type table[]
     local result = {}
     for _, kb in ipairs(keybinds) do
         if kb[4] ~= false then

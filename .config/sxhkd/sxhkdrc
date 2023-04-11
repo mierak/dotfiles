@@ -24,7 +24,7 @@ super + control + f
 
 # Open rofi drun
 super + d
-	rofi -show drun
+	rofi -show combi -modes "combi,drun,run,window,calc" -combi-modes "window,drun,run"
 # Open rofi run
 super + r
 	rofi -show run

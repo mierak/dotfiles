@@ -6,6 +6,7 @@ local keyboard        = awful.keyboard
 
 local PermanentScratchpad = require(... .. ".permanent_scratchpad")
 local TemporaryScratchpad = require(... .. ".temporary_scratchpad")
+local hotkeys = require("widgets.hotkeys").default_instance
 
 local ret = {
     _private = {
@@ -42,6 +43,16 @@ function ret:add(args)
                 end
             }
         }
+
+        hotkeys:add_keygroups({
+            ["Scratchpad"] = {
+                {
+                    key = args.hotkey.key,
+                    description = args.hotkey.description,
+                    mods = args.hotkey.modifiers,
+                }
+            }
+        })
     end
 
     self._private.permanent_scratchpads[args.class] = scratchpad
@@ -67,15 +78,29 @@ function ret:add_temp(args)
                 end
             },
             key {
-                    modifiers   = args.hotkey.client_toggle_modifiers,
-                    key         = args.hotkey.key,
-                    description = "Toggle " .. args.hotkey.description,
-                    group       = args.hotkey.group,
-                    on_press    = function ()
-                        scratchpad:toggle_client()
-                    end
+                modifiers   = args.hotkey.client_toggle_modifiers,
+                key         = args.hotkey.key,
+                description = "Toggle " .. args.hotkey.description,
+                group       = args.hotkey.group,
+                on_press    = function ()
+                    scratchpad:toggle_client()
+                end
             }
         }
+        hotkeys:add_keygroups({
+            ["Scratchpad"] = {
+                {
+                    key = args.hotkey.key,
+                    description = args.hotkey.description,
+                    mods = args.hotkey.modifiers,
+                },
+                {
+                    key = args.hotkey.key,
+                    description = "Toggle" .. args.hotkey.description,
+                    mods = args.hotkey.client_toggle_modifiers,
+                }
+            }
+        })
     end
 
     table.insert(self._private.temporary_scratchpads, scratchpad)

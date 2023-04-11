@@ -4,7 +4,7 @@ vim.opt.completeopt = { "menu", "menuone", "noselect", "preview" }
 
 -- Set up nvim-cmp.
 local cmp = require("cmp")
-local cmp_kinds = require("completion_icons")
+local cmp_kinds = require("mrk.completion_icons")
 
 -- Trigger autopairs on completion
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
@@ -26,8 +26,8 @@ cmp.setup({
 		end,
 	},
 	window = {
-		completion = cmp.config.window.bordered({ scrolloff = 3 }),
-		documentation = cmp.config.window.bordered({ scrolloff = 3 }),
+		completion = cmp.config.window.bordered({ scrolloff = 3, border = "single" }),
+		documentation = cmp.config.window.bordered({ scrolloff = 3, border = "single" }),
 	},
 	mapping = cmp.mapping.preset.insert({
 		["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),

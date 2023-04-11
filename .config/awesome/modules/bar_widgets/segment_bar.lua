@@ -5,10 +5,14 @@ local helpers = require("helpers")
 
 local BaseBar   = require("modules.bar_widgets.bar_base")
 
-local SegmentBar = {}
+---@class SegmentBar : BarBase
+---@field text string
+local SegmentBar = BaseBar:new()
 
+---@param args { fg: string, bar_width: integer, icon: string, init_val: string | integer }?
+---@return SegmentBar
 function SegmentBar:new(args)
-    local obj = BaseBar:new(args)
+    local obj = BaseBar:new(args) --[[@as SegmentBar]]
     setmetatable(obj, self)
     self.__index = self
 
@@ -27,6 +31,7 @@ function SegmentBar:new(args)
 
     return obj
 end
+
 
 function SegmentBar:update(value)
     local count = math.floor(value / 10)

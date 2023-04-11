@@ -16,11 +16,24 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     ezhk:global_keybind_group("Awesome", {
         { "M-S-q",        "Quit Awesome",                          awesome.quit },
         { "M-S-r",        "Restart Awesome",                       awesome.restart },
-        { "M-Return",     "Open a Terminal",                       function() awful.spawn(cfg.terminal) end },
-        { "M-s",          "Show Help",                             function () hotkeys_popup:toggle() end, hotkeys_popup ~= nil },
-        { "M-w",          "Show Main Menu",                        function () main_menu:show() end },
-        { "M-x",          "Lua Execute Prompt",                    self.lua_execute_prompt },
-        { "M-`",          "Toggle Sidebar",                        function() awesome.emit_signal("sidebar::toggle") end,     cfg.sidebar.enabled },
+        { "M-Return",     "Open a Terminal",                       Hotkeys.spawn(cfg.terminal) },
+        { "M-s",          "Show Help",                             function() hotkeys_popup:toggle() end, hotkeys_popup ~= nil },
+        --{ "M-w",          "Show Main Menu",                        function() main_menu:show() end },
+        { "M-Tab",          "Toggle Sidebar",                        function() awesome.emit_signal("sidebar::toggle") end,     cfg.sidebar.enabled },
+        { "M-g",          "Open rofi",                             Hotkeys.spawn('rofi -show combi -modes "combi,drun,run,window,calc" -combi-modes "window,drun,run"') },
+        { "M-S-s",        "Screenshot",                            Hotkeys.spawn("screenshot") },
+        --{ "M-S-c",        "Edit configs",                          Hotkeys.spawn("confedit") },
+        { "M-S-p",        "Power Menu",                            Hotkeys.spawn("powermenu") },
+        { "A-S-c",        "Color Picker",                          Hotkeys.colorpicker },
+    })
+
+    ezhk:client_keybind_group("Volume", {
+        { "XF86AudioRaiseVolume",        "Volume Up",                      Hotkeys.spawn("volctl inc-volume") },
+        { "XF86AudioLowerVolume",        "Volume Down",                    Hotkeys.spawn("volctl dec-volume") },
+        { "XF86AudioMute",               "(Un)mute",                       Hotkeys.spawn("volctl toggle") },
+        { "C-F11",                       "Mic Volume Up",                  Hotkeys.spawn("volctl mic-inc-volume") },
+        { "C-F10",                       "Mic Volume Down",                Hotkeys.spawn("volctl mic-dec-volume") },
+        { "C-F9",                        "Mic (Un)mute",                   Hotkeys.spawn("volctl mic-toggle") },
     })
 
     ezhk:global_keybind_group("Tag", {
@@ -49,9 +62,12 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     })
 
     ezhk:global_keybind_group("Screen", {
-        { "M-,",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   not not cfg.screen.left},
-        { "M-.",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, not not cfg.screen.middle },
-        { "M-/",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  not not cfg.screen.right },
+        { "M-h",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   not not cfg.screen.left},
+        { "M-,",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        { "M-.",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  not not cfg.screen.right },
+        { "M-x",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   not not cfg.screen.left},
+        { "M-c",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        { "M-d",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  not not cfg.screen.right },
         { "M-C-j",        "Focus Next/Previous Screen",            function() awful.screen.focus_relative(1) end },
         { "M-C-k",        "Focus Next/Previous Screen",            function() awful.screen.focus_relative(-1) end },
     })
@@ -59,7 +75,7 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     ezhk:global_keybind_group("Client", {
         { "M-u",          "Jump to Urgent Client",                 awful.client.urgent.jumpto },
         { "M-C-Tab",      "Jump to Previous Client on Screen",     self.jump_to_previous_client },
-        { "M-C-n",        "Restore Minimized",                     self.restore_minimized },
+        --{ "M-C-n",        "Restore Minimized",                     self.restore_minimized },
         { "M-j",          "Focus Next/Previous Client",            function() awful.client.focus.byidx(1) end },
         { "M-k",          "Focus Next/Previous Client",            function() awful.client.focus.byidx(-1) end },
         { "M-S-j",        "Swap Client With Next/Previous Client", function() awful.client.swap.byidx(1) end },
@@ -71,23 +87,26 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-q",          "Kill Client",                           function(c) c:kill() end },
         { "M-S-Return",   "Move to Master",                        function(c) c:swap(awful.client.getmaster()) end },
         { "M-t",          "Toggle Floating",                       awful.client.floating.toggle },
-        { "M-n",          "Minimize Client",                       function(c) c.minimized = true end },
+        --{ "M-n",          "Minimize Client",                       function(c) c.minimized = true end },
         { "M-m",          "(Un)maximize",                          self.un_maximize },                                                               -- Remove? I use fullscreen instead anyway
         { "M-C-m",        "(Un)maximize Vertically",               function(c) c.maximized_vertical = not c.maximized_vertical; c:raise() end },     -- Remove? I use fullscreen instead anyway
         { "M-S-m",        "(Un)maximize Horizontally",             function(c) c.maximized_horizontal = not c.maximized_horizontal; c:raise() end }, -- Remove? I use fullscreen instead anyway
-        { "M-C-space",    "Toggle Keep on Top",                    function(c) c.ontop = not c.ontop end },
+        --{ "M-C-space",    "Toggle Keep on Top",                    function(c) c.ontop = not c.ontop end },
     })
 
     ezhk:client_keybind_group("Client > Screen", {
-        { "M-S-,",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   not not cfg.screen.left },
-        { "M-S-.",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, not not cfg.screen.middle },
-        { "M-S-/",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  not not cfg.screen.right },
+        { "M-S-h",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   not not cfg.screen.left },
+        { "M-S-,",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        { "M-S-.",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  not not cfg.screen.right },
+        { "M-S-x",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   not not cfg.screen.left },
+        { "M-S-c",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        { "M-S-d",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  not not cfg.screen.right },
     })
 
     ezhk:global_keybind_group("Run or Raise", {
-        { "M-e d",        "Discord",                               function () helpers.run.run_or_raise("discord", { class = "discord" }) end, },
-        { "M-e s",        "Steam",                                 function () helpers.run.run_or_raise("steam",   { class = "Steam", name = "Steam" }) end, },
-        { "M-e t",        "Teams",                                 function () helpers.run.run_or_raise("teams",   { class = "Microsoft Teams %- Preview" }) end, },
+        { "M-e d",        "Discord",                               function () helpers.run.run_or_raise("discord",     { class = "discord" }) end, },
+        { "M-e s",        "Steam",                                 function () helpers.run.run_or_raise("steam",       { class = "Steam", name = "Steam" }) end, },
+        { "M-e t",        "Teams",                                 function () helpers.run.run_or_raise("teams",       { class = "Microsoft Teams %- Preview" }) end, },
         { "M-e k",        "KeePassXC",                             function () helpers.run.run_or_raise("keepassxc",   { class = "KeePassXC" }) end, },
     })
 
@@ -113,6 +132,16 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     if hotkeys_popup then
         hotkeys_popup:add_keygroups(ezhk.key_groups)
     end
+end
+
+function Hotkeys.spawn(cmd)
+    return function ()
+        awful.spawn(cmd)
+    end
+end
+
+function Hotkeys.colorpicker()
+    awful.spawn.with_shell('xcolor -s && notify-send "Color picked" "<span background=\'$(xclip -selection clipboard -o)\'>	$(xclip -selection clipboard -o)		</span>"')
 end
 
 function Hotkeys.un_maximize(c)

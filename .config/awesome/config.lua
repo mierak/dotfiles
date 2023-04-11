@@ -27,6 +27,7 @@ return {
                 "Vivaldi%-stable",
                 "code-oss",
                 "code",
+                "Code",
                 "discord",
                 "firefox",
                 "Microsoft Teams %- Preview",

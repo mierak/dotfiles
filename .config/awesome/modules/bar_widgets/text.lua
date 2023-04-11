@@ -40,4 +40,13 @@ function TextOnly:update(value)
         }
     end
 end
+
+function TextOnly:connect_signal(name, fn)
+    self.widget:connect_signal(name, fn)
+end
+
+function TextOnly:disconnect_signal(name, fn)
+    self.widget:disconnect_signal(name, fn)
+end
+
 return TextOnly

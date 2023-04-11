@@ -4,10 +4,11 @@ local ruled   = require("ruled")
 
 local Scratchpad = require("modules.scratchpad.abstract_scratchpad")
 
+---@class PermanentScratchpad : AbstractScratchpad
 local PermanentScratchpad = Scratchpad:new()
 
 function PermanentScratchpad:apply_props()
-    self._apply_props(self.props)
+    self:_apply_props(self.props)
 end
 
 function PermanentScratchpad:toggle()

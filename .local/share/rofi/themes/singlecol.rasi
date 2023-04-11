@@ -97,7 +97,7 @@ window {
     background-color: #1d1f21d9; // @black + 0.85 alpha
     border: 1;
     border-color: #546078;
-    border-radius: 16;
+    border-radius: 8;
     width: 1024;
     height: 460;
 }
@@ -285,6 +285,7 @@ mode-switcher {
 button {
     text-color: @white-bright;
     padding: 16 0 16 0;
+    font: "JetBrains Mono 14";
 }
 
 button selected.normal {

@@ -11,4 +11,8 @@ daemon:connect_signal("update", function (_, values)
     end
 end)
 
+mem:connect_signal("button::press", function ()
+    require("awful").spawn("alacritty -e htop")
+end)
+
 return mem

@@ -7,7 +7,7 @@ require("formatter").setup {
         typescript = {
             require("formatter.filetypes.typescript").prettier,
         },
-        rs = {
+        rust = {
             require("formatter.filetypes.rust").rustfmt,
         }
     }

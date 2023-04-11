@@ -4,10 +4,15 @@ local beautiful = require("beautiful")
 local helpers = require("helpers")
 local BaseBar   = require("modules.bar_widgets.bar_base")
 
-local BarOnly = {}
+---@class BarOnly : BarBase
+local BarOnly = BaseBar:new()
 
+---@param args { fg: string, bar_width: integer, icon: string, init_val: string | integer }?
+---@return BarOnly
 function BarOnly:new(args)
-    local obj = BaseBar:new(args)
+    local obj = BaseBar:new(args) --[[@as BarOnly]]
+    setmetatable(obj, self)
+    self.__index = self
 
     obj.widget = wibox.widget {
         layout = wibox.layout.fixed.horizontal,

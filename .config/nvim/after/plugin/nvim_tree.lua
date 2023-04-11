@@ -1,8 +1,4 @@
 -- disable netrw at the very start of your init.lua (strongly advised)
-
-local bg = "#191d24"
-vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = bg })
-vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { bg = bg })
 require("nvim-tree").setup({
 	disable_netrw = true,
 	open_on_tab = false,

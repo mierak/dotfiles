@@ -1,7 +1,3 @@
-local function gitsigns()
-	return vim.b.gitsigns_status
-end
-
 require("lualine").setup({
 	options = {
 		theme = "onedark",
@@ -14,7 +10,7 @@ require("lualine").setup({
 		},
 		ignore_focus = {},
 		always_divide_middle = false,
-		globalstatus = false,
+		globalstatus = true,
 		refresh = {
 			statusline = 1000,
 			tabline = 1000,
@@ -27,7 +23,7 @@ require("lualine").setup({
 		lualine_c = { "filename" },
 		lualine_x = { "encoding", "fileformat", "filetype" },
 		lualine_y = { "progress", "location" },
-		lualine_z = { gitsigns },
+		lualine_z = { "b:gitsigns_status" },
 	},
 	inactive_sections = {
 		lualine_a = {},

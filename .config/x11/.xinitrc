@@ -9,7 +9,7 @@ mpd &
 picom -b
 xinput --set-prop 9 'libinput Accel Profile Enabled' 0, 1
 redshift &
-sxhkd &
+#sxhkd &
 #dunst &
 lxsession &
 unclutter -b

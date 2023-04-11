@@ -20,6 +20,7 @@ alignment = left
     separator_height = 3
     dmenu = "rofi -dmenu -p dunst"
     corner_radius = 10
+    browser = xdg-open
 
 [urgency_low]
     background = "#1e222a"

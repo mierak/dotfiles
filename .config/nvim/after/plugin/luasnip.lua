@@ -25,4 +25,4 @@ vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/after/plugi
 --end
 
 --require("luasnip.loaders.from_lua").load({paths = vim.api.nvim_get_runtime_file("lua/snippets/ft", true)})
-require("luasnip.loaders.from_lua").load({paths = "~/.config/nvim/lua/snippets/ft"})
+require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/lua/mrk/snippets/ft" })

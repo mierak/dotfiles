@@ -1,19 +1,18 @@
-local wk = require("which-key")
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 --[[ local opts = { noremap=true, silent=true } ]]
 --
-local cmp_icons = require("completion_icons")
+local cmp_icons = require("mrk.completion_icons")
 
 vim.diagnostic.config({
 	float = {
 		source = "always",
-		border = "rounded",
+		border = "solid",
 		severity_sort = true,
 	},
 })
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-	border = "rounded",
+	border = "single",
 })
 vim.lsp.set_log_level("off")
 local on_attach = function(_, bufnr)

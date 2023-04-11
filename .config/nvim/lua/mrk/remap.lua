@@ -33,6 +33,15 @@ vim.keymap.set("n", "<leader>fo", "<cmd>Telescope treesitter<cr>")
 
 vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<cr>")
 
+vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
+vim.keymap.set("n", "<leader>uf", vim.cmd.UndotreeFocus)
+
+-- Split navigation
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+
 -- Snippets
 local ls = require("luasnip")
 -- Move to the next item within snippet
@@ -47,6 +56,14 @@ vim.keymap.set({ "i", "s" }, "<c-j>", function()
 		ls.jump(-1)
 	end
 end, { silent = true })
+vim.keymap.set("i", "<c-l>", function()
+  if ls.choice_active() then
+    ls.change_choice(1)
+  end
+end)
+vim.keymap.set("i", "<c-u>", require "luasnip.extras.select_choice")
+vim.keymap.set("v", "<C-f>", "\"ac<cmd>lua require('luasnip.extras.otf').on_the_fly()<cr>", { noremap = true })
+vim.keymap.set("i", "<C-f>", "<cmd>lua require('luasnip.extras.otf').on_the_fly('a')<cr>", { noremap = true })
 
 -- Disallow movement with arrow keys
 vim.keymap.set("n", "<Up>", "<NOP>")

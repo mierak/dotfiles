@@ -11,18 +11,21 @@ local mod_to_display = {
 }
 
 local key_to_display = {
-    numrow   = "0-9",
-    numpad   = "Num 0-9",
-    arrows   = "    ",
-    Right    = " ",
-    Left     = " ",
-    Up       = " ",
-    Down     = " ",
-    Escape   = "󱊷 ",
-    fkeys    = "F1-12",
-    Return   = "󰌑 ",
-    space    = " 󱁐  ",
-    vimotion = "hjkl"
+    numrow               = "0-9",
+    numpad               = "Num 0-9",
+    arrows               = "    ",
+    Right                = " ",
+    Left                 = " ",
+    Up                   = " ",
+    Down                 = " ",
+    Escape               = "󱊷 ",
+    fkeys                = "F1-12",
+    Return               = "󰌑 ",
+    space                = " 󱁐  ",
+    vimotion             = "hjkl",
+    XF86AudioRaiseVolume = " 󰝝 ",
+    XF86AudioLowerVolume = " 󰝞 ",
+    XF86AudioMute        = " 󰝟 ",
 }
 
 ---@class Hotkey

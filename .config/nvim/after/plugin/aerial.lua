@@ -1,4 +1,4 @@
-local icons = require("completion_icons")
+local icons = require("mrk.completion_icons")
 
 require('aerial').setup({
     backends = { "lsp", "treesitter" },

@@ -147,6 +147,7 @@ awful.keygrabber {
         },
     }
 }
+
 HotkeysPopup:add_keygroups({
     ["Layout Switcher"] = {
         {

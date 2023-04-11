@@ -1,14 +1,17 @@
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local gears     = require("gears")
 
 local helpers   = require("helpers")
 local BaseBar   = require("modules.bar_widgets.bar_base")
 
-local TextBar = {}
+---@class TextBar : BarBase
+---@field text string
+local TextBar = BaseBar:new()
 
+---@param args { fg: string, bar_width: integer, icon: string, init_val: string | integer }?
+---@return TextBar
 function TextBar:new(args)
-    local obj = BaseBar:new(args)
+    local obj = BaseBar:new(args) --[[@as TextBar]]
     setmetatable(obj, self)
     self.__index = self
 
@@ -32,7 +35,11 @@ function TextBar:new(args)
                 {
                     layout = wibox.layout.stack,
                     obj.bar,
-                    obj.text,
+                    {
+                        widget = wibox.widget.background,
+                        shape = require("gears.shape").partially_rounded_rect,
+                        obj.text,
+                    }
                 },
             },
         },
@@ -41,6 +48,8 @@ function TextBar:new(args)
     return obj
 end
 
+---Updates the widget's bar value
+---@param value integer Percentage value, 0-100
 function TextBar:update(value)
     BaseBar.update(self, value)
     self.text.markup = helpers.misc.colorize {

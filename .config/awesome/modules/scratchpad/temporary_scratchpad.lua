@@ -17,7 +17,6 @@ function TemporaryScratchpad:backup_props()
         skip_taskbar = self.client.skip_taskbar,
         first_tag = self.client.first_tag,
     }
-    self._apply_props(self.props_backup)
 end
 
 function TemporaryScratchpad:toggle()
@@ -57,6 +56,7 @@ function TemporaryScratchpad:toggle_client()
     end
     if self.client then
         self:apply_props { from_backup = true }
+        self:disconnect_signals()
         self:set_client(nil)
         return
     end
