@@ -8,7 +8,7 @@ vim.o.timeoutlen = 500
 vim.o.title = true
 vim.o.scrolloff = 6
 vim.o.cursorline = true
-vim.o.cmdheight = 0
+vim.o.cmdheight = 1
 
 vim.o.foldmethod = "expr"
 vim.o.foldexpr = "nvimtreesitter#foldexpr()"

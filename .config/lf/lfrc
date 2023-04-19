@@ -39,6 +39,8 @@ map <c-f> :fzf_jump
 map f :fzf_jump
 map zdi push :zi<space>
 
+map gv openvimdir
+
 # Map 'a' to exit lf without changing cwd and Q to exit and change cwd
 push m-
 map q push '-Q
@@ -152,7 +154,7 @@ cmd zi ${{
 }}
 
 cmd fzf_jump ${{
-    res="$(find . -maxdepth 1 | fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    res="$(find . -maxdepth 1 | fzf --preview 'if [[ -d {} ]]; then exa -la {}; else bat --color=always --style=numbers --line-range=:500 {}; fi' --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
     if [ -d "$res" ] ; then
         cmd="cd"
     elif [ -f "$res" ] ; then
@@ -161,4 +163,8 @@ cmd fzf_jump ${{
         exit 0
     fi
     lf -remote "send $id $cmd \"$res\""
+}}
+
+cmd openvimdir ${{
+    $EDITOR $PWD
 }}

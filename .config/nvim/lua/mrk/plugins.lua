@@ -43,6 +43,8 @@ return {
 
 	"mbbill/undotree",
 	"stevearc/aerial.nvim",
+	{ "ThePrimeagen/harpoon", dependencies = { { "nvim-lua/plenary.nvim" } } },
+    "nvim-treesitter/nvim-treesitter-context",
 
 	-- UI,
 	"nvim-tree/nvim-web-devicons",
@@ -62,6 +64,6 @@ return {
 	"norcalli/nvim-colorizer.lua",
 
 	"folke/which-key.nvim",
-    { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
+	{ "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
 	"ThePrimeagen/vim-be-good",
 }
