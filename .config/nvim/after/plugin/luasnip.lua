@@ -17,7 +17,6 @@ ls.config.set_config({
 	},
 })
 
-vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/after/plugin/luasnip.lua<CR>")
 
 --for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/snippets/ft/*.lua", true)) do
 --	print("loading", ft_path)
@@ -25,4 +24,5 @@ vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/after/plugi
 --end
 
 --require("luasnip.loaders.from_lua").load({paths = vim.api.nvim_get_runtime_file("lua/snippets/ft", true)})
+require("luasnip").config.setup({store_selection_keys="<C-t>"})
 require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/lua/mrk/snippets/ft" })

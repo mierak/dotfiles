@@ -1,4 +1,5 @@
 local ls = require("luasnip")
+local shared = require("mrk.snippets")
 
 local s = ls.s
 local sn = ls.snippet_node
@@ -23,14 +24,6 @@ local require_var = function(args, _)
 	return sn(nil, {
 		c(1, options),
 	})
-end
-local function capture_at(index)
-    return function (_, snip)
-        if not snip.captures or not snip.captures[index] then
-            return ""
-        end
-        return snip.captures[index]
-    end
 end
 
 -- stylua: ignore
@@ -61,7 +54,7 @@ return {
 
 	s(
 		{ trig = "(%w+)([.:])fun", regTrig = true, dscr = "Creates a method on a table" },
-        fmt("function {}{}{}({})\n\t{}\nend", { f(capture_at(1)), f(capture_at(2)), i(1, "name"), i(2, "args"), i(0) })
+        fmt("function {}{}{}({})\n\t{}\nend", { f(shared.capture_at(1)), f(shared.capture_at(2)), i(1, "name"), i(2, "args"), i(0) })
 	),
 
     s(
@@ -72,7 +65,7 @@ return {
             end
         ]],
         { d(1, function (_, parent)
-            local var_name = capture_at(1)(nil, parent)
+            local var_name = shared.capture_at(1)(nil, parent)
             return sn(nil, { c(1, {
                 t("not " .. var_name),
                 fmt("{} ~= {}", { t(var_name), i(1) }),

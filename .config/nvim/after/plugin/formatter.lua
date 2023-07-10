@@ -9,6 +9,9 @@ require("formatter").setup {
         },
         rust = {
             require("formatter.filetypes.rust").rustfmt,
+        },
+        c = {
+            require("formatter.filetypes.c").clangformat,
         }
     }
 }

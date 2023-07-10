@@ -2,7 +2,6 @@
 require("nvim-tree").setup({
 	disable_netrw = true,
 	open_on_tab = false,
-	open_on_setup = false,
 	hijack_cursor = true,
 	diagnostics = {
 		enable = true,
@@ -24,8 +23,8 @@ require("nvim-tree").setup({
 	},
 	update_focused_file = {
 		enable = true,
-		update_root = true,
-		update_cwd = true,
+		update_root = false,
+		update_cwd = false,
 		ignore_list = {},
 	},
 	renderer = {

@@ -110,3 +110,10 @@ vim.api.nvim_set_hl(0, "CmpItemKindUnit", { link = "CmpItemKindKeyword" })
 --vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { bg = nvimtree_bg })
 
 vim.api.nvim_set_hl(0, "CursorLine", { bg = "#262a36" })
+
+-- harpoon tabline
+vim.api.nvim_set_hl(0, "HarpoonInactive", { fg = "#63698c" })
+vim.api.nvim_set_hl(0, "HarpoonActive", { fg = "white" })
+vim.api.nvim_set_hl(0, "HarpoonNumberActive", { fg = "#7aa2f7" })
+vim.api.nvim_set_hl(0, "HarpoonNumberInactive", { fg = "#7aa2f7" })
+vim.api.nvim_set_hl(0, "TabLineFill", { fg = "white" })

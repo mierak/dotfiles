@@ -15,9 +15,9 @@ vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 -- Tab navigation
-vim.keymap.set("n", "<C-l>", "<cmd>BufferLineCycleNext<cr>")
-vim.keymap.set("n", "<C-h>", "<cmd>BufferLineCyclePrev<cr>")
-vim.keymap.set("n", "<C-w><C-w>", "<cmd>tabclose<cr>")
+-- vim.keymap.set("n", "<C-l>", "<cmd>BufferLineCycleNext<cr>")
+-- vim.keymap.set("n", "<C-h>", "<cmd>BufferLineCyclePrev<cr>")
+-- vim.keymap.set("n", "<C-w><C-w>", "<cmd>tabclose<cr>")
 
 -- Nerd Tree
 vim.keymap.set("n", "<leader>tt", "<cmd>NvimTreeToggle<cr>")
@@ -37,10 +37,10 @@ vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", "<leader>uf", vim.cmd.UndotreeFocus)
 
 -- Split navigation
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-k>", "<C-w>k")
-vim.keymap.set("n", "<C-l>", "<C-w>l")
+-- vim.keymap.set("n", "<C-h>", "<C-w>h")
+-- vim.keymap.set("n", "<C-j>", "<C-w>j")
+-- vim.keymap.set("n", "<C-k>", "<C-w>k")
+-- vim.keymap.set("n", "<C-l>", "<C-w>l")
 
 -- Snippets
 local ls = require("luasnip")
@@ -89,3 +89,7 @@ vim.keymap.set("n", "<leader>hn", function() ui.nav_file(1) end)
 vim.keymap.set("n", "<leader>he", function() ui.nav_file(2) end)
 vim.keymap.set("n", "<leader>hi", function() ui.nav_file(3) end)
 vim.keymap.set("n", "<leader>ho", function() ui.nav_file(4) end)
+
+vim.keymap.set("n","<leader>o", "<cmd>Lspsaga outline<CR>")
+
+vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/after/plugin/luasnip.lua<CR>")

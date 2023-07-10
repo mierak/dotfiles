@@ -44,7 +44,19 @@ return {
 	"mbbill/undotree",
 	"stevearc/aerial.nvim",
 	{ "ThePrimeagen/harpoon", dependencies = { { "nvim-lua/plenary.nvim" } } },
-    "nvim-treesitter/nvim-treesitter-context",
+	"nvim-treesitter/nvim-treesitter-context",
+	{
+		"glepnir/lspsaga.nvim",
+		event = "LspAttach",
+		config = function()
+			require("lspsaga").setup({})
+		end,
+		dependencies = {
+			{ "nvim-tree/nvim-web-devicons" },
+			--Please make sure you install markdown and markdown_inline parser
+			{ "nvim-treesitter/nvim-treesitter" },
+		},
+	},
 
 	-- UI,
 	"nvim-tree/nvim-web-devicons",
@@ -66,4 +78,6 @@ return {
 	"folke/which-key.nvim",
 	{ "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
 	"ThePrimeagen/vim-be-good",
+	"christoomey/vim-tmux-navigator",
+    "HiPhish/nvim-ts-rainbow2",
 }

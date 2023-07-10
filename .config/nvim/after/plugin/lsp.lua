@@ -43,13 +43,20 @@ require("lspconfig").tsserver.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
-require("lspconfig").ccls.setup({
+require("lspconfig").clangd.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
 require("lspconfig").rust_analyzer.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
+	settings = {
+		["rust-analyzer"] = {
+			checkOnSave = {
+				command = "clippy",
+			},
+		},
+	},
 })
 require("lspconfig").lua_ls.setup({
 	on_attach = on_attach,
