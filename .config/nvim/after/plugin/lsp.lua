@@ -27,7 +27,13 @@ local on_attach = function(_, bufnr)
 	vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "go to type definition" })
 	vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>", { buffer = bufnr, desc = "Find references" })
 	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Code actions" })
-	vim.keymap.set("n", "<leader><F2>", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename" })
+	vim.keymap.set("n", "<leader>rs", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename" })
+	vim.keymap.set(
+		"n",
+		"<leader>fs",
+		"<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
+		{ buffer = bufnr, desc = "Workspace symbols" }
+	)
 end
 
 local kinds = vim.lsp.protocol.CompletionItemKind
@@ -54,6 +60,12 @@ require("lspconfig").rust_analyzer.setup({
 		["rust-analyzer"] = {
 			checkOnSave = {
 				command = "clippy",
+			},
+			procMacro = {
+				enable = true,
+				attributes = {
+					enable = true,
+				},
 			},
 		},
 	},

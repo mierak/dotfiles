@@ -24,6 +24,20 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- Highlight after yank
+vim.api.nvim_create_autocmd("TextYankPost", {
+	group = group,
+	callback = function()
+		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 300 })
+	end,
+})
+
+-- Format on save
+vim.api.nvim_create_autocmd("BufWritePost ", {
+    group = group,
+    command = "FormatWrite"
+})
+
 -- Set colorscheme delayed
 --vim.api.nvim_create_autocmd("ColorScheme", {
 --	pattern = "*",

@@ -13,6 +13,8 @@ vim.keymap.set("n", "N", "Nzzzv")
 -- Convenience to to yank to plus register
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]])
+vim.keymap.set("n", "<leader>P", [["+P]])
 
 -- Tab navigation
 -- vim.keymap.set("n", "<C-l>", "<cmd>BufferLineCycleNext<cr>")
@@ -25,7 +27,9 @@ vim.keymap.set("n", "<leader>tf", "<cmd>NvimTreeFocus<cr>")
 
 -- Telescope
 vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
+vim.keymap.set("n", "<C-p>", "<cmd>Telescope find_files<cr>")
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope live_grep<cr>")
+vim.keymap.set("v", "<leader>fw", "<cmd>Telescope grep_string<cr>")
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 vim.keymap.set("n", "<C-e>", "<cmd>Telescope buffers<cr>")
 vim.keymap.set("n", "<leader>fg", "<cmd>Telescope help_tags<cr>")
@@ -57,11 +61,11 @@ vim.keymap.set({ "i", "s" }, "<c-j>", function()
 	end
 end, { silent = true })
 vim.keymap.set("i", "<c-l>", function()
-  if ls.choice_active() then
-    ls.change_choice(1)
-  end
+	if ls.choice_active() then
+		ls.change_choice(1)
+	end
 end)
-vim.keymap.set("i", "<c-u>", require "luasnip.extras.select_choice")
+vim.keymap.set("i", "<c-u>", require("luasnip.extras.select_choice"))
 vim.keymap.set("v", "<C-f>", "\"ac<cmd>lua require('luasnip.extras.otf').on_the_fly()<cr>", { noremap = true })
 vim.keymap.set("i", "<C-f>", "<cmd>lua require('luasnip.extras.otf').on_the_fly('a')<cr>", { noremap = true })
 
@@ -85,11 +89,19 @@ local ui = require("harpoon.ui")
 vim.keymap.set("n", "<leader>ha", mark.add_file)
 vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
 
-vim.keymap.set("n", "<leader>hn", function() ui.nav_file(1) end)
-vim.keymap.set("n", "<leader>he", function() ui.nav_file(2) end)
-vim.keymap.set("n", "<leader>hi", function() ui.nav_file(3) end)
-vim.keymap.set("n", "<leader>ho", function() ui.nav_file(4) end)
+vim.keymap.set("n", "<leader>hn", function()
+	ui.nav_file(1)
+end)
+vim.keymap.set("n", "<leader>he", function()
+	ui.nav_file(2)
+end)
+vim.keymap.set("n", "<leader>hi", function()
+	ui.nav_file(3)
+end)
+vim.keymap.set("n", "<leader>ho", function()
+	ui.nav_file(4)
+end)
 
-vim.keymap.set("n","<leader>o", "<cmd>Lspsaga outline<CR>")
+vim.keymap.set("n", "<leader>o", "<cmd>Lspsaga outline<CR>")
 
 vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/after/plugin/luasnip.lua<CR>")
