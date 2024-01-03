@@ -1,4 +1,4 @@
-local ls = require "luasnip"
+local ls = require("luasnip")
 
 local f = ls.function_node
 

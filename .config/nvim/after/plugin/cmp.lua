@@ -1,13 +1,8 @@
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-
 vim.opt.completeopt = { "menu", "menuone", "noselect", "preview" }
 
 -- Set up nvim-cmp.
 local cmp = require("cmp")
 local cmp_kinds = require("mrk.completion_icons")
-
--- Trigger autopairs on completion
--- cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 cmp.setup({
@@ -82,5 +77,3 @@ cmp.setup.cmdline(":", {
 	}),
 })]]
 --
-
-

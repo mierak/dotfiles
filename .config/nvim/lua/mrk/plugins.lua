@@ -8,7 +8,17 @@ return {
 	"hrsh7th/cmp-nvim-lsp-signature-help",
 	"saadparwaiz1/cmp_luasnip",
 	"L3MON4D3/LuaSnip",
-	"windwp/nvim-autopairs",
+	"neovim/nvim-lspconfig",
+	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+
+	-- telescope and exts
+	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = { { "nvim-lua/plenary.nvim" } },
+	},
+	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+	"nvim-telescope/telescope-ui-select.nvim",
+
 	"mhartington/formatter.nvim",
 	{
 		"ThePrimeagen/refactoring.nvim",
@@ -17,9 +27,7 @@ return {
 			{ "nvim-treesitter/nvim-treesitter" },
 		},
 	},
-	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 
-	"neovim/nvim-lspconfig",
 	"numToStr/Comment.nvim",
 	{
 		"folke/trouble.nvim",
@@ -33,23 +41,19 @@ return {
 		end,
 	},
 
-	-- telescope and exts
-	{
-		"nvim-telescope/telescope.nvim",
-		dependencies = { { "nvim-lua/plenary.nvim" } },
-	},
-	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-	"nvim-telescope/telescope-ui-select.nvim",
-
 	"mbbill/undotree",
-	"stevearc/aerial.nvim",
-	{ "ThePrimeagen/harpoon", dependencies = { { "nvim-lua/plenary.nvim" } } },
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		requires = { { "nvim-lua/plenary.nvim" } },
+	},
+
 	"nvim-treesitter/nvim-treesitter-context",
 	{
 		"glepnir/lspsaga.nvim",
 		event = "LspAttach",
 		config = function()
-			require("lspsaga").setup({})
+			require("lspsaga").setup({ lightbulb = { enable = false } })
 		end,
 		dependencies = {
 			{ "nvim-tree/nvim-web-devicons" },
@@ -59,25 +63,42 @@ return {
 	},
 
 	-- UI,
-	"nvim-tree/nvim-web-devicons",
-	"b0o/incline.nvim",
-	"lukas-reineke/indent-blankline.nvim",
+	{
+		"nvim-tree/nvim-web-devicons",
+		config = function()
+			require("nvim-web-devicons").setup({ default = true })
+		end,
+	},
+	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 	"petertriho/nvim-scrollbar",
 	"lewis6991/gitsigns.nvim",
 	{
+		"linrongbin16/lsp-progress.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("lsp-progress").setup()
+		end,
+	},
+	{
 		"nvim-lualine/lualine.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
+		dependencies = { "nvim-tree/nvim-web-devicons", "linrongbin16/lsp-progress.nvim", lazy = true },
 	},
 
-	-- Colors
-	"NTBBloodbath/doom-one.nvim",
-	--"olimorris/onedarkpro.nvim"
 	"navarasu/onedark.nvim",
-	"norcalli/nvim-colorizer.lua",
 
-	"folke/which-key.nvim",
 	{ "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
-	"ThePrimeagen/vim-be-good",
 	"christoomey/vim-tmux-navigator",
-    "HiPhish/nvim-ts-rainbow2",
+
+	{ url = "https://gitlab.com/HiPhish/rainbow-delimiters.nvim" },
+	"github/copilot.vim",
+	{
+		"karb94/neoscroll.nvim",
+		config = function()
+			require("neoscroll").setup({})
+			local t = {}
+			t["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "100" } }
+			t["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "100" } }
+			require("neoscroll.config").set_mappings(t)
+		end,
+	},
 }

@@ -16,7 +16,10 @@ vim.o.foldexpr = "nvimtreesitter#foldexpr()"
 vim.o.nofoldenable = true
 vim.o.wildmode = "longest,list,full"
 
-vim.o.fillchars = 'eob: ,vert:│'
+vim.o.fillchars = "eob: ,vert:│"
 
 vim.o.splitbelow = true
 vim.o.splitright = true
+
+vim.o.smartcase = true
+vim.o.ignorecase = true

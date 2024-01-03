@@ -1,8 +1,8 @@
 require("gitsigns").setup({
-	on_attach = function(bufnr)
+	on_attach = function()
 		vim.keymap.set("n", "<leader>ob", '<cmd>lua require"gitsigns".blame_line{full=true}<CR>')
-        vim.keymap.set('n', '<leader>od', '<cmd>Gitsigns diffthis<CR>')
-        vim.keymap.set('n', '<leader>cd', '<cmd>wincmd p | q<CR>')
+		vim.keymap.set("n", "<leader>od", "<cmd>Gitsigns diffthis<CR>")
+		vim.keymap.set("n", "<leader>cd", "<cmd>wincmd p | q<CR>")
 	end,
 	signs = {
 		add = { text = "+" },

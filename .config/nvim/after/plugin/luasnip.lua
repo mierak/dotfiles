@@ -17,12 +17,11 @@ ls.config.set_config({
 	},
 })
 
-
 --for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/snippets/ft/*.lua", true)) do
 --	print("loading", ft_path)
 --	loadfile(ft_path)()
 --end
 
 --require("luasnip.loaders.from_lua").load({paths = vim.api.nvim_get_runtime_file("lua/snippets/ft", true)})
-require("luasnip").config.setup({store_selection_keys="<C-t>"})
+require("luasnip").config.setup({ store_selection_keys = "<C-t>" })
 require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/lua/mrk/snippets/ft" })

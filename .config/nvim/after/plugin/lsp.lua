@@ -58,6 +58,9 @@ require("lspconfig").rust_analyzer.setup({
 	capabilities = capabilities,
 	settings = {
 		["rust-analyzer"] = {
+			cargo = {
+				features = "all",
+			},
 			checkOnSave = {
 				command = "clippy",
 			},

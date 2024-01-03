@@ -5,10 +5,11 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 -- Kep cursor in the middle when jumping around
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
+-- vim.keymap.set("n", "<C-d>", "<C-d>zz")
+-- vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set("i", "<C-c>", "<Plug>(copilot-dismiss)<C-c>")
 
 -- Convenience to to yank to plus register
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
@@ -31,11 +32,9 @@ vim.keymap.set("n", "<C-p>", "<cmd>Telescope find_files<cr>")
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope live_grep<cr>")
 vim.keymap.set("v", "<leader>fw", "<cmd>Telescope grep_string<cr>")
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
-vim.keymap.set("n", "<C-e>", "<cmd>Telescope buffers<cr>")
+-- vim.keymap.set("n", "<C-e>", "<cmd>Telescope buffers<cr>")
 vim.keymap.set("n", "<leader>fg", "<cmd>Telescope help_tags<cr>")
 vim.keymap.set("n", "<leader>fo", "<cmd>Telescope treesitter<cr>")
-
-vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<cr>")
 
 vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", "<leader>uf", vim.cmd.UndotreeFocus)
@@ -83,24 +82,36 @@ vim.keymap.set("i", "<Right>", "<NOP>")
 vim.keymap.set("n", "<leader><C-f>", "<cmd>Format<cr>")
 
 -- Harpoon
-local mark = require("harpoon.mark")
-local ui = require("harpoon.ui")
+-- local mark = require("harpoon.mark")
+-- local ui = require("harpoon.ui")
+--
+-- vim.keymap.set("n", "<leader>ha", mark.add_file)
+-- -- vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+--
+-- vim.keymap.set("n", "<leader>hn", function()
+-- 	ui.nav_file(1)
+-- end)
+-- vim.keymap.set("n", "<leader>he", function()
+-- 	ui.nav_file(2)
+-- end)
+-- vim.keymap.set("n", "<leader>hi", function()
+-- 	ui.nav_file(3)
+-- end)
+-- vim.keymap.set("n", "<leader>ho", function()
+-- 	ui.nav_file(4)
+-- end)
 
-vim.keymap.set("n", "<leader>ha", mark.add_file)
-vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+local harpoon = require("harpoon")
+harpoon:setup()
+-- stylua: ignore start
+vim.keymap.set("n", "<leader>ha", function() harpoon:list():append() end)
+vim.keymap.set("n", "<leader>hb", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
-vim.keymap.set("n", "<leader>hn", function()
-	ui.nav_file(1)
-end)
-vim.keymap.set("n", "<leader>he", function()
-	ui.nav_file(2)
-end)
-vim.keymap.set("n", "<leader>hi", function()
-	ui.nav_file(3)
-end)
-vim.keymap.set("n", "<leader>ho", function()
-	ui.nav_file(4)
-end)
+vim.keymap.set("n", "<leader>hq", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<leader>hw", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<leader>hf", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<leader>hp", function() harpoon:list():select(4) end)
+-- stylua: ignore end
 
 vim.keymap.set("n", "<leader>o", "<cmd>Lspsaga outline<CR>")
 

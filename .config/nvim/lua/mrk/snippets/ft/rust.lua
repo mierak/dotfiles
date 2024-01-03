@@ -19,14 +19,14 @@ return {
 		{ trig = "(%w+)prn", regTrig = true, dscr = "Prints a variable" },
 		fmt('println!("{}: {{:?}}", {});', { f(shared.capture_at(1)), f(shared.capture_at(1)) })
 	),
-    s("dp", fmt([[println!("{}: {{:?}}", {});]], { shared.same(1), i(1) })),
+	s("dp", fmt([[println!("{}: {{:?}}", {});]], { shared.same(1), i(1) })),
 	s(
 		"print",
 		f(function(_, snip)
-            local result = {}
+			local result = {}
 			local env = snip.env
 			for _, ele in ipairs(env.LS_SELECT_RAW) do
-                table.insert(result, 'println!("' .. ele .. ': {{:?}}", ' .. ele .. ');')
+				table.insert(result, 'println!("' .. ele .. ': {{:?}}", ' .. ele .. ");")
 			end
 			return result
 		end)
