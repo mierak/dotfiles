@@ -15,20 +15,20 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]])
 vim.keymap.set("n", "<leader>P", [["+P]])
 
--- Tab navigation
--- vim.keymap.set("n", "<C-l>", "<cmd>BufferLineCycleNext<cr>")
--- vim.keymap.set("n", "<C-h>", "<cmd>BufferLineCyclePrev<cr>")
--- vim.keymap.set("n", "<C-w><C-w>", "<cmd>tabclose<cr>")
-
--- Nerd Tree
+-- Nvim Tree
 vim.keymap.set("n", "<leader>tt", "<cmd>NvimTreeToggle<cr>")
 vim.keymap.set("n", "<leader>tf", "<cmd>NvimTreeFocus<cr>")
 
 -- Telescope
+local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
 vim.keymap.set("n", "<C-p>", "<cmd>Telescope find_files<cr>")
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope live_grep<cr>")
-vim.keymap.set("v", "<leader>fw", "<cmd>Telescope grep_string<cr>")
+vim.keymap.set("v", "<leader>fw", builtin.grep_string)
+vim.keymap.set("n", "<leader>fw", function()
+	builtin.grep_string({ search = vim.fn.expand("<cword>") })
+end)
+
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 -- vim.keymap.set("n", "<C-e>", "<cmd>Telescope buffers<cr>")
 vim.keymap.set("n", "<leader>fg", "<cmd>Telescope help_tags<cr>")
@@ -36,35 +36,6 @@ vim.keymap.set("n", "<leader>fo", "<cmd>Telescope treesitter<cr>")
 
 vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", "<leader>uf", vim.cmd.UndotreeFocus)
-
--- Split navigation
--- vim.keymap.set("n", "<C-h>", "<C-w>h")
--- vim.keymap.set("n", "<C-j>", "<C-w>j")
--- vim.keymap.set("n", "<C-k>", "<C-w>k")
--- vim.keymap.set("n", "<C-l>", "<C-w>l")
-
--- Snippets
-local ls = require("luasnip")
--- Move to the next item within snippet
-vim.keymap.set({ "i", "s" }, "<C-k>", function()
-	if ls.expand_or_jumpable() then
-		ls.expand_or_jump()
-	end
-end, { silent = true })
--- Move to the previous item within snippet
-vim.keymap.set({ "i", "s" }, "<c-j>", function()
-	if ls.jumpable(-1) then
-		ls.jump(-1)
-	end
-end, { silent = true })
-vim.keymap.set("i", "<c-l>", function()
-	if ls.choice_active() then
-		ls.change_choice(1)
-	end
-end)
-vim.keymap.set("i", "<c-u>", require("luasnip.extras.select_choice"))
-vim.keymap.set("v", "<C-f>", "\"ac<cmd>lua require('luasnip.extras.otf').on_the_fly()<cr>", { noremap = true })
-vim.keymap.set("i", "<C-f>", "<cmd>lua require('luasnip.extras.otf').on_the_fly('a')<cr>", { noremap = true })
 
 -- Disallow movement with arrow keys
 vim.keymap.set("n", "<Up>", "<NOP>")
@@ -78,38 +49,6 @@ vim.keymap.set("i", "<Right>", "<NOP>")
 
 -- Formatting
 vim.keymap.set("n", "<leader><C-f>", "<cmd>Format<cr>")
-
--- Harpoon
--- local mark = require("harpoon.mark")
--- local ui = require("harpoon.ui")
---
--- vim.keymap.set("n", "<leader>ha", mark.add_file)
--- -- vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
---
--- vim.keymap.set("n", "<leader>hn", function()
--- 	ui.nav_file(1)
--- end)
--- vim.keymap.set("n", "<leader>he", function()
--- 	ui.nav_file(2)
--- end)
--- vim.keymap.set("n", "<leader>hi", function()
--- 	ui.nav_file(3)
--- end)
--- vim.keymap.set("n", "<leader>ho", function()
--- 	ui.nav_file(4)
--- end)
-
-local harpoon = require("harpoon")
-harpoon:setup()
--- stylua: ignore start
-vim.keymap.set("n", "<leader>ha", function() harpoon:list():append() end)
-vim.keymap.set("n", "<leader>hb", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-
-vim.keymap.set("n", "<leader>hq", function() harpoon:list():select(1) end)
-vim.keymap.set("n", "<leader>hw", function() harpoon:list():select(2) end)
-vim.keymap.set("n", "<leader>hf", function() harpoon:list():select(3) end)
-vim.keymap.set("n", "<leader>hp", function() harpoon:list():select(4) end)
--- stylua: ignore end
 
 vim.keymap.set("n", "<leader>o", "<cmd>Lspsaga outline<CR>")
 

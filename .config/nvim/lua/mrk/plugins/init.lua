@@ -1,6 +1,5 @@
 return {
 	"github/copilot.vim",
-	"navarasu/onedark.nvim",
 	"christoomey/vim-tmux-navigator",
 
 	{
@@ -14,20 +13,15 @@ return {
 			})
 		end,
 	},
-	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
-		requires = { { "nvim-lua/plenary.nvim" } },
-	},
 
 	{
 		"karb94/neoscroll.nvim",
 		config = function()
 			require("neoscroll").setup({})
-			local t = {}
-			t["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "100" } }
-			t["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "100" } }
-			require("neoscroll.config").set_mappings(t)
+			require("neoscroll.config").set_mappings({
+				["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "100" } },
+				["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "100" } },
+			})
 		end,
 	},
 }
