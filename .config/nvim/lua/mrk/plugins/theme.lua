@@ -1,7 +1,9 @@
 return {
 	"navarasu/onedark.nvim",
 	opts = {
+		transparent = true,
 		style = "warm",
+		toggle_style_key = "<leader>ts",
 		colors = {
 			bg0 = "#1e222a",
 			bg1 = "#1e222a",

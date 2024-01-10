@@ -24,4 +24,42 @@ return {
 			})
 		end,
 	},
+
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			routes = {
+				{
+					filter = { event = "notify", find = "No information available" },
+					opts = { skip = true },
+				},
+			},
+			presets = {
+				lsp_doc_border = true,
+			},
+			lsp = {
+				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+				override = {
+					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+					["vim.lsp.util.stylize_markdown"] = true,
+					["cmp.entry.get_documentation"] = true,
+				},
+			},
+			messages = {
+				-- NOTE: If you enable messages, then the cmdline is enabled automatically.
+				-- This is a current Neovim limitation.
+				enabled = false, -- enables the Noice messages UI
+				view = "notify", -- default view for messages
+				view_error = "notify", -- view for errors
+				view_warn = "notify", -- view for warnings
+				view_history = "messages", -- view for :messages
+				view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
+			},
+		},
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
+	},
 }

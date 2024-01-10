@@ -7,14 +7,17 @@ return {
 	},
 	{
 		"nvim-telescope/telescope.nvim",
-		dependencies = { "nvim-lua/plenary.nvim" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope-fzf-native.nvim",
+		},
 		config = function(_, opts)
 			local telescope = require("telescope")
 
 			telescope.setup(opts)
 
 			telescope.load_extension("ui-select")
-			telescope.load_extension("fzf")
+			-- telescope.load_extension("fzf")
 			telescope.load_extension("harpoon")
 		end,
 		opts = function()

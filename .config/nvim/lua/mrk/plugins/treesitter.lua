@@ -15,9 +15,9 @@ return {
 			require("nvim-treesitter.configs").setup(opts)
 		end,
 	},
-	{
-		"nvim-treesitter/nvim-treesitter-context",
-	},
+	-- {
+	-- 	"nvim-treesitter/nvim-treesitter-context",
+	-- },
 	{
 		"luckasRanarison/tree-sitter-hypr",
 	},

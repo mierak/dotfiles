@@ -16,9 +16,6 @@ return {
 			local capabilities =
 				require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 			capabilities.textDocument.completion.completionItem.snippetSupport = true
-			--[[ local opts = { noremap=true, silent=true } ]]
-			--
-			local cmp_icons = require("mrk.completion_icons")
 
 			vim.diagnostic.config({
 				float = {
@@ -88,6 +85,7 @@ return {
 			end
 
 			local kinds = vim.lsp.protocol.CompletionItemKind
+			local cmp_icons = require("mrk.completion_icons")
 			for i, kind in ipairs(kinds) do
 				kinds[i] = cmp_icons[kind] or kind
 			end
@@ -139,10 +137,9 @@ return {
 						diagnostics = {
 							enable = true,
 							globals = {
-								-- VIM
 								"vim",
 								"use",
-								"require", -- Packer use keyword
+								"require",
 							},
 						},
 						completion = {
