@@ -6,6 +6,9 @@ return {
 		require("mrk/plugins/lsp/cmp"),
 	},
 	{
+		require("mrk/plugins/lsp/dap"),
+	},
+	{
 		"linrongbin16/lsp-progress.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {},
