@@ -65,21 +65,19 @@ return {
 			end
 
 			local key = vim.keymap.set
-            -- stylua: ignore start
 			key("n", "<leader>dB", breakpoint_with_condition, { desc = "Breakpoint Condition" })
 			key("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
 			key("n", "<leader>dB", dap.set_breakpoint, { desc = "Toggle breakpoint" })
 			key("n", "<leader>dc", dap.continue, { desc = "Continue" })
 			key("n", "<leader>dC", dap.run_to_cursor, { desc = "Debug to cursor" })
-            key("n", "<leader>di", dap.step_into, { desc = "Step into" })
-            key("n", "<leader>do", dap.step_over, { desc = "Step over" })
-            key("n", "<leader>dO", dap.step_out, { desc = "Step out" })
-            key("n", "<leader>dr", dap.repl.toggle, { desc = "Toggle REPL" })
-            key("n", "<leader>dj", dap.down, { desc = "Down" })
-            key("n", "<leader>dk", dap.up, { desc = "Up" })
+			key("n", "<leader>di", dap.step_into, { desc = "Step into" })
+			key("n", "<leader>do", dap.step_over, { desc = "Step over" })
+			key("n", "<leader>dO", dap.step_out, { desc = "Step out" })
+			key("n", "<leader>dr", dap.repl.toggle, { desc = "Toggle REPL" })
+			key("n", "<leader>dj", dap.down, { desc = "Down" })
+			key("n", "<leader>dk", dap.up, { desc = "Up" })
 			key("v", "<leader>de", dapui.eval, { desc = "Evaluate expression" })
 			key("n", "<leader>de", eval_input, { desc = "Evaluate expression" })
-			--stylua: ignore end
 
 			dap.adapters.lldb = {
 				type = "executable",
