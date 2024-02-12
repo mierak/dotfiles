@@ -1,0 +1,10 @@
+d ~/Downloads
+r ~/Repos
+p ~/Projects
+c ~/.config
+b ~/.local/bin
+s ~/.local/share
+m /mnt
+a /run/user/1000/gvfs
+R /
+t /tmp
