@@ -19,6 +19,15 @@ return {
 				typescriptreact = {
 					require("formatter.filetypes.typescriptreact").prettier,
 				},
+				css = {
+					require("formatter.filetypes.css").prettier,
+				},
+				json = {
+					require("formatter.filetypes.json").prettier,
+				},
+				jsonc = {
+					require("formatter.filetypes.json").prettier,
+				},
 				rust = {
 					require("formatter.filetypes.rust").rustfmt,
 				},

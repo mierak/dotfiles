@@ -7,6 +7,7 @@ export EDITOR="nvim"
 export TERMINAL="alacritty"
 export BROWSER="firefox"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANROFFOPT="-c"
 
 export FZF_DEFAULT_OPTS="--preview 'if [[ -d {} ]]; then exa -la {}; else bat --color=always --style=numbers --line-range=:500 {}; fi' --reverse"
 
