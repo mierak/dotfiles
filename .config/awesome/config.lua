@@ -1,24 +1,24 @@
 local gears = require("gears")
 
 return {
-    editor   = os.getenv("EDITOR") or "nano",
-    terminal = "alacritty",
-    modkey   = "Mod4",
+    editor = os.getenv("EDITOR") or "nano",
+    terminal = "kitty",
+    modkey = "Mod4",
     dir = {
         assets = gears.filesystem.get_configuration_dir() .. "assets",
-        data   = os.getenv("XDG_DATA_HOME") or os.getenv("HOME") .. "/.local/share",
+        data = os.getenv("XDG_DATA_HOME") or os.getenv("HOME") .. "/.local/share",
         config = os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config",
-        cache  = os.getenv("XDG_CACHE_HOME") or os.getenv("HOME") .. "/.cache",
-        music  = os.getenv("HOME") .. "/Music",
+        cache = os.getenv("XDG_CACHE_HOME") or os.getenv("HOME") .. "/.cache",
+        music = os.getenv("HOME") .. "/Music",
     },
     modules = {
         restore_tags_on_restart = true,
-        smart_borders           = true,
-        focus_center_mouse      = true,
-        scratchpad              = {
-            enabled              = true,
-            close_on_focus_lost  = true,
-            reapply_props        = true,
+        smart_borders = true,
+        focus_center_mouse = true,
+        scratchpad = {
+            enabled = true,
+            close_on_focus_lost = true,
+            reapply_props = true,
         },
         window_swallow = {
             active = true,
@@ -36,6 +36,10 @@ return {
                 "Pcmanfm",
                 "Virt%-manager",
                 "KeePassXC",
+                "jetbrains%-rider",
+                "jetbrains%-idea",
+                "steam",
+                "ripdrag",
             },
         },
     },
@@ -52,7 +56,7 @@ return {
             enable_position_update = true,
         },
         playerctl = {
-            players = { "mpd" }
+            players = { "mpd" },
         },
         redshift = {
             update_interval_sec = 60,
@@ -61,34 +65,34 @@ return {
             update_interval_sec = 1600,
         },
     },
-    use_confirm_dialogs     = true,
-    focus_follows_mouse     = true,
-    command  = {
-        reboot   = "systemctl reboot",
+    use_confirm_dialogs = true,
+    focus_follows_mouse = true,
+    command = {
+        reboot = "systemctl reboot",
         poweroff = "systemctl poweroff",
-        lock     = "sleep 1 && xset dpms force suspend && slock",
-        logout   = 'loginctl kill-user "$USER"',
+        lock = "sleep 1 && xset dpms force suspend && slock",
+        logout = 'loginctl kill-user "$USER"',
     },
     screen = {
-        left   = {
+        left = {
             index = 3,
             tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
             tag_property_override = {
-                ["1"] = { gap_single_client = false }
-            }
+                ["1"] = { gap_single_client = false },
+            },
         },
         middle = {
             index = 1,
             tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
             tag_property_override = {
-                ["1"] = { gap_single_client = false }
-            }
+                ["1"] = { gap_single_client = false },
+            },
         },
-        right  = {
+        right = {
             index = 2,
             tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
             tag_property_override = {
-                ["1"] = { master_width_factor = 0.8, }
+                ["1"] = { master_width_factor = 0.8 },
             },
         },
     },
@@ -111,31 +115,31 @@ return {
         },
         ---@type widget_config
         cpu = {
-            style     = "text_bar",
-            fg        = "color1",
-            icon      = " ",
+            style = "text_bar",
+            fg = "color1",
+            icon = " ",
             bar_width = 70,
         },
         ---@type widget_config
         mem = {
-            style     = "bar",
-            fg        = "color3",
-            icon      = " ",
+            style = "bar",
+            fg = "color3",
+            icon = "󰍛 ",
             bar_width = 70,
         },
         ---@type widget_config
         fs = {
-            style     = "bar",
-            fg        = "fg_normal",
-            icon      = " ",
+            style = "bar",
+            fg = "fg_normal",
+            icon = "󰋊 ",
             bar_width = 70,
         },
         ---@type text_widget_config
         net = {
-            style     = "text",
-            fg        = "color2",
-            icon      = nil,
-        }
+            style = "text",
+            fg = "color2",
+            icon = nil,
+        },
     },
 }
 

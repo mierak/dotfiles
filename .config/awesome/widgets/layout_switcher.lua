@@ -97,24 +97,24 @@ awful.keygrabber {
     stop_key         = { "Escape", "Super_L", "Super_R" },
     allowed_keys     = { cfg.modkey, " ", "shift", "h", "j", "k", "l" },
     root_keybindings = {
-        awful.key {
-            modifiers   = { cfg.modkey },
-            key         = "space",
-            group       = "Layout Switcher",
-            description = "Open and Switch to Next",
-            on_press    = function()
-                awful.layout.set((gears.table.cycle_value(layout_list.layouts, layout_list.current_layout, 1)))
-            end
-        },
-        awful.key {
-            modifiers   = { cfg.modkey, "Shift" },
-            key         = "space",
-            group       = "Layout Switcher",
-            description = "Open and Switch to Previous",
-            on_press    = function()
-                awful.layout.set((gears.table.cycle_value(layout_list.layouts, layout_list.current_layout, -1)))
-            end
-        },
+        -- awful.key {
+        --     modifiers   = { cfg.modkey },
+        --     key         = "space",
+        --     group       = "Layout Switcher",
+        --     description = "Open and Switch to Next",
+        --     on_press    = function()
+        --         awful.layout.set((gears.table.cycle_value(layout_list.layouts, layout_list.current_layout, 1)))
+        --     end
+        -- },
+        -- awful.key {
+        --     modifiers   = { cfg.modkey, "Shift" },
+        --     key         = "space",
+        --     group       = "Layout Switcher",
+        --     description = "Open and Switch to Previous",
+        --     on_press    = function()
+        --         awful.layout.set((gears.table.cycle_value(layout_list.layouts, layout_list.current_layout, -1)))
+        --     end
+        -- },
     },
     keybindings = {
         awful.key {
@@ -148,22 +148,22 @@ awful.keygrabber {
     }
 }
 
-HotkeysPopup:add_keygroups({
-    ["Layout Switcher"] = {
-        {
-            key = "space",
-            description = "Open and Switch to Next",
-            mods = { cfg.modkey },
-        },
-        {
-            key = "space",
-            description = "Open and Switch to Previous",
-            mods = { cfg.modkey, "Shift" },
-        },
-        {
-            key = "vimotion",
-            description = "Move Around",
-            mods = { cfg.modkey },
-        },
-    },
-})
+-- HotkeysPopup:add_keygroups({
+--     ["Layout Switcher"] = {
+--         {
+--             key = "space",
+--             description = "Open and Switch to Next",
+--             mods = { cfg.modkey },
+--         },
+--         {
+--             key = "space",
+--             description = "Open and Switch to Previous",
+--             mods = { cfg.modkey, "Shift" },
+--         },
+--         {
+--             key = "vimotion",
+--             description = "Move Around",
+--             mods = { cfg.modkey },
+--         },
+--     },
+-- })

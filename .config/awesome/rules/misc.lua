@@ -26,26 +26,29 @@ return {
             tag    = "1",
         }
     },
-    { -- A very hacky rule. Wait for two seconds after firefox starts and then check WM_NAME and move to left monitor if applicable.
-        id = "firefox-wait-name-change",
-        rule = {
-            class = "firefox",
-        },
-        callback = function (client)
-            gears.timer {
-                timeout = 3,
-                single_shot = true,
-                autostart = true,
-                call_now = false,
-                callback = function ()
-                    if client and client.name:match("%[Left Mon].*") then
-                        client.screen = screen[config.screen.left.index]
-                        client:tags({ screen[config.screen.left.index].tags[1] })
-                    end
-                end
-            }
-        end
-    },
+    -- { -- A very hacky rule. Wait for two seconds after firefox starts and then check WM_NAME and move to left monitor if applicable.
+    --     id = "firefox-wait-name-change",
+    --     rule = {
+    --         class = "firefox",
+    --     },
+    --     callback = function (client)
+    --         gears.timer {
+    --             timeout = 3,
+    --             single_shot = true,
+    --             autostart = true,
+    --             call_now = false,
+    --             callback = function ()
+    --                 if client and client.name:match("%Left Mon.*") then
+    --                     client.screen = screen[config.screen.left.index]
+    --                     client:tags({ screen[config.screen.left.index].tags[1] })
+    --                 else
+    --                     client.screen = screen[config.screen.middle.index]
+    --                     client:tags({ screen[config.screen.middle.index].tags[1] })
+    --                 end
+    --             end
+    --         }
+    --     end
+    -- },
     {
         id = "teams",
         rule = {

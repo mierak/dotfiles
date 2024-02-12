@@ -128,10 +128,11 @@ function notification_box.create_actions(_, notification)
     }
 end
 function notification_box.create_close_icon(_, notification)
+    local close_symbol = ""
     local close_button = wibox.widget {
         widget = wibox.widget.textbox,
         font = beautiful.fonts.symbols_base .. "12",
-        markup = helpers.misc.colorize { fg = beautiful.color4, text = "" },
+        markup = helpers.misc.colorize { fg = beautiful.color4, text = close_symbol },
         valgin = "center",
         halign = "center",
     }
@@ -176,7 +177,7 @@ function notification_box.create_close_icon(_, notification)
             close_icon.backup_cursor = w.cursor
             w.cursor = "hand1"
         end
-        close_button.markup = helpers.misc.colorize { fg = beautiful.color1, text = "" }
+        close_button.markup = helpers.misc.colorize { fg = beautiful.color1, text = close_symbol }
         close_icon:set_color(1)
     end)
 
@@ -185,7 +186,7 @@ function notification_box.create_close_icon(_, notification)
         if w then
             w.cursor = close_icon.backup_cursor
         end
-        close_button.markup = helpers.misc.colorize { fg = beautiful.color4, text = "" }
+        close_button.markup = helpers.misc.colorize { fg = beautiful.color4, text = close_symbol }
         close_icon:set_color(4)
     end)
 

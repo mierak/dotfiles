@@ -7,8 +7,8 @@ daemon:connect_signal("update", function (_, value)
     cpu:update(value)
 end)
 
-cpu:connect_signal("button::press", function ()
-    require("awful").spawn("alacritty -e htop")
-end)
+-- cpu:connect_signal("button::press", function ()
+--     require("awful").spawn("alacritty -e htop")
+-- end)
 
 return cpu

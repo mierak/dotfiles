@@ -46,22 +46,23 @@ end)
 
 awesome.register_xproperty("_NET_WM_BYPASS_COMPOSITOR", "boolean")
 
-screen.connect_signal("request::wallpaper", function (s)
-    awful.wallpaper {
-        screen = s,
-        widget = {
-            {
-                image     = beautiful.wallpaper,
-                upscale   = true,
-                downscale = true,
-                widget    = wibox.widget.imagebox,
-            },
-            valign = "center",
-            halign = "center",
-            tiled  = false,
-            widget = wibox.container.tile,
-        },
-    }
+screen.connect_signal("request::wallpaper", function (_)
+    awful.spawn("setbg")
+    -- awful.wallpaper {
+    --     screen = s,
+    --     widget = {
+    --         {
+    --             image     = beautiful.wallpaper,
+    --             upscale   = true,
+    --             downscale = true,
+    --             widget    = wibox.widget.imagebox,
+    --         },
+    --         valign = "center",
+    --         halign = "center",
+    --         tiled  = false,
+    --         widget = wibox.container.tile,
+    --     },
+    -- }
 end)
 
 if config.focus_follows_mouse then

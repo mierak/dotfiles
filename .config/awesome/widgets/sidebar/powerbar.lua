@@ -26,7 +26,7 @@ return wibox.widget {
         end
     },
     helpers.misc.text_button {
-        text     = "",
+        text     = "󰍃",
         font     = font,
         align    = "center",
         fg       = beautiful.active,

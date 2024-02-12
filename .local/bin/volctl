@@ -53,13 +53,13 @@ notify_icon() {
 }
 
 [ ! -f "$icon_path" ] && create_icon "" "$icon_path"
-[ ! -f "$icon_muted_path" ] && create_icon "婢" "$icon_muted_path"
+[ ! -f "$icon_muted_path" ] && create_icon "󰖁" "$icon_muted_path"
 [ ! -f "$icon_mic_path" ] && create_icon "󰍬" "$icon_mic_path"
 [ ! -f "$icon_mic_muted_path" ] && create_icon "󰍭" "$icon_mic_muted_path"
 
 case $1 in
-    "status")         if [ "$(pamixer --get-mute)" = "true" ]; then echo "婢"; else echo ""; fi ;;
-    "mic-status")     if [ "$(pamixer --default-source --get-mute)" = "true" ]; then echo ""; else echo ""; fi ;;
+    "status")         if [ "$(pamixer --get-mute)" = "true" ]; then echo "󰖁"; else echo ""; fi ;;
+    "mic-status")     if [ "$(pamixer --default-source --get-mute)" = "true" ]; then echo "󰍭"; else echo "󰍬"; fi ;;
     "volume")         pamixer --get-volume ;;
     "mic-volume")     pamixer --default-source --get-volume ;;
     "inc-volume")     pamixer --allow-boost -i 3; notify_volume ;;

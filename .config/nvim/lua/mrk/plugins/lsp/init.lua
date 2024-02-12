@@ -31,7 +31,7 @@ return {
 				clangd = {},
 				jsonls = {},
 				rust_analyzer = {
-					["rust_analyze"] = {
+					["rust-analyzer"] = {
 						cargo = {
 							features = "all",
 						},

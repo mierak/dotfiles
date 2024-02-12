@@ -38,9 +38,9 @@ local widget = wibox.widget {
 daemon:connect_signal("update", function (_, temp_value, period_value)
     period.markup = period_value
     if period_value == "Night" then
-        icon.markup = helpers.misc.colorize { text = "ﯧ", fg = beautiful.color3 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
+        icon.markup = helpers.misc.colorize { text = "󰛨", fg = beautiful.color3 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
     else
-        icon.markup = helpers.misc.colorize { text = "", fg = beautiful.color4 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
+        icon.markup = helpers.misc.colorize { text = "󰌶", fg = beautiful.color4 } .. ' <span font="' .. beautiful.fonts.base .. '21">' .. temp_value ..'</span>'
     end
 end)
 

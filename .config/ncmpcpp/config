@@ -13,10 +13,10 @@ visualizer_spectrum_dft_size = 1
 visualizer_autoscale = yes
 
 # Album Covers
-startup_screen = visualizer
-startup_slave_screen = playlist
-startup_slave_screen_focus = yes
-locked_screen_width_part = 35
+# startup_screen = visualizer
+# startup_slave_screen = playlist
+# startup_slave_screen_focus = yes
+# locked_screen_width_part = 35
 
 
 # Interface & colors
@@ -38,7 +38,7 @@ now_playing_suffix = $/b$(end)
 statusbar_visibility = no
 statusbar_color = blue
 
-progressbar_look = 
+progressbar_look = .
 
 # Misc
 clock_display_seconds = yes
@@ -49,7 +49,7 @@ header_visibility = no
 cyclic_scrolling = yes
 display_bitrate = yes
 lines_scrolled = 1
-execute_on_song_change="~/.config/ncmpcpp/ncmpcpp-ueberzug/ncmpcpp_cover_art.sh"
+execute_on_song_change="~/.config/ncmpcpp/ncmpcpp-ueberzug/ncmpcpp_cover_art_kitty"
 
 #Borders
 active_window_border = blue

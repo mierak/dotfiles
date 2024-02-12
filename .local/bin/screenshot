@@ -1,6 +1,6 @@
 #!/bin/sh
 
-choice=$(printf " Area| Screen| Window" | rofi -sep "|" -dmenu -p "What to screenshot?" -l 4)
+choice=$(printf " Area|󰹑  Screen|  Window" | rofi -sep "|" -dmenu -p "What to screenshot?" -l 4)
 image_type="png"
 temp_file="/tmp/screenshot.$image_type"
 icon_path=/tmp/screenshot_icon.png
@@ -26,9 +26,9 @@ to_file() {
 }
 
 prompt_destination() {
-    dest=$(printf " Clipboard|祝 Puush| File" | rofi -sep "|" -dmenu -p "Destination" -l 3)
+    dest=$(printf "󰅍 Clipboard|祝 Puush| File" | rofi -sep "|" -dmenu -p "Destination" -l 3)
     case "$dest" in
-        " Clipboard") to_clipboard;;
+        "󰅍 Clipboard") to_clipboard;;
         "祝 Puush") puush "$temp_file";;
         " File") to_file "$1";;
     esac
@@ -40,12 +40,12 @@ case "$choice" in
         maim -s -m 10 "$temp_file"
         prompt_destination area
         ;;
-	" Screen")
+	"󰹑  Screen")
         SCREEN=$(xrandr | grep -Po '(?<= )\d+x\d+\+\d+\+\d+' | tr '\n' '|' | rofi -dmenu -sep "|" -p "Choose a screen" -l 3)
         sleep 0.5 && maim -g "$SCREEN" "$temp_file"
         prompt_destination screen
         ;;
-	" Window")
+	"  Window")
         ACTIVE_WINDOW="$(xdotool getactivewindow)"
         maim -m 10 -i "$ACTIVE_WINDOW" "$temp_file"
         prompt_destination window

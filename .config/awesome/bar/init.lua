@@ -33,7 +33,7 @@ for _, v in ipairs(get_all_enabled_widgets()) do
 end
 
 return function (screen, menu)
-    local logo_menu   = create_launcher(menu)
+    -- local logo_menu   = create_launcher(menu)
     local tag_list
     local layout_box = create_layout_box(screen)
     local task_list  = create_task_list(screen)
@@ -74,7 +74,7 @@ return function (screen, menu)
                 {
                     layout = wibox.layout.fixed.horizontal,
                     spacing = beautiful.margin,
-                    logo_menu,
+                    -- logo_menu,
                     tag_list,
                 },
                 {

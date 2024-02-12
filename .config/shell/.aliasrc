@@ -33,13 +33,15 @@ alias \
 	e="$EDITOR" \
 	v="$EDITOR" \
 	p="pacman" \
-	kube="kubectl"
+	kube="kubectl" \
+	xsc="xclip -selection clipboard" \
 
 # Utilities
 alias \
 	myip='echo $(curl -s https://api.my-ip.io/ip)' \
 	cat="bat --paging=auto" \
     cd="z" \
+    ssh="kitty +kitten ssh"
 
 alias bathelp='bat --plain --language=help'
 help() {

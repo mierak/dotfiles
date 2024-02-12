@@ -4,4 +4,4 @@
 # param $2 color
 # param $3 output path
 
-magick -size 128:128 xc:transparent -fill "$2" -font 'JetBrains-Mono-Regular-Nerd-Font-Complete-Mono' -pointsize 192 -draw "gravity center text 0 0 \"$1\"" "$3"
+magick -size 128:128 xc:transparent -fill "$2" -font 'JetBrainsMono-NFM-Regular' -pointsize 192 -draw "gravity center text 0 0 \"$1\"" "$3"

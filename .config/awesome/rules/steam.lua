@@ -4,7 +4,7 @@ return {
     {
         id = "steam",
         rule = {
-            class = "Steam"
+            class = "steam"
         },
         properties = {
             screen = screen[config.screen.middle.index],
@@ -14,7 +14,7 @@ return {
     {
         id = "steam-friendlist",
         rule = {
-            class = "Steam",
+            class = "steam",
             name = "Friends List",
         },
         properties = {
@@ -28,7 +28,7 @@ return {
     {
         id = "steam-chat",
         rule = {
-            class = "Steam",
+            class = "steam",
         },
         except = {
             name = "Steam"
@@ -44,7 +44,7 @@ return {
     {
         id = "steam-news",
         rule = {
-            class = "Steam",
+            class = "steam",
             name = "Steam %- News.*",
         },
         properties = {

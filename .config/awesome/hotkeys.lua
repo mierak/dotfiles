@@ -14,10 +14,10 @@ local Hotkeys = {}
 ---@param main_menu any
 function Hotkeys:init(hotkeys_popup, main_menu)
     ezhk:global_keybind_group("Awesome", {
-        { "M-S-q",        "Quit Awesome",                          awesome.quit },
+        -- { "M-S-q",        "Quit Awesome",                          awesome.quit },
         { "M-S-r",        "Restart Awesome",                       awesome.restart },
         { "M-Return",     "Open a Terminal",                       Hotkeys.spawn(cfg.terminal) },
-        { "M-s",          "Show Help",                             function() hotkeys_popup:toggle() end, hotkeys_popup ~= nil },
+        -- { "M-s",          "Show Help",                             function() hotkeys_popup:toggle() end, hotkeys_popup ~= nil },
         --{ "M-w",          "Show Main Menu",                        function() main_menu:show() end },
         { "M-Tab",          "Toggle Sidebar",                        function() awesome.emit_signal("sidebar::toggle") end,     cfg.sidebar.enabled },
         { "M-g",          "Open rofi",                             Hotkeys.spawn('rofi -show combi -modes "combi,drun,run,window,calc" -combi-modes "window,drun,run"') },
@@ -37,8 +37,8 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     })
 
     ezhk:global_keybind_group("Tag", {
-        { "M-Left",       "View Previous",                         awful.tag.viewprev },
-        { "M-Right",      "View Next",                             awful.tag.viewnext },
+        -- { "M-Left",       "View Previous",                         awful.tag.viewprev },
+        -- { "M-Right",      "View Next",                             awful.tag.viewnext },
         { "M-Escape",     "View Last",                             awful.tag.history.restore },
         { "M-numrow",     "Only View Tag",                         self.only_view_tag },
         { "M-C-numrow",   "Toggle Tag",                            self.toggle_tag },
@@ -47,27 +47,30 @@ function Hotkeys:init(hotkeys_popup, main_menu)
     })
 
     ezhk:global_keybind_group("Layout", {
-        { "M-S-l",        "Inc/Dec Number of Clients in Master",   function() awful.tag.incnmaster(1, nil, true) end },
-        { "M-S-h",        "Inc/Dec Number of Clients in Master",   function() awful.tag.incnmaster(-1, nil, true) end },
-        { "M-S-C-l",      "Inc/Dec Number of Columns",             function() awful.tag.incncol(1, nil, true) end },
-        { "M-S-C-h",      "Inc/Dec Number of Columns",             function() awful.tag.incncol(-1, nil, true) end },
+        -- { "M-S-l",        "Inc/Dec Number of Clients in Master",   function() awful.tag.incnmaster(1, nil, true) end },
+        -- { "M-S-h",        "Inc/Dec Number of Clients in Master",   function() awful.tag.incnmaster(-1, nil, true) end },
+        -- { "M-S-C-l",      "Inc/Dec Number of Columns",             function() awful.tag.incncol(1, nil, true) end },
+        -- { "M-S-C-h",      "Inc/Dec Number of Columns",             function() awful.tag.incncol(-1, nil, true) end },
         { "M-l",          "Inc/Dec Master Width",                  function() awful.tag.incmwfact(0.05) end },
         { "M-h",          "Inc/Dec Master Width",                  function() awful.tag.incmwfact(-0.05) end },
         { "M-numpad",     "Select Layout Directly",                self.select_layout_by_idx }
     })
 
-    ezhk:global_keybind_group("Gaps", {
+   ezhk:global_keybind_group("Gaps", {
         { "M-p",          "Toggle Single Client Gaps",             self.toggle_single_client_gaps },
         { "M-o",          "Toggle All Gaps",                       self.toggle_all_gaps },
     })
 
     ezhk:global_keybind_group("Screen", {
+        -- { "M-,",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   not not cfg.screen.left},
+        -- { "M-.",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        -- { "M-/",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  not not cfg.screen.right },
+        -- { "M-x",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   not not cfg.screen.left},
+        -- { "M-c",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        -- { "M-d",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  not not cfg.screen.right },
         { "M-h",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   not not cfg.screen.left},
         { "M-,",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, not not cfg.screen.middle },
         { "M-.",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  not not cfg.screen.right },
-        { "M-x",          "Focus Left Screen",                     function() awful.screen.focus(cfg.screen.left.index) end,   not not cfg.screen.left},
-        { "M-c",          "Focus Middle Screen",                   function() awful.screen.focus(cfg.screen.middle.index) end, not not cfg.screen.middle },
-        { "M-d",          "Focus Right Screen",                    function() awful.screen.focus(cfg.screen.right.index) end,  not not cfg.screen.right },
         { "M-C-j",        "Focus Next/Previous Screen",            function() awful.screen.focus_relative(1) end },
         { "M-C-k",        "Focus Next/Previous Screen",            function() awful.screen.focus_relative(-1) end },
     })
@@ -87,20 +90,23 @@ function Hotkeys:init(hotkeys_popup, main_menu)
         { "M-q",          "Kill Client",                           function(c) c:kill() end },
         { "M-S-Return",   "Move to Master",                        function(c) c:swap(awful.client.getmaster()) end },
         { "M-t",          "Toggle Floating",                       awful.client.floating.toggle },
-        --{ "M-n",          "Minimize Client",                       function(c) c.minimized = true end },
+        -- { "M-n",          "Minimize Client",                       function(c) c.minimized = true end },
         { "M-m",          "(Un)maximize",                          self.un_maximize },                                                               -- Remove? I use fullscreen instead anyway
-        { "M-C-m",        "(Un)maximize Vertically",               function(c) c.maximized_vertical = not c.maximized_vertical; c:raise() end },     -- Remove? I use fullscreen instead anyway
-        { "M-S-m",        "(Un)maximize Horizontally",             function(c) c.maximized_horizontal = not c.maximized_horizontal; c:raise() end }, -- Remove? I use fullscreen instead anyway
-        --{ "M-C-space",    "Toggle Keep on Top",                    function(c) c.ontop = not c.ontop end },
+        -- { "M-C-m",        "(Un)maximize Vertically",               function(c) c.maximized_vertical = not c.maximized_vertical; c:raise() end },     -- Remove? I use fullscreen instead anyway
+        -- { "M-S-m",        "(Un)maximize Horizontally",             function(c) c.maximized_horizontal = not c.maximized_horizontal; c:raise() end }, -- Remove? I use fullscreen instead anyway
+        -- { "M-C-space",    "Toggle Keep on Top",                    function(c) c.ontop = not c.ontop end },
     })
 
     ezhk:client_keybind_group("Client > Screen", {
+        -- { "M-S-,",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   not not cfg.screen.left },
+        -- { "M-S-.",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        -- { "M-S-/",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  not not cfg.screen.right },
+        -- { "M-S-x",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   not not cfg.screen.left },
+        -- { "M-S-c",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, not not cfg.screen.middle },
+        -- { "M-S-d",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  not not cfg.screen.right },
         { "M-S-h",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   not not cfg.screen.left },
         { "M-S-,",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, not not cfg.screen.middle },
         { "M-S-.",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  not not cfg.screen.right },
-        { "M-S-x",        "Move to Left Screen",                   function(c) c:move_to_screen(cfg.screen.left.index) end,   not not cfg.screen.left },
-        { "M-S-c",        "Move to Middle Screen",                 function(c) c:move_to_screen(cfg.screen.middle.index) end, not not cfg.screen.middle },
-        { "M-S-d",        "Move to Right Screen",                  function(c) c:move_to_screen(cfg.screen.right.index) end,  not not cfg.screen.right },
     })
 
     ezhk:global_keybind_group("Run or Raise", {
@@ -135,13 +141,15 @@ function Hotkeys:init(hotkeys_popup, main_menu)
 end
 
 function Hotkeys.spawn(cmd)
-    return function ()
+    return function()
         awful.spawn(cmd)
     end
 end
 
 function Hotkeys.colorpicker()
-    awful.spawn.with_shell('xcolor -s && notify-send "Color picked" "<span background=\'$(xclip -selection clipboard -o)\'>	$(xclip -selection clipboard -o)		</span>"')
+    awful.spawn.with_shell(
+        'xcolor -s && notify-send "Color picked" "<span background=\'$(xclip -selection clipboard -o)\'>	$(xclip -selection clipboard -o)		</span>"'
+    )
 end
 
 function Hotkeys.un_maximize(c)

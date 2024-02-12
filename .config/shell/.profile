@@ -8,6 +8,8 @@ export TERMINAL="alacritty"
 export BROWSER="firefox"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
+export FZF_DEFAULT_OPTS="--preview 'if [[ -d {} ]]; then exa -la {}; else bat --color=always --style=numbers --line-range=:500 {}; fi' --reverse"
+
 # ~/ Cleanup of home directory
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -29,7 +31,16 @@ export XAUTHORITY="${XDG_RUNTIME_DIR:-$HOME}/Xauthority"
 export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 
 # Adds GO bin to $PATH
-export PATH="$PATH:$GOPATH/bin"
+export PATH="$PATH:$GOPATH/bin:$CARGO_HOME/bin"
 
 # Start graphical server on user's current tty if not already running.
 #[ "$(tty)" = "/dev/tty1" ] && ! pidof -s Xorg >/dev/null 2>&1 && exec startx "$XINITRC"
+
+# Regenerate bookmarks on login
+if command -v crossmarks >/dev/null 2>&1 ; then
+    crossmarks \
+        --input "${XDG_CONFIG_HOME:-HOME/.config}"/shell/bookmarks \
+        --lf "${XDG_CONFIG_HOME:-HOME/.config}"/lf/bookmarks \
+        --zsh "${XDG_CONFIG_HOME:-HOME/.config}"/zsh/zshnameddir \
+        --cd-alias "${XDG_CONFIG_HOME:-HOME/.config}"/shell/cdalias
+fi

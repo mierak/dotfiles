@@ -24,7 +24,7 @@ theme.client_icon_size = dpi(18)
 theme.wallpaper = config.dir.data .. "/wallpaper/current"
 
 theme.fonts = {}
-theme.fonts.base         = "JetBrainsMono Nerd Font "
+theme.fonts.base         = "JetBrainsMono NF "
 theme.fonts.base_bold    = theme.fonts.base .. "Bold "
 theme.fonts.bar          = theme.fonts.base_bold .. "9"
 theme.fonts.title        = theme.fonts.base .. "13"

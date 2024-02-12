@@ -8,12 +8,13 @@ configuration {
     drun-display-format: "<b>{name}</b>[ <span weight='light' size='small'><i>({generic})</i></span>][ <span weight='light' fgalpha='65%' size='small'>{exec}</span>]";
 	window-format: "{icon} {title}";
 	location: 0;
-	display-drun: "   Apps ";
-    	display-run: "   Run ";
-	display-window: "﩯  Window";
-	display-calc: "  Calc";
+	display-drun: "󰀻  Apps ";
+    display-run: "  Run ";
+	display-window: "  Window";
+	display-calc: "  Calc";
+	display-combi: "  Combi";
 	display-Network: " 󰤨  Network";
-        sidebar-mode: true;
+    sidebar-mode: true;
 
 	kb-accept-entry: "Control+m,Return,KP_Enter";
 	kb-remove-to-eol: "";

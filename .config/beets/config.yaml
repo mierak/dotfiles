@@ -6,3 +6,5 @@ fetchart:
   quality: 90
 embedart:
   auto: yes
+chroma:
+  auto: yes

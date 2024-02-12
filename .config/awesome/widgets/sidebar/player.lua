@@ -50,7 +50,7 @@ local timer = wibox.widget {
 }
 
 local next = helpers.misc.text_button {
-    text         = "怜",
+    text         = "󰒭",
     align        = "right",
     fg       = beautiful.active,
     font     = beautiful.fonts.symbols_base .. button_size,
@@ -62,7 +62,7 @@ local next = helpers.misc.text_button {
     end,
 }
 local prev = helpers.misc.text_button {
-    text         = "玲",
+    text         = "󰒮",
     align        = "left",
     fg       = beautiful.active,
     font     = beautiful.fonts.symbols_base .. button_size,
@@ -74,10 +74,10 @@ local prev = helpers.misc.text_button {
     end,
 }
 local play_pause = helpers.misc.text_button {
-    text         = "契",
+    text         = "󰐊",
     align        = "center",
     fg       = beautiful.active,
-    font     = beautiful.fonts.symbols_base .. button_size,
+    font     = beautiful.fonts.symbols_base .. (button_size - 8),
     hover    = {
         fg = beautiful.color4,
     },
@@ -112,9 +112,9 @@ daemon:connect_signal("metadata", function (_, table)
     art.image = gears.surface.load_uncached(table.artUrl)
 
     if table.status == "Playing" or table.status == "playing" then
-        play_pause.update_text("")
+        play_pause.update_text("")
     else
-        play_pause.update_text("契")
+        play_pause.update_text("")
     end
 
     if not table.length or table.length > 86400 or table.length < 1 then

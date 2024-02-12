@@ -36,7 +36,7 @@ function TextBar:new(args)
                     layout = wibox.layout.stack,
                     obj.bar,
                     {
-                        widget = wibox.widget.background,
+                        widget = wibox.container.background,
                         shape = require("gears.shape").partially_rounded_rect,
                         obj.text,
                     }

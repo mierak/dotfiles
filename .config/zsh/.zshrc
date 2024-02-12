@@ -41,10 +41,9 @@ bindkey -v '^?' backward-delete-char
 # Source aliases and other stuff #    
 #                                #    
 ##################################
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/.shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/.shortcutrc"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/.aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/.aliasrc"
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/.zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/.zshnameddirrc"
-
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/zshnameddir" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/zshnameddir"
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/cdalias" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/cdalias"
 
 ##################################
 #                                #
@@ -96,7 +95,8 @@ lf () {
         fi
     fi
 }
-bindkey -s '^o' '^ulfcd\n'
+bindkey -s '^f' '^ulf\n'
+#bindkey -s '^m' '^utmux attach -t $(tmux list-sessions | fzf | cut -f1 -d ":")\n'
 
 # Bind sxiv thumbnail mode in cwd
 bindkey -s '^t' 'nsxiv -t .^M'
