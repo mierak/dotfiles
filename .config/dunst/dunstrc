@@ -2,7 +2,7 @@
 alignment = left
 
 [global]
-    monitor = 0
+    monitor = 2
     frame_color = "#3f485a"
     separator_color= frame
     follow = none
