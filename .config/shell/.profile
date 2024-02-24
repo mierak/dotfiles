@@ -35,7 +35,7 @@ export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 export PATH="$PATH:$GOPATH/bin:$CARGO_HOME/bin"
 
 # Start graphical server on user's current tty if not already running.
-#[ "$(tty)" = "/dev/tty1" ] && ! pidof -s Xorg >/dev/null 2>&1 && exec startx "$XINITRC"
+[ "$(tty)" = "/dev/tty1" ] && ! pidof -s Hyprland >/dev/null 2>&1 && Hyprland
 
 # Regenerate bookmarks on login
 if command -v crossmarks >/dev/null 2>&1 ; then
