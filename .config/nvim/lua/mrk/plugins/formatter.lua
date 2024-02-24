@@ -34,6 +34,9 @@ return {
 				c = {
 					require("formatter.filetypes.c").clangformat,
 				},
+				sh = {
+					require("formatter.filetypes.sh").shfmt,
+				},
 			},
 		}
 	end,

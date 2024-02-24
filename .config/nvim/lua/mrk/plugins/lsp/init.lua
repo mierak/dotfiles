@@ -13,6 +13,7 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {},
 	},
+	"folke/neodev.nvim",
 	{
 		"neovim/nvim-lspconfig",
 		opts = {
@@ -74,6 +75,7 @@ return {
 			},
 		},
 		config = function(_, opts)
+			require("neodev").setup({})
 			local capabilities =
 				require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 			capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -81,10 +83,10 @@ return {
 			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 				border = "single",
 			})
-			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-				vim.lsp.handlers["signature_help"],
-				{ border = "single", close_events = { "CursorMoved", "BufHidden" } }
-			)
+			-- vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+			-- 	vim.lsp.handlers["signature_help"],
+			-- 	{ border = "single", close_events = { "CursorMoved", "BufHidden" } }
+			-- )
 			vim.lsp.set_log_level("off")
 
 			-- Setup keymaps

@@ -43,4 +43,9 @@ return {
 		---Function to call after (un)comment
 		post_hook = nil,
 	},
+	config = function(_, opts)
+		local ft = require("Comment.ft")
+		ft.hyprlang = "#%s"
+		require("Comment").setup(opts)
+	end,
 }

@@ -56,12 +56,31 @@ return {
 			return {
 				formatting = {
 					-- <kind icon> <text> <kind name>
-					fields = { "kind", "abbr", "menu" },
-					format = function(_, vim_item)
-						vim_item.menu = vim_item.kind or ""
-						vim_item.kind = cmp_kinds[vim_item.kind] or ""
-						return vim_item
+					fields = { "abbr", "menu", "kind" },
+					format = function(entry, item)
+						local n = entry.source.name
+						if n == "nvim_lsp" then
+							item.menu = "[LSP]"
+						elseif n == "nvim_lua" then
+							item.menu = "[nvim]"
+						else
+							item.menu = string.format("[%s]", n)
+						end
+
+						item.kind = (cmp_kinds[item.kind] or "") .. "" .. item.kind
+
+						-- if maxwidth and #item.abbr > maxwidth then
+						-- 	local last = item.kind == "Snippet" and "~" or ""
+						-- 	item.abbr = string.format("%s %s", string.sub(item.abbr, 1, maxwidth), last)
+						-- end
+
+						return item
 					end,
+					-- format = function(_, vim_item)
+					-- 	vim_item.menu = vim_item.kind or ""
+					-- 	vim_item.kind = cmp_kinds[vim_item.kind] or ""
+					-- 	return vim_item
+					-- end,
 				},
 				snippet = {
 					expand = function(args)

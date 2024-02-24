@@ -35,6 +35,9 @@ return {
 		}
 		return {
 			scope = { highlight = highlight, enabled = false },
+			exclude = {
+				filetypes = { "dashboard" },
+			},
 			indent = {
 				char = "▎",
 				tab_char = "▎",
