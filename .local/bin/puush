@@ -10,8 +10,8 @@ puush_upload_url="https://puush.me/api/up"
 barstatus set "  Uploading..."
 url=$(curl "$puush_upload_url" -s -F "k=$api_key" -F "z=ShareX/14.1.0" -F "f=@$file_name" | grep -Po '(?<=,)(htt(p|ps):\/\/.+?)(?=,)')
 
-echo "$url" | xclip -selection clipboard
+echo "$url" | wl-copy
 case $(notify-send "File $file_name uploaded" "URL $url copied to clipboard" -a "Puush" -i "puush" -A "open=Open in Browser") in
-    "open") xdg-open "$url" ;;
+"open") xdg-open "$url" ;;
 esac
 barstatus clear

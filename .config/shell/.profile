@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # Adds `~/.local/bin` to $PATH
-export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
+subdirs="$(find ~/.local/bin -type d -printf %p:)"
+export PATH="$PATH:${subdirs%%:}"
 
 export EDITOR="nvim"
 export TERMINAL="alacritty"
@@ -27,6 +28,7 @@ export CUDA_CACHE_PATH="${XDG_CACHE_HOME:-$HOME/.cache}/nv"
 export STACK_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/stack"
 export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
 export XAUTHORITY="${XDG_RUNTIME_DIR:-$HOME}/Xauthority"
 
 export __GL_SYNC_DISPLAY_DEVICE="DP-0"
@@ -38,7 +40,7 @@ export PATH="$PATH:$GOPATH/bin:$CARGO_HOME/bin"
 [ "$(tty)" = "/dev/tty1" ] && ! pidof -s Hyprland >/dev/null 2>&1 && Hyprland
 
 # Regenerate bookmarks on login
-if command -v crossmarks >/dev/null 2>&1 ; then
+if command -v crossmarks >/dev/null 2>&1; then
     crossmarks \
         --input "${XDG_CONFIG_HOME:-HOME/.config}"/shell/bookmarks \
         --lf "${XDG_CONFIG_HOME:-HOME/.config}"/lf/bookmarks \

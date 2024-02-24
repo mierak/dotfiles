@@ -6,7 +6,7 @@ set ifs "\n"
 set icons
 set wrapscroll
 set hidden
-set autoquit on
+set autoquit true
 set info size:time
 set drawbox
 set errorfmt "\033[7;31;40m%s\033[0m"
