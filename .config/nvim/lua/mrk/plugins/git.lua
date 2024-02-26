@@ -1,5 +1,14 @@
 return {
-	{ "sindrets/diffview.nvim" },
+	{
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"sindrets/diffview.nvim",
+
+			"nvim-telescope/telescope.nvim", -- optional
+		},
+		config = true,
+	},
 	{
 		"lewis6991/gitsigns.nvim",
 		opts = {
@@ -52,6 +61,12 @@ return {
 					table.insert(status_txt, "|  " .. head)
 				end
 				return table.concat(status_txt, " ")
+			end,
+		},
+		{
+			"tpope/vim-fugitive",
+			config = function()
+				vim.keymap.set("n", "<leader>tb", "<cmd>Git blame<CR>")
 			end,
 		},
 	},
