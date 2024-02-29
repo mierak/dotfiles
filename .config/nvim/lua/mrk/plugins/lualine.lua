@@ -1,13 +1,7 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	dependencies = { "nvim-tree/nvim-web-devicons", "linrongbin16/lsp-progress.nvim", lazy = true },
+	dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
 	opts = function()
-		vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
-		vim.api.nvim_create_autocmd("User", {
-			group = "lualine_augroup",
-			pattern = "LspProgressStatusUpdated",
-			callback = require("lualine").refresh,
-		})
 		return {
 			options = {
 				theme = "onedark",
@@ -31,7 +25,7 @@ return {
 				lualine_a = { "mode" },
 				lualine_b = { "diagnostics" },
 				lualine_c = { "filename" },
-				lualine_x = { require("lsp-progress").progress, "encoding", "fileformat", "filetype" },
+				lualine_x = { "encoding", "fileformat", "filetype" },
 				lualine_y = { "progress", "location" },
 				lualine_z = { "b:gitsigns_status" },
 			},

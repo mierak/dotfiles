@@ -8,14 +8,12 @@ return {
 	{
 		require("mrk/plugins/lsp/dap"),
 	},
-	{
-		"linrongbin16/lsp-progress.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		opts = {},
-	},
 	"folke/neodev.nvim",
 	{
 		"neovim/nvim-lspconfig",
+		dependencies = {
+			{ "j-hui/fidget.nvim", opts = {} },
+		},
 		opts = {
 			autoformat = false,
 			inlay_hints = { enabled = true },
