@@ -8,11 +8,26 @@ return {
 	{
 		require("mrk/plugins/lsp/dap"),
 	},
+	{
+		"glepnir/lspsaga.nvim",
+		event = "LspAttach",
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		opts = {
+			lightbulb = { enable = false },
+		},
+	},
+
 	"folke/neodev.nvim",
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			{ "j-hui/fidget.nvim", opts = {} },
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
 		},
 		opts = {
 			autoformat = false,
@@ -24,11 +39,15 @@ return {
 					severity_sort = true,
 				},
 			},
+			ensure_installed = { "stylua", "prettier", "shfmt", "shellcheck" },
 			servers = {
 				bashls = {},
 				tsserver = {},
 				clangd = {},
 				jsonls = {},
+				yamlls = {},
+				helm_ls = {},
+				eslint = {},
 				rust_analyzer = {
 					["rust-analyzer"] = {
 						cargo = {
@@ -74,56 +93,72 @@ return {
 		},
 		config = function(_, opts)
 			require("neodev").setup({})
-			local capabilities =
-				require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-			capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 				border = "single",
 			})
-			-- vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-			-- 	vim.lsp.handlers["signature_help"],
-			-- 	{ border = "single", close_events = { "CursorMoved", "BufHidden" } }
-			-- )
 			vim.lsp.set_log_level("off")
 
-			-- Setup keymaps
-			local key = vim.keymap.set
-            -- stylua: ignore
-			local on_attach = function(_, bufnr)
-				key("i", "<c-s>", vim.lsp.buf.signature_help)
-				key("n", "<leader>dn", vim.diagnostic.goto_next, { buffer = bufnr, desc = "Go to next diagnostic" })
-				key("n", "<leader>dp", vim.diagnostic.goto_prev, { buffer = bufnr, desc = "Go to prev diagnostic" })
-				key("n", "<leader>dl", "<cmd>Telescope diagnostics<cr>", { buffer = bufnr, desc = "List diagnostics" })
-				key("n", "<leader>do", vim.diagnostic.open_float, { buffer = bufnr, desc = "Open diagnostics in float" })
-				key("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "Go to declaration" })
-				key("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to definition" })
-				key("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Hover" })
-				key("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "Go to implementation" })
-				key("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "go to type definition" })
-				key("n", "gr", "<cmd>Telescope lsp_references<cr>", { buffer = bufnr, desc = "Find references" })
-				key("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Code actions" })
-				key("n", "<leader>rs", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename" })
-				key("n", "<leader>fs", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", { buffer = bufnr, desc = "Workspace symbols" })
-			end
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+				callback = function(event)
+					local key = function(keys, func, desc)
+						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+					end
+                    -- key("i", "<c-s>", vim.lsp.buf.signature_help)
+                    -- stylua: ignore start
+                    key("<leader>dn",   vim.diagnostic.goto_next,                           "Go to next diagnostic" )
+                    key("<leader>dp",   vim.diagnostic.goto_prev,                           "Go to prev diagnostic" )
+                    key("<leader>dl",   "<cmd>Telescope diagnostics<cr>",                   "List diagnostics" )
+                    key("<leader>do",   vim.diagnostic.open_float,                          "Open diagnostics in float" )
+                    key("gD",           vim.lsp.buf.declaration,                            "Go to declaration" )
+                    key("gd",           vim.lsp.buf.definition,                             "Go to definition" )
+                    key("K",            vim.lsp.buf.hover,                                  "Hover" )
+                    key("gi",           vim.lsp.buf.implementation,                         "Go to implementation" )
+                    key("gt",           vim.lsp.buf.type_definition,                        "Go to type definition" )
+                    key("gr",           "<cmd>Telescope lsp_references<cr>",                "Find references" )
+                    key("<leader>ca",   vim.lsp.buf.code_action,                            "Code actions" )
+                    key("<leader>rs",   vim.lsp.buf.rename,                                 "Rename" )
+                    key("<leader>fs",   "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace symbols" )
+					-- stylua: ignore end
 
-			-- Setup icons
-			local kinds = vim.lsp.protocol.CompletionItemKind
-			local cmp_icons = require("mrk.completion_icons")
-			for i, kind in ipairs(kinds) do
-				kinds[i] = cmp_icons[kind] or kind
-			end
+					-- Highlight references after a short delay of cursor being on top of the word
+					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					if client and client.server_capabilities.documentHighlightProvider then
+						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+							buffer = event.buf,
+							callback = vim.lsp.buf.document_highlight,
+						})
 
-			-- Setup servers
-			for server, config in pairs(opts.servers) do
-				require("lspconfig")[server].setup({
-					on_attach = on_attach,
-					capabilities = capabilities,
-					settings = config,
-				})
-			end
+						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+							buffer = event.buf,
+							callback = vim.lsp.buf.clear_references,
+						})
+					end
+				end,
+			})
 
-			return {}
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+
+			require("mason").setup()
+			require("mason-tool-installer").setup({
+				ensure_installed = vim.list_extend(vim.tbl_keys(opts.servers), opts.ensure_installed),
+				auto_update = true,
+				debounce_hourse = 24,
+			})
+			require("mason-lspconfig").setup({
+				handlers = {
+					function(server_name)
+						local server = opts.servers[server_name] or {}
+						-- This handles overriding only values explicitly passed
+						-- by the server configuration above. Useful when disabling
+						-- certain features of an LSP (for example, turning off formatting for tsserver)
+						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+						require("lspconfig")[server_name].setup(server)
+					end,
+				},
+			})
 		end,
 	},
 }
