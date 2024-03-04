@@ -28,6 +28,7 @@ return {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			"hrsh7th/cmp-nvim-lsp",
 		},
 		opts = {
 			autoformat = false,
@@ -39,7 +40,7 @@ return {
 					severity_sort = true,
 				},
 			},
-			ensure_installed = { "stylua", "prettier", "shfmt", "shellcheck" },
+			ensure_installed = { "stylua", "shfmt", "shellcheck" },
 			servers = {
 				bashls = {},
 				tsserver = {},
@@ -97,11 +98,13 @@ return {
 			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 				border = "single",
 			})
+			vim.diagnostic.config({ float = { border = "single" } })
 			vim.lsp.set_log_level("off")
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 				callback = function(event)
+					local telescope = require("telescope.builtin")
 					local key = function(keys, func, desc)
 						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
@@ -109,17 +112,17 @@ return {
                     -- stylua: ignore start
                     key("<leader>dn",   vim.diagnostic.goto_next,                           "Go to next diagnostic" )
                     key("<leader>dp",   vim.diagnostic.goto_prev,                           "Go to prev diagnostic" )
-                    key("<leader>dl",   "<cmd>Telescope diagnostics<cr>",                   "List diagnostics" )
+                    key("<leader>dl",   telescope.diagnostics,                              "List diagnostics" )
                     key("<leader>do",   vim.diagnostic.open_float,                          "Open diagnostics in float" )
                     key("gD",           vim.lsp.buf.declaration,                            "Go to declaration" )
-                    key("gd",           vim.lsp.buf.definition,                             "Go to definition" )
+                    key("gd",           telescope.lsp_definitions,                          "Go to definition" )
                     key("K",            vim.lsp.buf.hover,                                  "Hover" )
-                    key("gi",           vim.lsp.buf.implementation,                         "Go to implementation" )
+                    key("gi",           telescope.lsp_implementations,                      "Go to implementation" )
                     key("gt",           vim.lsp.buf.type_definition,                        "Go to type definition" )
-                    key("gr",           "<cmd>Telescope lsp_references<cr>",                "Find references" )
+                    key("gr",           telescope.lsp_references,                           "Find references" )
                     key("<leader>ca",   vim.lsp.buf.code_action,                            "Code actions" )
                     key("<leader>rs",   vim.lsp.buf.rename,                                 "Rename" )
-                    key("<leader>fs",   "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace symbols" )
+                    key("<leader>fs",   telescope.lsp_dynamic_workspace_symbols,            "Workspace symbols" )
 					-- stylua: ignore end
 
 					-- Highlight references after a short delay of cursor being on top of the word
