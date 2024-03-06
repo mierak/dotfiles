@@ -10,7 +10,7 @@ return {
 		local function create_tabline()
 			local contents = {}
 			-- TODO hook to nvim tree
-			contents[1] = string.rep(" ", 35)
+			-- contents[1] = string.rep(" ", 35)
 			local marks_length = harpoon:list():length()
 			local current_file_path = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":.")
 

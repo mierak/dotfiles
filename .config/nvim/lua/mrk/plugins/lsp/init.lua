@@ -48,7 +48,7 @@ return {
 				jsonls = {},
 				yamlls = {},
 				helm_ls = {},
-				eslint = {},
+				-- eslint = {},
 				rust_analyzer = {
 					["rust-analyzer"] = {
 						cargo = {
