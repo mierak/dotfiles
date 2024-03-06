@@ -19,10 +19,10 @@ return {
 				local file_name = harpoon_file_path == "" and "(empty)" or vim.fn.fnamemodify(harpoon_file_path, ":t")
 
 				if current_file_path == harpoon_file_path then
-					contents[index + 1] =
+					contents[index] =
 						string.format("%%#HarpoonNumberActive# %s. %%#HarpoonActive#%s ", index, file_name)
 				else
-					contents[index + 1] =
+					contents[index] =
 						string.format("%%#HarpoonNumberInactive# %s. %%#HarpoonInactive#%s ", index, file_name)
 				end
 			end
