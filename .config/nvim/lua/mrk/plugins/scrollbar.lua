@@ -5,8 +5,8 @@ return {
 		show_in_active_only = true,
 		handlers = {
 			cursor = true,
-			diagnostic = true,
-			gitsigns = false, -- Requires gitsigns
+			diagnostic = false,
+			gitsigns = true, -- Requires gitsigns
 			handle = true,
 			search = false, -- Requires hlslens
 			ale = false, -- Requires ALE

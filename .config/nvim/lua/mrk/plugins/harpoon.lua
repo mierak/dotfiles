@@ -8,12 +8,18 @@ return {
 		harpoon:setup()
 
 		local contents = {}
-		local nvim_tree_width = 0
+		local tabline_offset = 0
 
 		local function create_tabline()
-			contents = {}
-			contents[1] = string.rep(" ", nvim_tree_width)
 			local marks_length = harpoon:list():length()
+			if marks_length == 0 then
+				vim.o.tabline = ""
+				vim.o.showtabline = 0
+				return
+			end
+
+			contents = {}
+			contents[1] = string.rep(" ", tabline_offset)
 			local current_file_path = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":.")
 
 			for index = 1, marks_length do
@@ -29,6 +35,7 @@ return {
 				end
 			end
 
+			vim.o.showtabline = 2
 			vim.o.tabline = table.concat(contents)
 		end
 
@@ -40,8 +47,6 @@ return {
         vim.keymap.set("n", "<leader>hf", function() harpoon:list():select(3) end)
         vim.keymap.set("n", "<leader>hp", function() harpoon:list():select(4) end)
 		-- stylua: ignore end
-
-		vim.o.showtabline = 2
 
 		vim.api.nvim_set_hl(0, "HarpoonInactive", { fg = "#63698c" })
 		vim.api.nvim_set_hl(0, "HarpoonActive", { fg = "white" })
@@ -55,20 +60,22 @@ return {
 			end,
 		})
 
-		local api = require("nvim-tree.api")
-		local tree = require("nvim-tree")
+		local has_nvimtree, tree = pcall(require, "nvim-tree")
+		if has_nvimtree then
+			local api = require("nvim-tree.api")
 
-		api.events.subscribe(api.events.Event.Ready, function()
-			nvim_tree_width = tree.config.view.width
-			create_tabline()
-		end)
-		api.events.subscribe(api.events.Event.TreeOpen, function()
-			nvim_tree_width = tree.config.view.width
-			create_tabline()
-		end)
-		api.events.subscribe(api.events.Event.TreeClose, function()
-			nvim_tree_width = 0
-			create_tabline()
-		end)
+			api.events.subscribe(api.events.Event.Ready, function()
+				tabline_offset = tree.config.view.width
+				create_tabline()
+			end)
+			api.events.subscribe(api.events.Event.TreeOpen, function()
+				tabline_offset = tree.config.view.width
+				create_tabline()
+			end)
+			api.events.subscribe(api.events.Event.TreeClose, function()
+				tabline_offset = 0
+				create_tabline()
+			end)
+		end
 	end,
 }

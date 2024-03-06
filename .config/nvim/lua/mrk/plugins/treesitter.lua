@@ -15,6 +15,9 @@ return {
 			vim.filetype.add({
 				pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
 			})
+			vim.filetype.add({
+				pattern = { ["%..*%rc"] = "jsonc" },
+			})
 			require("nvim-treesitter.configs").setup(opts)
 		end,
 	},
