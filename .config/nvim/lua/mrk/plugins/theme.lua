@@ -1,6 +1,26 @@
 --- @type "tokyonight" | "onedark" | "catppuccin"
 local theme = "tokyonight"
 
+local function set_cmp_kind_hl()
+	vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#808080" })
+
+	vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#569CD6" })
+	vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { link = "CmpItemAbbrMatch" })
+
+	vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = "#9CDCFE" })
+	vim.api.nvim_set_hl(0, "CmpItemKindInterface", { link = "CmpItemKindVariable" })
+	vim.api.nvim_set_hl(0, "CmpItemKindText", { link = "CmpItemKindVariable" })
+
+	vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#C586C0" })
+	vim.api.nvim_set_hl(0, "CmpItemKindMethod", { link = "CmpItemKindFunction" })
+
+	vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = "#D4D4D4" })
+	vim.api.nvim_set_hl(0, "CmpItemKindProperty", { link = "CmpItemKindKeyword" })
+	vim.api.nvim_set_hl(0, "CmpItemKindUnit", { link = "CmpItemKindKeyword" })
+
+	vim.api.nvim_set_hl(0, "CursorLine", { bg = "#262a36" })
+end
+
 if theme == "onedark" then
 	return {
 		"navarasu/onedark.nvim",
@@ -38,21 +58,7 @@ if theme == "onedark" then
 			require("onedark").setup(opts)
 			require("onedark").load()
 
-			vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#808080" })
-
-			vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#569CD6" })
-			vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { link = "CmpItemAbbrMatch" })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = "#9CDCFE" })
-			vim.api.nvim_set_hl(0, "CmpItemKindInterface", { link = "CmpItemKindVariable" })
-			vim.api.nvim_set_hl(0, "CmpItemKindText", { link = "CmpItemKindVariable" })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#C586C0" })
-			vim.api.nvim_set_hl(0, "CmpItemKindMethod", { link = "CmpItemKindFunction" })
-
-			vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = "#D4D4D4" })
-			vim.api.nvim_set_hl(0, "CmpItemKindProperty", { link = "CmpItemKindKeyword" })
-			vim.api.nvim_set_hl(0, "CmpItemKindUnit", { link = "CmpItemKindKeyword" })
+			set_cmp_kind_hl()
 
 			vim.api.nvim_set_hl(0, "CursorLine", { bg = "#262a36" })
 
@@ -80,6 +86,7 @@ elseif theme == "tokyonight" then
 		config = function(_, opts)
 			require("tokyonight").setup(opts)
 			vim.cmd.colorscheme("tokyonight")
+			set_cmp_kind_hl()
 		end,
 	}
 elseif theme == "catppuccin" then
@@ -90,6 +97,7 @@ elseif theme == "catppuccin" then
 		config = function(_, opts)
 			require("catppuccin").setup(opts)
 			vim.cmd.colorscheme("catppuccin")
+			set_cmp_kind_hl()
 		end,
 	}
 end

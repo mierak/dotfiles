@@ -7,10 +7,12 @@ return {
 		---@diagnostic disable-next-line: missing-parameter
 		harpoon:setup()
 
+		local contents = {}
+		local nvim_tree_width = 0
+
 		local function create_tabline()
-			local contents = {}
-			-- TODO hook to nvim tree
-			-- contents[1] = string.rep(" ", 35)
+			contents = {}
+			contents[1] = string.rep(" ", nvim_tree_width)
 			local marks_length = harpoon:list():length()
 			local current_file_path = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":.")
 
@@ -19,10 +21,10 @@ return {
 				local file_name = harpoon_file_path == "" and "(empty)" or vim.fn.fnamemodify(harpoon_file_path, ":t")
 
 				if current_file_path == harpoon_file_path then
-					contents[index] =
+					contents[index + 1] =
 						string.format("%%#HarpoonNumberActive# %s. %%#HarpoonActive#%s ", index, file_name)
 				else
-					contents[index] =
+					contents[index + 1] =
 						string.format("%%#HarpoonNumberInactive# %s. %%#HarpoonInactive#%s ", index, file_name)
 				end
 			end
@@ -52,5 +54,21 @@ return {
 				create_tabline()
 			end,
 		})
+
+		local api = require("nvim-tree.api")
+		local tree = require("nvim-tree")
+
+		api.events.subscribe(api.events.Event.Ready, function()
+			nvim_tree_width = tree.config.view.width
+			create_tabline()
+		end)
+		api.events.subscribe(api.events.Event.TreeOpen, function()
+			nvim_tree_width = tree.config.view.width
+			create_tabline()
+		end)
+		api.events.subscribe(api.events.Event.TreeClose, function()
+			nvim_tree_width = 0
+			create_tabline()
+		end)
 	end,
 }
