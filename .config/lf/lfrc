@@ -159,4 +159,8 @@ cmd openvimdir ${{
     $EDITOR $PWD
 }}
 
+cmd copypath ${{
+    printf "$f" | wl-copy
+}}
+
 source "~/.config/lf/bookmarks"
