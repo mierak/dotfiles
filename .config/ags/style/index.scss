@@ -1,0 +1,151 @@
+@use "macchiato.scss" as c;
+
+$color-bg: #1e222a;
+$color-surface: #363a4f;
+
+$widget-spacig: 5px;
+$screen-gap: 10px;
+$widget-radius: 5px;
+$top-gap: 2px;
+$bottom-gap: 2px;
+
+* {
+    font-weight: bold;
+    min-height: 0px;
+    font-size: 13px;
+    font-family:
+        Symbols Nerd Font,
+        JetBrainsMono Nerd Font Mono;
+}
+
+.bar {
+    .widget {
+        border-radius: $widget-radius;
+        margin: $top-gap $widget-spacig $bottom-gap 0px;
+        background-color: $color-bg;
+
+        &:hover {
+            background: $color-surface;
+        }
+
+        &:last-child {
+            margin-right: $screen-gap;
+        }
+
+        & > * {
+            padding: 0px 5px;
+        }
+
+        &.network {
+            color: c.$color-green;
+        }
+
+        &.cpu {
+            color: c.$color-red;
+        }
+
+        &.volume {
+            padding: 0px 0px;
+
+            & > * {
+                color: c.$color-blue;
+            }
+
+            &:hover {
+                background-color: $color-surface;
+            }
+
+            .speaker {
+                padding-left: 10px;
+                border-top-left-radius: $widget-radius;
+                border-bottom-left-radius: $widget-radius;
+            }
+
+            .mic {
+                padding-right: 10px;
+                border-top-right-radius: $widget-radius;
+                border-bottom-right-radius: $widget-radius;
+            }
+        }
+
+        &.time {
+            color: c.$color-text;
+        }
+
+        &.tray {
+            padding: 0px 0px;
+            & :last-child {
+                padding: 0px 5px;
+                border-top-right-radius: $widget-radius;
+                border-bottom-right-radius: $widget-radius;
+            }
+
+            & :first-child {
+                padding: 0px 5px;
+                border-top-left-radius: $widget-radius;
+                border-bottom-left-radius: $widget-radius;
+            }
+
+            & :not(:first-child):not(:last-child) {
+                padding: 0px 5px;
+            }
+
+            .icon {
+                &:hover {
+                    background-color: $color-surface;
+                }
+            }
+        }
+    }
+
+    .workspaces {
+        padding: 0px 0px;
+        margin: $top-gap 0px $bottom-gap $screen-gap;
+
+        .workspace-id {
+            margin-right: 5px;
+        }
+
+        .workspace {
+            border-radius: $widget-radius;
+            background-color: $color-bg;
+            margin-right: $widget-spacig;
+            padding: 0px 5px 0px 10px;
+
+            &:hover {
+                background-color: $color-surface;
+            }
+
+            &.active {
+                background-color: $color-surface;
+            }
+
+            &.urgent {
+                background-color: c.$color-red;
+                border-color: c.$color-red;
+            }
+
+            .app-icon {
+                margin: 0px 5px;
+            }
+        }
+    }
+    .window {
+        margin: $top-gap $widget-spacig $bottom-gap 0px;
+        padding: 0px 10px;
+        border-radius: $widget-radius;
+        background-color: $color-bg;
+
+        &:hover {
+            background-color: $color-surface;
+        }
+
+        .app-icon {
+            margin-right: 5px;
+        }
+
+        .status-icon {
+            margin-right: 5px;
+        }
+    }
+}

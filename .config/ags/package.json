@@ -1,0 +1,11 @@
+{
+  "name": "ags",
+  "module": "config.js",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "sass": "^1.75.0"
+  }
+}
