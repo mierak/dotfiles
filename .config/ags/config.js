@@ -12,15 +12,15 @@ Utils.monitorFile("./src", () => {
 });
 
 Utils.monitorFile(inScss, async () => {
-    console.log(["bun", "run", "sass", inScss, outCss].join(" "));
-    await Utils.execAsync(["bun", "run", "sass", inScss, outCss]);
+    console.log(["bun", "run", "--cwd", App.configDir, "sass", inScss, outCss].join(" "));
+    await Utils.execAsync(["bun", "run", "--cwd", App.configDir, "sass", inScss, outCss]);
     App.resetCss();
     App.applyCss(outCss);
 });
 
 try {
-    console.log(["bun", "run", "sass", inScss, outCss].join(" "));
-    Utils.exec(["bun", "run", "sass", inScss, outCss]);
+    console.log(["bun", "run", "--cwd", App.configDir, "sass", inScss, outCss].join(" "));
+    await Utils.execAsync(["bun", "run", "--cwd", App.configDir, "sass", inScss, outCss]);
     App.applyCss(outCss);
 
     console.log(["bun", "build", entry, "--outdir", outfile, "--external", "resource://*", "--external", "gi://*"].join(" "));
@@ -40,6 +40,11 @@ try {
     await import(`file://${outfile}`);
 } catch (error) {
     console.error(error);
+    let current = "";
+    try {
+        current = await Utils.readFileAsync("/tmp/error.log");
+    } catch (e) {}
+    await Utils.writeFile(`${current} \n ${error}`, "/tmp/ags/error.log");
 }
 
 export {};
