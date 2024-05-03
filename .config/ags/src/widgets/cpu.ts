@@ -16,9 +16,9 @@ function CpuLabel(hovered: TVar<boolean>) {
     });
 }
 
-export function Cpu(args: Pick<Parameters<typeof CollapsibleWidget>[0], "initialMode">) {
+export function Cpu(args: Pick<Parameters<typeof CollapsibleWidget>[0], "initialMode" | "disableHover">) {
     return CollapsibleWidget({
-        initialMode: args.initialMode,
+        ...args,
         child: CpuLabel,
     });
 }

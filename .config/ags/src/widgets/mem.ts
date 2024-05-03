@@ -12,6 +12,9 @@ function MemoryLabel(hovered: TVar<boolean>) {
     });
 }
 
-export function Memory(args: Pick<Parameters<typeof CollapsibleWidget>[0], "initialMode">) {
-    return CollapsibleWidget({ initialMode: args.initialMode, child: MemoryLabel });
+export function Memory(args: Pick<Parameters<typeof CollapsibleWidget>[0], "initialMode" | "disableHover">) {
+    return CollapsibleWidget({
+        ...args,
+        child: MemoryLabel,
+    });
 }

@@ -12,6 +12,9 @@ function DiskLabel(hovered: TVar<boolean>) {
     });
 }
 
-export function Disk(args: Pick<Parameters<typeof CollapsibleWidget>[0], "initialMode">) {
-    return CollapsibleWidget({ initialMode: args.initialMode, child: DiskLabel });
+export function Disk(args: Pick<Parameters<typeof CollapsibleWidget>[0], "initialMode" | "disableHover">) {
+    return CollapsibleWidget({
+        ...args,
+        child: DiskLabel,
+    });
 }

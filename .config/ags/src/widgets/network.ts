@@ -14,6 +14,9 @@ function NetworkLabel(hovered: TVar<boolean>) {
     });
 }
 
-export function Network(args: Pick<Parameters<typeof CollapsibleWidget>[0], "initialMode">) {
-    return CollapsibleWidget({ initialMode: args.initialMode, child: NetworkLabel });
+export function Network(args: Pick<Parameters<typeof CollapsibleWidget>[0], "initialMode" | "disableHover">) {
+    return CollapsibleWidget({
+        ...args,
+        child: NetworkLabel,
+    });
 }

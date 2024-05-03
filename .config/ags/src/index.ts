@@ -17,6 +17,7 @@ const hyprland = await Service.import("hyprland");
 
 function Bar(monitor: Monitor) {
     const mode = monitor.name === "DP-2" ? "collapsed" : "full";
+    const disableHover = monitor.name !== "DP-2";
     return Widget.Window({
         gdkmonitor: hyprToGdkMonitor(monitor),
         name: `bar${monitor.id}`,
@@ -30,10 +31,10 @@ function Bar(monitor: Monitor) {
                 hpack: "end",
                 className: "right",
                 children: [
-                    Memory({ initialMode: mode }),
-                    Disk({ initialMode: mode }),
-                    Network({ initialMode: mode }),
-                    Cpu({ initialMode: mode }),
+                    Memory({ initialMode: mode, disableHover }),
+                    Disk({ initialMode: mode, disableHover }),
+                    Network({ initialMode: mode, disableHover }),
+                    Cpu({ initialMode: mode, disableHover }),
                     Volume(),
                     Systray(),
                     Time(),

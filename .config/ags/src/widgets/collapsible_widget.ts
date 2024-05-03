@@ -3,6 +3,7 @@ import { Variable as TVar } from "types/variable";
 
 type Args = {
     initialMode: "full" | "collapsed";
+    disableHover?: boolean;
     child(hovered: TVar<boolean>): Gtk.Widget;
 };
 
@@ -15,16 +16,20 @@ export function CollapsibleWidget(args: Args) {
     const widget = Widget.Button({
         classNames: ["widget"],
         child: args.child(collapsed),
-        onMiddleClick() {
+    });
+    if (!args.disableHover) {
+        widget.on_middle_click = function () {
             if (leaveConnId && enterConnId) {
                 disconnectCollapsible();
             } else {
                 connectCollapsible();
             }
-        },
-    });
+        };
+    }
 
-    connectCollapsible();
+    if (!args.disableHover) {
+        connectCollapsible();
+    }
 
     return widget;
 
