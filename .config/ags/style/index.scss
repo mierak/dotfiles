@@ -36,12 +36,20 @@ $bottom-gap: 2px;
             padding: 0px 5px;
         }
 
-        &.network {
+        .network {
             color: c.$color-green;
         }
 
-        &.cpu {
+        .cpu {
             color: c.$color-red;
+        }
+
+        .disk {
+            color: c.$color-peach;
+        }
+
+        .memory {
+            color: c.$color-mauve;
         }
 
         &.volume {
@@ -102,7 +110,7 @@ $bottom-gap: 2px;
         padding: 0px 0px;
         margin: $top-gap 0px $bottom-gap $screen-gap;
 
-        .workspace-id {
+        .workspace-label {
             margin-right: 5px;
         }
 

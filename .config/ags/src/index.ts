@@ -7,6 +7,8 @@ import { Volume } from "./widgets/volume";
 import { Network } from "./widgets/network";
 import { Cpu } from "./widgets/cpu";
 import { Time } from "./widgets/time";
+import { Disk } from "./widgets/disk";
+import { Memory } from "./widgets/mem";
 
 App.addIcons(`${App.configDir}/assets`);
 App.addIcons(`${App.configDir}/assets/window-icons`);
@@ -14,6 +16,7 @@ App.addIcons(`${App.configDir}/assets/window-icons`);
 const hyprland = await Service.import("hyprland");
 
 function Bar(monitor: Monitor) {
+    const mode = monitor.name === "DP-2" ? "collapsed" : "full";
     return Widget.Window({
         gdkmonitor: hyprToGdkMonitor(monitor),
         name: `bar${monitor.id}`,
@@ -26,7 +29,15 @@ function Bar(monitor: Monitor) {
             end_widget: Widget.Box({
                 hpack: "end",
                 className: "right",
-                children: [Network(), Cpu(), Volume(), Systray(), Time()],
+                children: [
+                    Memory({ initialMode: mode }),
+                    Disk({ initialMode: mode }),
+                    Network({ initialMode: mode }),
+                    Cpu({ initialMode: mode }),
+                    Volume(),
+                    Systray(),
+                    Time(),
+                ],
             }),
         }),
     });

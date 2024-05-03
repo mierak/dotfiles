@@ -3,43 +3,12 @@ import type { Client, Monitor } from "types/service/hyprland";
 
 const hyprland = await Service.import("hyprland");
 
-const workspaceRename = {
-    1: "1",
-    2: "2",
-    3: "3",
-    4: "4",
-    5: "5",
-    6: "6",
-    7: "7",
-    8: "8",
-    9: "9",
-    10: "10",
-    11: "1",
-    12: "2",
-    13: "3",
-    14: "4",
-    15: "5",
-    16: "6",
-    17: "7",
-    18: "8",
-    19: "9",
-    20: "10",
-    21: "1",
-    22: "2",
-    23: "3",
-    24: "4",
-    25: "5",
-    26: "6",
-    27: "7",
-    28: "8",
-    29: "9",
-    30: "10",
-};
+const workspaceRename = Array.from({ length: 30 }, (_, i) => (i % 10).toString());
 
-function WorkspaceLabel(id: number, _name: string) {
+function WorkspaceLabel(name: string) {
     return Widget.Label({
-        className: "workspace-id",
-        label: workspaceRename[id] ?? id,
+        className: "workspace-label",
+        label: workspaceRename[name] ?? name,
     });
 }
 
@@ -62,13 +31,13 @@ function WorkspaceIcons(id: number) {
 
 function WorkspaceClients(id: number, name: string) {
     return Widget.Box({
-        children: [WorkspaceLabel(id, name), ...WorkspaceIcons(id)],
+        children: [WorkspaceLabel(name), ...WorkspaceIcons(id)],
     }).hook(
         hyprland,
         (self, eventName, _data) => {
             switch (eventName) {
                 case "movewindowv2": {
-                    self.children = [WorkspaceLabel(id, name), ...WorkspaceIcons(id)];
+                    self.children = [WorkspaceLabel(name), ...WorkspaceIcons(id)];
                     break;
                 }
             }

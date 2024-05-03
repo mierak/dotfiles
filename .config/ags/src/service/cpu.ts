@@ -1,3 +1,4 @@
+const interval = 5_000;
 class Cpu extends Service {
     static {
         Service.register(
@@ -15,7 +16,6 @@ class Cpu extends Service {
 
     constructor() {
         super();
-        const interval = 5000;
         Utils.interval(interval, () => {
             Utils.execAsync("head -n1 /proc/stat")
                 .then((stdout) => this.onUpdate(stdout))

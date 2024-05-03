@@ -25,8 +25,32 @@ export function getIconName(client: Client | undefined): string {
     let icon = app_icons.classOrNames[client.class];
 
     if (!icon) {
+        // TODO cache?
+        const filePath = `${App.configDir}/assets/${client.class}.png`;
+        if (fileExists(filePath)) {
+            icon = filePath;
+            app_icons.classOrNames[client.class] = icon;
+        }
+    }
+
+    if (!icon) {
+        // TODO cache?
+        const filePath = `${App.configDir}/assets/${client.class}.svg`;
+        if (fileExists(filePath)) {
+            icon = filePath;
+            app_icons.classOrNames[client.class] = icon;
+        }
+    }
+
+    if (!icon) {
         const binaryName = Utils.exec(`ps -p ${client.pid} -o comm=`);
         icon = app_icons.executables[binaryName];
+        if (!icon) {
+            let key = Object.keys(app_icons.executables).find((key) => key.startsWith(binaryName));
+            if (key) {
+                icon = app_icons.executables[key];
+            }
+        }
         if (icon) {
             app_icons[client.class] = icon;
         }
@@ -42,24 +66,6 @@ export function getIconName(client: Client | undefined): string {
         );
         if (icon_key) {
             icon = app_icons.classOrNames[icon_key];
-            app_icons.classOrNames[client.class] = icon;
-        }
-    }
-
-    if (!icon) {
-        // TODO cache?
-        const filePath = `${App.configDir}/assets/${client.class}.png`;
-        if (fileExists(filePath)) {
-            icon = filePath;
-            app_icons.classOrNames[client.class] = icon;
-        }
-    }
-
-    if (!icon) {
-        // TODO cache?
-        const filePath = `${App.configDir}/assets/${client.class}.svg`;
-        if (fileExists(filePath)) {
-            icon = filePath;
             app_icons.classOrNames[client.class] = icon;
         }
     }

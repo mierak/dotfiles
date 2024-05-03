@@ -1,3 +1,4 @@
+const interval = 5_000;
 class NetworkSpeed extends Service {
     static {
         Service.register(
@@ -14,7 +15,6 @@ class NetworkSpeed extends Service {
 
     constructor() {
         super();
-        const interval = 5000;
         Utils.interval(interval, async () => {
             try {
                 const stdout = await Utils.execAsync(["sh", "-c", "cat /sys/class/net/[ew]*/statistics/*_bytes"]);

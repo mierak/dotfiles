@@ -42,9 +42,9 @@ try {
     console.error(error);
     let current = "";
     try {
-        current = await Utils.readFileAsync("/tmp/error.log");
+        current = await Utils.readFileAsync("/tmp/agserror.log");
     } catch (e) {}
-    await Utils.writeFile(`${current} \n ${error}`, "/tmp/ags/error.log");
+    await Utils.writeFile(`${current} \n ${error}`, "/tmp/agserror.log");
 }
 
 export {};
