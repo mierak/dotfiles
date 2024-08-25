@@ -1,0 +1,118 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 2,
+  "final_space": true,
+  "console_title_template": "{{.Shell}} :: {{.PWD}}",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "white",
+          "template": "╭─"
+        },
+        {
+          "type": "os",
+          "style": "diamond",
+          "powerline_symbol": "",
+          "foreground": "blue",
+          "background": "darkGray",
+          "template": " {{.Icon}} ",
+          "properties": {}
+        },
+        {
+          "type": "shell",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "template": "<b>{{ .UserName }}</b> ",
+          "foreground": "white",
+          "background": "darkGray"
+        },
+        {
+          "type": "text",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "transparent",
+          "background": "transparent",
+          "template": "a"
+        },
+        {
+          "type": "path",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "template": " <b>{{ .Path }}</b> ",
+          "foreground": "black",
+          "background": "white",
+          "properties": {
+            "style": "full"
+          }
+        },
+        {
+          "type": "text",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "transparent",
+          "background": "transparent",
+          "template": "a"
+        },
+        {
+          "type": "git",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "black",
+          "background": "yellow",
+          "template": " <b>{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uF044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uF046 {{ .Staging.String }}{{ end }}</b> ",
+          "properties": {
+            "fetch_status": true,
+            "commit_icon": "@",
+            "branch_icon": "󰘬 "
+          }
+        },
+        {
+          "type": "text",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "transparent",
+          "background": "transparent",
+          "template": "a"
+        },
+        {
+          "type": "status",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "black",
+          "background": "green",
+          "background_templates": ["{{ if .Error }}red{{ end }}"],
+          "template": " <b>{{ .Code }}</b> ",
+          "properties": {
+            "always_enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "alignment": "left",
+      "type": "prompt",
+      "newline": true,
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "white",
+          "template": "╰─"
+        }
+      ]
+    }
+  ],
+  "transient_prompt": {
+    "template": "❯ ",
+    "foreground_templates": [
+      "{{if gt .Code 0}}red{{end}}",
+      "{{if eq .Code 0}}white{{end}}"
+    ],
+    "background": "transparent"
+  }
+}
