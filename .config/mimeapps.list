@@ -27,5 +27,6 @@ x-scheme-handler/media-player=media-player.desktop
 x-scheme-handler-https=browser.desktop
 x-scheme-handler/magnet=torrent.desktop;
 application/x-bittorrent=torrent.desktop;
+x-scheme-handler/jetbrains-gateway=jetbrains-gateway.desktop
 
 [Added Associations]

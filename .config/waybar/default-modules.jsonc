@@ -56,25 +56,6 @@
         "format": "{}",
         "separate-outputs": true
     },
-    "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
-        "format": "{volume}% <span font=\"Symbols Nerd Font 11\">{icon}</span> {format_source}",
-        "format-bluetooth": "{volume}% <span font=\"Symbols Nerd Font 11\">{icon}</span> {format_source}",
-        "format-bluetooth-muted": " <span font=\"Symbols Nerd Font 11\">{icon}</span> {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "{volume}% <span font=\"Symbols Nerd Font 11\"></span>",
-        "format-source-muted": "<span font=\"Symbols Nerd Font 11\"></span>",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
-        },
-        "on-click": "pavucontrol"
-    },
     "mpd": {
         "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
         "format-disconnected": "Disconnected ",
@@ -158,6 +139,23 @@
         "on-click": "helvum",
         "format-icons": ["", "", ""]
     },
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{volume}% <span font=\"Symbols Nerd Font 11\">{icon}</span> {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": "{volume}% <span font=\"Symbols Nerd Font 11\"></span>",
+        "format-source-muted": "<span font=\"Symbols Nerd Font 11\"></span>",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
     "custom/separator-right": {
         "format": "",
         "tooltip": false
@@ -176,6 +174,8 @@
     "group/stats": {
         "orientation": "horizontal",
         "modules": [
+            "idle_inhibitor",
+            "custom/separator-right",
             "network",
             "custom/separator-right",
             "cpu",

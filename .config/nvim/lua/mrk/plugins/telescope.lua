@@ -21,6 +21,7 @@ return {
 			telescope.load_extension("harpoon")
 		end,
 		opts = function()
+			local open = require("trouble.sources.telescope").open
 			return {
 				defaults = {
 					path_display = { "smart" },
@@ -35,8 +36,8 @@ return {
 						},
 					},
 					mappings = {
-						i = { ["<c-t>"] = trouble.open_with_trouble },
-						n = { ["<c-t>"] = trouble.open_with_trouble },
+						i = { ["<c-t>"] = open },
+						n = { ["<c-t>"] = open },
 					},
 				},
 				pickers = {

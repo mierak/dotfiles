@@ -3,12 +3,37 @@ mon_r="HDMI-A-2"
 mon_m="DP-2"
 mon_l="HDMI-A-1"
 
+config="$HOME/.config/hypr/ipc_config.json"
+
+# if directory /tmp/hypr/mrk does not exist, create it
+if [ ! -d "/tmp/hypr/mrk" ]; then
+    mkdir -p /tmp/hypr/mrk
+fi
+
 handle() {
     case "$1" in
-    createworkspace*) handle_workspaces "${1:17:19}" ;;
+    createworkspacev2*)
+        ws="${1:19:2}"
+        ws="${ws//,/}"
+        handle_workspaces "$ws"
+        ;;
     windowtitle*) handle_firefox "${1:13:19}" ;;
     openwindow*) handle_steam "${1:12}" ;;
+    workspacev2*) handle_workspace "${1:13}" ;;
     esac
+}
+
+handle_workspace() {
+    if [ -f "$config" ]; then
+        disable_wallpaper_shuffle=$(jq -r '.disable_wallpaper_shuffle' "$config")
+        if [ "$disable_wallpaper_shuffle" == "true" ]; then
+            return
+        fi
+    fi
+    monitor="$(hyprctl workspaces -j | jq -r --arg id "$(echo "$1" | cut --delimiter="," -f1)" '.[] | select(.id == ($id | tonumber)) | .monitor')"
+    find ~/Pictures/wallpapers -regextype posix-extended -regex ".*(png|jpg|webp)$" |
+        shuf -n 1 |
+        xargs -I {} swww img --resize crop -t none --transition-duration 0.125 --transition-fps 60 {} --outputs "$monitor"
 }
 
 ### Kills the Update News window that pops up every time steam is started
@@ -58,15 +83,15 @@ handle_firefox() {
 ### Moves workspaces to the correct monitors when they are created
 handle_workspaces() {
     # WS 1-10 -> middle monitor
-    if [[ $1 -gt "0" && $1 -lt "11" ]]; then
+    if [[ $1 -gt 0 && $1 -lt 11 ]]; then
         hyprctl dispatch moveworkspacetomonitor "$1" "$mon_m" >/dev/null
     # WS 11-20 -> left monitor
-    elif [[ $1 -gt "10" && $1 -lt "21" ]]; then
+    elif [[ $1 -gt 10 && $1 -lt 21 ]]; then
         hyprctl dispatch moveworkspacetomonitor "$1" "$mon_l" >/dev/null
     # WS 21-30 -> right monitor
-    elif [[ $1 -gt "20" && $1 -lt "31" ]]; then
+    elif [[ $1 -gt 20 && $1 -lt 31 ]]; then
         hyprctl dispatch moveworkspacetomonitor "$1" "$mon_r" >/dev/null
     fi
 }
 
-socat - UNIX-CONNECT:/tmp/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock | while read -r line; do handle "$line"; done
+socat - UNIX-CONNECT:"$XDG_RUNTIME_DIR"/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock | while read -r line; do handle "$line"; done

@@ -24,6 +24,8 @@ user_interface = alternative
 playlist_display_mode = columns
 song_columns_list_format = "(20)[]{a} (40)[]{t} (35)[]{b} (5)[]{l}"
 
+song_library_format = {%n - }{%t}|{%f} TEST
+
 # Playlist
 playlist_disable_highlight_delay = 0
 playlist_separate_albums = no
@@ -35,7 +37,7 @@ now_playing_prefix = $(blue)$b
 now_playing_suffix = $/b$(end)
 
 # Statusbar
-statusbar_visibility = no
+statusbar_visibility = yes
 statusbar_color = blue
 
 progressbar_look = .
@@ -49,7 +51,7 @@ header_visibility = no
 cyclic_scrolling = yes
 display_bitrate = yes
 lines_scrolled = 1
-execute_on_song_change="~/.config/ncmpcpp/ncmpcpp-ueberzug/ncmpcpp_cover_art_kitty"
+# execute_on_song_change="~/.config/ncmpcpp/ncmpcpp-ueberzug/ncmpcpp_cover_art_kitty"
 
 #Borders
 active_window_border = blue

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    url="$(xclip -o)"
+else
+    url="$1"
+fi
+
+url=$(echo "$url" | sed 's/media-player:\/\///')
+case $url in
+*youtube.com/watch* | *youtube.com/shorts* | *youtube.com/playlist* | *youtu.be* | *pornhub.com*)
+    choice=$(echo "browser|mpv" | rofi -sep "|" -dmenu -p "Where to open $url?")
+    echo "$choice" >~/test
+    case "$choice" in
+    "mpv") mpv -quiet --x11-name=mpv-float --geometry=80% --force-window=immediate --ytdl-format="bestvideo[height<=?1080]+bestaudio/best" "$url" >/dev/null 2>&1 ;;
+    "browser") [ -f "$url" ] && setsid -f "$TERMINAL" -e "$EDITOR" "$url" >/dev/null 2>&1 || setsid -f "$BROWSER" "$url" >/dev/null 2>&1 && sleep 0 ;;
+    esac
+    ;;
+*twitch.tv*)
+    mpv -quiet --x11-name=mpv-float --geometry=80% --force-window=immediate --ytdl-format="bestvideo[height<=?1080]+bestaudio/best" --demuxer-readahead-secs=10 --demuxer-max-bytes=200MiB "$url" >/dev/null 2>&1
+    ;;
+*)
+    [ -f "$url" ] && setsid -f "$TERMINAL" -e "$EDITOR" "$url" >/dev/null 2>&1 || setsid -f "$BROWSER" "$url" >/dev/null 2>&1 && sleep 0
+    ;;
+esac

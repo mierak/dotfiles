@@ -10,6 +10,12 @@ return {
 		config = true,
 	},
 	{
+		"tpope/vim-fugitive",
+		config = function()
+			vim.keymap.set("n", "<leader>tb", "<cmd>Git blame<CR>")
+		end,
+	},
+	{
 		"lewis6991/gitsigns.nvim",
 		opts = {
 			on_attach = function()
@@ -61,12 +67,6 @@ return {
 					table.insert(status_txt, "|  " .. head)
 				end
 				return table.concat(status_txt, " ")
-			end,
-		},
-		{
-			"tpope/vim-fugitive",
-			config = function()
-				vim.keymap.set("n", "<leader>tb", "<cmd>Git blame<CR>")
 			end,
 		},
 	},

@@ -43,7 +43,7 @@ alias \
     cat="bat --paging=auto" \
     cd="z" \
     ssh="kitty +kitten ssh" \
-    tms='tmux attach -t "$(\tms -e)"'
+    tms='exec tmux attach -t "$(\tms -e)"'
 
 alias bathelp='bat --plain --language=help'
 help() {

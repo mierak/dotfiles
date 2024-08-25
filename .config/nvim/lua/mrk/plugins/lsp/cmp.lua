@@ -1,5 +1,21 @@
 return {
 	{
+		"zbirenbaum/copilot-cmp",
+		dependencies = {
+			"zbirenbaum/copilot.lua",
+		},
+		config = function()
+			require("copilot").setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+				filetypes = {
+					["*"] = true,
+				},
+			})
+			require("copilot_cmp").setup()
+		end,
+	},
+	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
@@ -67,7 +83,7 @@ return {
 							item.menu = string.format("[%s]", n)
 						end
 
-						item.kind = (cmp_kinds[item.kind] or "") .. "" .. item.kind
+						item.kind = (cmp_kinds[item.kind] or "") .. "" .. (item.kind or "")
 
 						-- if maxwidth and #item.abbr > maxwidth then
 						-- 	local last = item.kind == "Snippet" and "~" or ""
@@ -106,6 +122,7 @@ return {
 					{ name = "nvim_lsp" },
 					{ name = "buffer", keyword_length = 5 },
 					{ name = "luasnip" }, -- For luasnip users.
+					{ name = "copilot" },
 				}),
 				experimental = {
 					native_menu = false,

@@ -1,5 +1,5 @@
 return {
-	"github/copilot.vim",
+	-- "github/copilot.vim",
 	"christoomey/vim-tmux-navigator",
 
 	{
@@ -17,13 +17,13 @@ return {
 	{
 		"karb94/neoscroll.nvim",
 		config = function()
-			require("neoscroll").setup({})
-			require("neoscroll.config").set_mappings({
-				["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "80" } },
-				["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "80" } },
-				["<C-b>"] = { "scroll", { "-vim.fn.winheight(0)", "true", "100" } },
-				["<C-f>"] = { "scroll", { "vim.fn.winheight(0)", "true", "100" } },
-			})
+			-- require("neoscroll").setup({})
+			-- require("neoscroll.config").set_mappings({
+			-- 	["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "80" } },
+			-- 	["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "80" } },
+			-- 	["<C-b>"] = { "scroll", { "-vim.fn.winheight(0)", "true", "100" } },
+			-- 	["<C-f>"] = { "scroll", { "vim.fn.winheight(0)", "true", "100" } },
+			-- })
 		end,
 	},
 	{
@@ -39,6 +39,29 @@ return {
 					note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
 					hex_color = require("mini.hipatterns").gen_highlighter.hex_color(),
 				},
+			})
+		end,
+	},
+	{
+		"michaelrommel/nvim-silicon",
+		lazy = true,
+		cmd = "Silicon",
+		keys = {
+			{ "<leader>ss", ":Silicon<CR>", mode = { "n", "x" }, desc = "Take screenshot to clipboard" },
+		},
+		config = function()
+			require("silicon").setup({
+				font = "JetBrainsMono Nerd Font=34;Noto Color Emoji=34",
+				theme = "tokyonight_night",
+				to_clipboard = true,
+				no_window_controls = false,
+				background = nil,
+				pad_horiz = 40,
+				pad_vert = 30,
+				num_separator = "\u{258f} ",
+				window_title = function()
+					return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()), ":t")
+				end,
 			})
 		end,
 	},

@@ -9,9 +9,10 @@ return {
 
 		local contents = {}
 		local tabline_offset = 0
+		local max_tabs = 6
 
 		local function create_tabline()
-			local marks_length = harpoon:list():length()
+			local marks_length = math.min(max_tabs, harpoon:list():length())
 			if marks_length == 0 then
 				vim.o.tabline = ""
 				vim.o.showtabline = 0
@@ -53,29 +54,29 @@ return {
 		vim.api.nvim_set_hl(0, "HarpoonNumberActive", { fg = "#7aa2f7" })
 		vim.api.nvim_set_hl(0, "HarpoonNumberInactive", { fg = "#7aa2f7" })
 
-		vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd" }, {
-			group = vim.api.nvim_create_augroup("harpoon_tabline", { clear = true }),
-			callback = function()
-				create_tabline()
-			end,
-		})
-
-		local has_nvimtree, tree = pcall(require, "nvim-tree")
-		if has_nvimtree then
-			local api = require("nvim-tree.api")
-
-			api.events.subscribe(api.events.Event.Ready, function()
-				tabline_offset = tree.config.view.width
-				create_tabline()
-			end)
-			api.events.subscribe(api.events.Event.TreeOpen, function()
-				tabline_offset = tree.config.view.width
-				create_tabline()
-			end)
-			api.events.subscribe(api.events.Event.TreeClose, function()
-				tabline_offset = 0
-				create_tabline()
-			end)
-		end
+		-- vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd" }, {
+		-- 	group = vim.api.nvim_create_augroup("harpoon_tabline", { clear = true }),
+		-- 	callback = function()
+		-- 		create_tabline()
+		-- 	end,
+		-- })
+		--
+		-- local has_nvimtree, tree = pcall(require, "nvim-tree")
+		-- if has_nvimtree then
+		-- 	local api = require("nvim-tree.api")
+		--
+		-- 	api.events.subscribe(api.events.Event.Ready, function()
+		-- 		tabline_offset = tree.config.view.width
+		-- 		create_tabline()
+		-- 	end)
+		-- 	api.events.subscribe(api.events.Event.TreeOpen, function()
+		-- 		tabline_offset = tree.config.view.width
+		-- 		create_tabline()
+		-- 	end)
+		-- 	api.events.subscribe(api.events.Event.TreeClose, function()
+		-- 		tabline_offset = 0
+		-- 		create_tabline()
+		-- 	end)
+		-- end
 	end,
 }

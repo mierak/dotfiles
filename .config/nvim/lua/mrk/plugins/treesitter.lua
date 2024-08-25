@@ -18,6 +18,9 @@ return {
 			vim.filetype.add({
 				pattern = { ["%..*%rc"] = "jsonc" },
 			})
+			vim.filetype.add({
+				pattern = { [".*%.mdx"] = "markdown" },
+			})
 			require("nvim-treesitter.configs").setup(opts)
 		end,
 	},

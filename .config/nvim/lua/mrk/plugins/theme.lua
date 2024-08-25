@@ -1,5 +1,5 @@
---- @type "tokyonight" | "onedark" | "catppuccin"
-local theme = "tokyonight"
+--- @type "tokyonight" | "onedark" | "catppuccin" | "kanagawa"
+local theme = "kanagawa"
 
 local function set_cmp_kind_hl()
 	vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#808080" })
@@ -77,11 +77,13 @@ elseif theme == "tokyonight" then
 		priority = 1000,
 		opts = {
 			style = "night",
+			transparent = true,
 			styles = {
 				sidebars = "dark",
 				floats = "dark",
 			},
 			sidebars = { "nvim-tree" },
+			plugins = { auto = true },
 		},
 		config = function(_, opts)
 			require("tokyonight").setup(opts)
@@ -93,10 +95,43 @@ elseif theme == "catppuccin" then
 	return {
 		"catppuccin/nvim",
 		priority = 1000,
-		opts = { flavour = "mocha" },
+		opts = { flavour = "macchiato" },
 		config = function(_, opts)
 			require("catppuccin").setup(opts)
 			vim.cmd.colorscheme("catppuccin")
+			set_cmp_kind_hl()
+		end,
+	}
+elseif theme == "kanagawa" then
+	return {
+		"rebelot/kanagawa.nvim",
+		priority = 1000,
+		opts = {
+			compile = false, -- enable compiling the colorscheme
+			undercurl = true, -- enable undercurls
+			commentStyle = { italic = true },
+			functionStyle = {},
+			keywordStyle = { italic = true },
+			statementStyle = { bold = true },
+			typeStyle = {},
+			transparent = false, -- do not set background color
+			dimInactive = false, -- dim inactive window `:h hl-NormalNC`
+			terminalColors = true, -- define vim.g.terminal_color_{0,17}
+			colors = { -- add/modify theme and palette colors
+				palette = {},
+				theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+			},
+			overrides = function(colors) -- add/modify highlights
+				return {}
+			end,
+			theme = "wave", -- Load "wave" theme when 'background' option is not set
+			background = { -- map the value of 'background' option to a theme
+				dark = "wave", -- try "dragon" !
+				light = "wave",
+			},
+		},
+		init = function()
+			vim.cmd("colorscheme kanagawa")
 			set_cmp_kind_hl()
 		end,
 	}

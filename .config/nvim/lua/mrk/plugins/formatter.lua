@@ -19,7 +19,16 @@ return {
 				typescriptreact = {
 					require("formatter.filetypes.typescriptreact").prettier,
 				},
+				astro = {
+					require("formatter.defaults.prettier"),
+				},
+				markdown = {
+					require("formatter.defaults.prettier"),
+				},
 				css = {
+					require("formatter.filetypes.css").prettier,
+				},
+				scss = {
 					require("formatter.filetypes.css").prettier,
 				},
 				json = {

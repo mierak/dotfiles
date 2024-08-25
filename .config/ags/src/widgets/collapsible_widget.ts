@@ -5,6 +5,7 @@ type Args = {
     initialMode: "full" | "collapsed";
     disableHover?: boolean;
     child(hovered: TVar<boolean>): Gtk.Widget;
+    onClick?: () => void;
 };
 
 export function CollapsibleWidget(args: Args) {
@@ -25,6 +26,9 @@ export function CollapsibleWidget(args: Args) {
                 connectCollapsible();
             }
         };
+    }
+    if (args.onClick) {
+        widget.on_clicked = args.onClick;
     }
 
     if (!args.disableHover) {

@@ -52,6 +52,12 @@ $bottom-gap: 2px;
             color: c.$color-mauve;
         }
 
+        &.menu {
+            border: none;
+            color: c.$color-sapphire;
+            padding: 0px 5px;
+        }
+
         &.volume {
             padding: 0px 0px;
 

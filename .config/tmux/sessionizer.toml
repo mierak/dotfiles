@@ -44,3 +44,13 @@ default = true
 kind = "Plain"
 name = "config"
 workdir = "$HOME/.config"
+
+[[entry]]
+kind = "Plain"
+name = "ags"
+workdir = "$HOME/.config/ags"
+
+[[entry]]
+kind = "Plain"
+name = "hyprland"
+workdir = "$HOME/.config/hypr"

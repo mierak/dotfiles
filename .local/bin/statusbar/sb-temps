@@ -1,6 +1,0 @@
-#!/bin/sh
-
-gpu_temp=$(nvidia-smi -d temperature -q | grep -Po '(?<=GPU Current Temp).*\K \K(\d+)')
-cpu_temp=$(sensors | grep -Po '(?<=Package id 0:).*?\K\d+')
-
-printf "CPU %s°C GPU %s°C" "$cpu_temp" "$gpu_temp"

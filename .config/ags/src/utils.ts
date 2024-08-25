@@ -78,7 +78,7 @@ export function getIconName(client: Client | undefined): string {
 }
 
 export function HyprToGdkMonitor(monitor: Monitor): Gdk.Monitor {
-    const mon = Gdk.Display.get_default()?.get_monitor_at_point(monitor.x, monitor.y);
+    const mon = Gdk.Display.get_default()?.get_monitor_at_point(monitor.x + 1, monitor.y + 1);
     return mon!!;
 }
 

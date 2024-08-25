@@ -146,14 +146,14 @@ case "$mode" in
         prompt_source
         case "$source" in
         "area")
-            filename="$output_dir"/recording-area-"$date".mkv
+            filename="$output_dir"/recording-area-"$date".mp4
             wf-recorder --audio="$(pactl get-default-sink).monitor" -g "$(area_prompt)" -f "$filename" -c "$encoding" >/dev/null 2>&1 &
             echo $! >/tmp/recordingpid
             update_icon "$record_icon"
             echo "$filename" >/tmp/recordingfn
             ;;
         "screen")
-            filename="$output_dir"/recording-screen-"$date".mkv
+            filename="$output_dir"/recording-screen-"$date".mp4
             wf-recorder --audio="$(pactl get-default-sink).monitor" -g "$(monitor_prompt)" -f "$filename" -c "$encoding" >/dev/null 2>&1 &
             echo $! >/tmp/recordingpid
             update_icon "$record_icon"

@@ -48,45 +48,53 @@ return {
 				jsonls = {},
 				yamlls = {},
 				helm_ls = {},
+				["tailwindcss-language-server"] = {},
+				["css-lsp"] = {},
+				["astro-language-server"] = {},
+				["termux-language-server"] = {},
 				-- eslint = {},
 				rust_analyzer = {
-					["rust-analyzer"] = {
-						cargo = {
-							features = "all",
-						},
-						checkOnSave = {
-							command = "clippy",
-						},
-						procMacro = {
-							enable = true,
-							attributes = {
+					settings = {
+						["rust-analyzer"] = {
+							cargo = {
+								features = "all",
+							},
+							checkOnSave = {
+								command = "clippy",
+							},
+							procMacro = {
 								enable = true,
+								attributes = {
+									enable = true,
+								},
 							},
 						},
 					},
 				},
 				lua_ls = {
-					Lua = {
-						runtime = {
-							pathStrict = true,
-						},
-						workspace = {
-							library = vim.api.nvim_get_runtime_file("", true),
-							checkThirdParty = false,
-						},
-						diagnostics = {
-							enable = true,
-							globals = {
-								"vim",
-								"use",
-								"require",
+					settings = {
+						Lua = {
+							runtime = {
+								pathStrict = true,
 							},
-						},
-						completion = {
-							displayContext = 10,
-						},
-						hint = {
-							enable = true,
+							workspace = {
+								library = vim.api.nvim_get_runtime_file("", true),
+								checkThirdParty = false,
+							},
+							diagnostics = {
+								enable = true,
+								globals = {
+									"vim",
+									"use",
+									"require",
+								},
+							},
+							completion = {
+								displayContext = 10,
+							},
+							hint = {
+								enable = true,
+							},
 						},
 					},
 				},
@@ -125,18 +133,13 @@ return {
                     key("<leader>fs",   telescope.lsp_dynamic_workspace_symbols,            "Workspace symbols" )
 					-- stylua: ignore end
 
-					-- Highlight references after a short delay of cursor being on top of the word
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
-					if client and client.server_capabilities.documentHighlightProvider then
-						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-							buffer = event.buf,
-							callback = vim.lsp.buf.document_highlight,
-						})
 
-						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-							buffer = event.buf,
-							callback = vim.lsp.buf.clear_references,
-						})
+					if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+						vim.lsp.inlay_hint.enable(false)
+						key("<leader>th", function()
+							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+						end, "[T]oggle Inlay [H]ints")
 					end
 				end,
 			})

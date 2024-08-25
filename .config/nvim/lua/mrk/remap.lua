@@ -7,7 +7,7 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
-vim.keymap.set("i", "<C-c>", "<Plug>(copilot-dismiss)<C-c>")
+-- vim.keymap.set("i", "<C-c>", "<Plug>(copilot-dismiss)<C-c>")
 
 -- Convenience to to yank to plus register
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
@@ -30,6 +30,7 @@ vim.keymap.set("v", "<leader>fw", builtin.grep_string)
 vim.keymap.set("n", "<leader>fw", function()
 	builtin.grep_string({ search = vim.fn.expand("<cword>") })
 end)
+vim.keymap.set("n", "<leader>fc", builtin.git_status)
 
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 -- vim.keymap.set("n", "<C-e>", "<cmd>Telescope buffers<cr>")

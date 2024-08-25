@@ -1,6 +1,6 @@
 configuration {
 //	modes: "window,drun,run,combi,calc";
-	modi: "run,drun,window,calc";
+	modi: "run,drun,window";
 	show-icons: true;
 	terminal: "alacritty";
 	//drun-display-format: "{icon} {name}";
@@ -11,15 +11,14 @@ configuration {
 	display-drun: "󰀻  Apps ";
     display-run: "  Run ";
 	display-window: "  Window";
-	display-calc: "  Calc";
 	display-combi: "  Combi";
 	display-Network: " 󰤨  Network";
     sidebar-mode: true;
 
 	kb-accept-entry: "Control+m,Return,KP_Enter";
 	kb-remove-to-eol: "";
-	kb-mode-next: "Control+k";
-	kb-mode-previous: "Control+j";
+	kb-mode-next: "Control+j";
+	kb-mode-previous: "Control+k";
 	kb-delete-entry: "Control+Delete";
   timeout {
       action: "kb-cancel";
