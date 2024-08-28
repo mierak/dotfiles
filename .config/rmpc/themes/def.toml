@@ -1,0 +1,182 @@
+album_art_position = "Left"
+album_art_width_percent = 40
+draw_borders = true
+browser_column_widths = [20, 38, 42]
+show_song_table_header = true
+symbols = { song = "🎵", dir = "📁", marker = "" }
+active_tab_style = { fg = "black", bg = "blue", modifiers = "Bold" }
+inactive_tab_style = {}
+border_style = { fg = "blue" }
+highlighted_item_style = { fg = "blue", modifiers = "Bold" }
+higlight_border_style = { fg = "blue" }
+current_item_style = { fg = "black", bg = "blue", modifiers = "Bold" }
+# background_color = "black"
+# modal_background_color = "black"
+
+[progress_bar]
+symbols = ["█", "", "█"]
+track_style = { fg = "#1e2030" }
+elapsed_style = { fg = "blue" }
+thumb_style = { fg = "blue", bg = "#1e2030" }
+
+[scrollbar]
+symbols = ["│", "█", "▲", "▼"]
+track_style = {}
+ends_style = {}
+thumb_style = { fg = "blue" }
+
+[[song_table_format]]
+width_percent = 20
+    [song_table_format.prop]
+    kind = { Property = "Artist" }
+    [song_table_format.prop.default]
+    kind = { Text = "Unknown" }
+
+[[song_table_format]]
+width_percent = 35
+    [song_table_format.prop]
+    kind = { Property = "Title" }
+    [song_table_format.prop.default]
+    kind = { Text = "Unknown" }
+
+[[song_table_format]]
+width_percent = 30
+    [song_table_format.prop]
+    kind = { Property = "Album" }
+    style = { fg = "white" }
+    [song_table_format.prop.default]
+    kind = { Text = "Unknown" }
+    style = { fg = "white" }
+
+[[song_table_format]]
+width_percent = 15
+alignment = "Right"
+    [song_table_format.prop]
+    kind = { Property = "Duration" }
+    [song_table_format.prop.default]
+    kind = { Text = "-" }
+
+[[header.rows]]
+
+[[header.rows.left]]
+
+[header.rows.left.kind]
+Text = "["
+
+[header.rows.left.style]
+fg = "yellow"
+modifiers = "Bold"
+
+[[header.rows.left]]
+
+[header.rows.left.kind.Property]
+Status = "State"
+
+[header.rows.left.style]
+fg = "yellow"
+modifiers = "Bold"
+
+[[header.rows.left]]
+
+[header.rows.left.kind]
+Text = "]"
+
+[header.rows.left.style]
+fg = "yellow"
+modifiers = "Bold"
+
+[[header.rows.center]]
+
+[header.rows.center.kind.Property]
+Song = "Title"
+
+[header.rows.center.style]
+modifiers = "Bold"
+
+[header.rows.center.default.kind]
+Text = "No Song"
+
+[header.rows.center.default.style]
+modifiers = "Bold"
+
+[[header.rows.right]]
+
+[header.rows.right.kind.Property]
+Widget = "Volume"
+
+[header.rows.right.style]
+fg = "blue"
+
+[[header.rows]]
+
+[[header.rows.left]]
+
+[header.rows.left.kind.Property]
+Status = "Elapsed"
+
+[[header.rows.left]]
+
+[header.rows.left.kind]
+Text = " / "
+
+[[header.rows.left]]
+
+[header.rows.left.kind.Property]
+Status = "Duration"
+
+[[header.rows.left]]
+
+[header.rows.left.kind]
+Text = " ("
+
+[[header.rows.left]]
+
+[header.rows.left.kind.Property]
+Status = "Bitrate"
+
+[[header.rows.left]]
+
+[header.rows.left.kind]
+Text = " kbps)"
+
+[[header.rows.center]]
+
+[header.rows.center.kind.Property]
+Song = "Artist"
+
+[header.rows.center.style]
+fg = "yellow"
+modifiers = "Bold"
+
+[header.rows.center.default.kind]
+Text = "Unknown"
+
+[header.rows.center.default.style]
+fg = "yellow"
+modifiers = "Bold"
+
+[[header.rows.center]]
+
+[header.rows.center.kind]
+Text = " - "
+
+[[header.rows.center]]
+
+[header.rows.center.kind.Property]
+Song = "Album"
+
+[header.rows.center.default.kind]
+Text = "Unknown Album"
+
+[[header.rows.right]]
+
+[header.rows.right.kind.Property.Widget.States.active_style]
+fg = "white"
+modifiers = "Bold"
+
+[header.rows.right.kind.Property.Widget.States.separator_style]
+fg = "white"
+
+[header.rows.right.style]
+fg = "dark_gray"
+

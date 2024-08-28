@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+song=$(rmpc song --path "$SELECTED_SONGS" | head -n 1)
+xdg-open "https://www.youtube.com/results?search_query=$(echo "$song" | jq -r '@uri "\(.metadata.artist)%20\(.metadata.title)"')"

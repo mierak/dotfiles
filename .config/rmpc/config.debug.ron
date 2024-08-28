@@ -1,0 +1,86 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    address: "/tmp/mpd_socket",
+    // address: "127.0.0.1:6600",
+    volume_step: 5,
+    theme: Some("def"),
+    cache_dir: Some("/tmp/rmpc/cache"),
+    on_song_change: ["~/.config/rmpc/notify"],
+    status_update_interval_ms: 1000,
+    select_current_song_on_change: false,
+    album_art: (
+        method: Auto,
+        max_size_px: (width:00, height: 00),
+    ),
+    keybinds: (
+        global: {
+            "3":       ArtistsTab,
+            ",":       VolumeDown,
+            "s":       Stop,
+            ".":       VolumeUp,
+            "c":       ToggleSingle,
+            "1":       QueueTab,
+            "6":       SearchTab,
+            "<Right>": NextTab,
+            "<Tab>":   NextTab,
+            "5":       PlaylistsTab,
+            "<Left>":  PreviousTab,
+            "<S-Tab>": PreviousTab,
+            "q":       Quit,
+            "~":       ShowHelp,
+            // "M":       ShowMessages,
+            "O":       ShowOutputs,
+            ":":       CommandMode,
+            "4":       AlbumsTab,
+            "x":       ToggleRandom,
+            ">":       NextTrack,
+            "<":       PreviousTrack,
+            "f":       SeekForward,
+            "v":       ToggleConsume,
+            "2":       DirectoriesTab,
+            "p":       TogglePause,
+            "z":       ToggleRepeat,
+            "b":       SeekBack,
+            "T":       ExternalCommand(command: 
+                       [
+                           "sh", "-c", 
+                           "rm -f /tmp/rmpc/env &&
+                           mkdir -p /tmp/rmpc &&
+                           ~/.config/rmpc/scripts/printenv >> /tmp/rmpc/env"
+                       ], description: "Save test env"),
+        },
+        navigation: {
+            "<C-u>":   UpHalf,
+            "N":       PreviousResult,
+            "a":       Add,
+            "r":       Rename,
+            "n":       NextResult,
+            "g":       Top,
+            "<Space>": Select,
+            "G":       Bottom,
+            "h":       Left,
+            "<CR>":    Confirm,
+            "i":       FocusInput,
+            "J":       MoveDown,
+            "j":       Down,
+            "<C-d>":   DownHalf,
+            "/":       EnterSearch,
+            "<C-c>":   Close,
+            "<Esc>":   Close,
+            "K":       MoveUp,
+            "l":       Right,
+            "D":       Delete,
+            "k":       Up,
+        },
+        queue: {
+            "D":       DeleteAll,
+            "<CR>":    Play,
+            "<C-s>":   Save,
+            "a":       AddToPlaylist,
+            "d":       Delete,
+        },
+    ),
+)
+

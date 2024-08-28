@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+echo "STATE"
+echo "$STATE"
+echo ""
+echo "CURRENT_SONG"
+echo "$CURRENT_SONG"
+echo ""
+echo "SELECTED_SONGS"
+echo "$SELECTED_SONGS"
