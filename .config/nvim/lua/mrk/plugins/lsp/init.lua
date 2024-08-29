@@ -9,6 +9,13 @@ return {
 		require("mrk/plugins/lsp/dap"),
 	},
 	{
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		opts = {
+			tsserver_max_memory = "8192",
+		},
+	},
+	{
 		"felpafel/inlay-hint.nvim",
 		event = "LspAttach",
 		config = true,
