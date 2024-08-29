@@ -4,6 +4,7 @@ return {
 		dependencies = {
 			"zbirenbaum/copilot.lua",
 		},
+		enabled = false,
 		config = function()
 			require("copilot").setup({
 				suggestion = { enabled = false },
@@ -16,7 +17,8 @@ return {
 		end,
 	},
 	{
-		"hrsh7th/nvim-cmp",
+		"yioneko/nvim-cmp",
+		branch = "perf",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
 			"L3MON4D3/LuaSnip",
@@ -122,7 +124,7 @@ return {
 					{ name = "nvim_lsp" },
 					{ name = "buffer", keyword_length = 5 },
 					{ name = "luasnip" }, -- For luasnip users.
-					{ name = "copilot" },
+					-- { name = "copilot" },
 				}),
 				experimental = {
 					native_menu = false,

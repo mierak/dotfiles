@@ -117,7 +117,7 @@
 ---@module "neominimap.config.meta"
 return {
 	"Isrothy/neominimap.nvim",
-	enabled = true,
+	enabled = false,
 	lazy = false, -- NOTE: NO NEED to Lazy load
 	-- Optional
 	keys = {
