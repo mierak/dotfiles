@@ -2,8 +2,6 @@
 #![enable(unwrap_newtypes)]
 #![enable(unwrap_variant_newtypes)]
 (
-    album_art_position: Left,
-    album_art_width_percent: 40,
     draw_borders: true,
     background_color: "black",
     text_color: None,
@@ -30,12 +28,9 @@
         ),
     ),
     scrollbar: (
-        symbols: [
-            "│",
-            "█",
-            "▲",
-            "▼",
-        ],
+
+        symbols: ["", "┃", "", ""],
+        // symbols: ["│", "█", "▲", "▼"],
         track_style: (),
         ends_style: (),
         thumb_style: (
@@ -74,9 +69,6 @@
         ),
         inactive_style: (),
     ),
-    borders_style: (
-        fg: "blue",
-    ),
     highlighted_item_style: (
         fg: "blue",
         modifiers: "Bold",
@@ -86,13 +78,16 @@
         bg: "blue",
         modifiers: "Bold",
     ),
-    highlight_border_style: (
+    borders_style: (
         fg: "blue",
+    ),
+    highlight_border_style: (
+        fg: "red",
     ),
     show_song_table_header: true,
     song_table_format: [
         (
-            prop: (kind: Property(Artist), default: (kind: Text("Unknown"))),
+            prop: (kind: Property(Other("albumartist")), default: (kind: Property(Artist), default: (kind: Text("Unknown")))),
             width_percent: 20,
         ),
         (
@@ -112,7 +107,17 @@
     header: (
         rows: [
             (left: [(kind: Text("["), style: (fg: "yellow", modifiers: "Bold")), (kind: Property(Status(State)), style: (fg: "yellow", modifiers: "Bold")), (kind: Text("]"), style: (fg: "yellow", modifiers: "Bold"))], center: [(kind: Property(Song(Title)), style: (modifiers: "Bold"), default: (kind: Text("No Song"), style: (modifiers: "Bold")))], right: [(kind: Property(Widget(Volume)), style: (fg: "blue"))]),
-            (left: [(kind: Property(Status(Elapsed))), (kind: Text(" / ")), (kind: Property(Status(Duration))), (kind: Text(" (")), (kind: Property(Status(Bitrate))), (kind: Text(" kbps)"))], center: [(kind: Property(Song(Artist)), style: (fg: "yellow", modifiers: "Bold"), default: (kind: Text("Unknown"), style: (fg: "yellow", modifiers: "Bold"))), (kind: Text(" - ")), (kind: Property(Song(Album)), default: (kind: Text("Unknown Album")))], right: [(kind: Property(Widget(States(active_style: (fg: "white", modifiers: "Bold"), separator_style: (fg: "white")))), style: (fg: "dark_gray"))]),
+            (left: [
+                (kind: Property(Status(Elapsed))), 
+                (kind: Text(" / ")), 
+                (kind: Property(Status(Duration))), 
+                (kind: Group([
+                    (kind: Text(" (")), 
+                    (kind: Property(Status(Bitrate))), 
+                    (kind: Text(" kbps)")),
+                ]))
+                ], 
+                center: [(kind: Property(Song(Artist)), style: (fg: "yellow", modifiers: "Bold"), default: (kind: Text("Unknown"), style: (fg: "yellow", modifiers: "Bold"))), (kind: Text(" - ")), (kind: Property(Song(Album)), default: (kind: Text("Unknown Album")))], right: [(kind: Property(Widget(States(active_style: (fg: "white", modifiers: "Bold"), separator_style: (fg: "white")))), style: (fg: "dark_gray"))]),
         ],
     ),
     default_album_art_path: None,

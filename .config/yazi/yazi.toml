@@ -9,7 +9,7 @@ sort_sensitive = false
 sort_reverse 	 = false
 sort_dir_first = true
 sort_translit  = false
-linemode       = "none"
+linemode       = "size_and_mtime"
 show_hidden    = true
 show_symlink   = true
 scrolloff      = 5
@@ -38,6 +38,9 @@ open = [
 	{ run = 'open "$@"',                    desc = "Open", for = "macos" },
 	{ run = 'start "" "%1"', orphan = true, desc = "Open", for = "windows" },
 ]
+imgopen = [
+	{ run = 'nsxivopendir $0', desc = "Open image dir" },
+]
 reveal = [
 	{ run = 'xdg-open "$(dirname "$1")"',           desc = "Reveal", for = "linux" },
 	{ run = 'open -R "$1"',                         desc = "Reveal", for = "macos" },
@@ -61,7 +64,7 @@ rules = [
 	# Text
 	{ mime = "text/*", use = [ "edit", "reveal" ] },
 	# Image
-	{ mime = "image/*", use = [ "open", "reveal" ] },
+	{ mime = "image/*", use = [ "imgopen" ] },
 	# Media
 	{ mime = "{audio,video}/*", use = [ "play", "reveal" ] },
 	# Archive
@@ -102,6 +105,12 @@ preloaders = [
 	{ mime = "font/*", run = "font" },
 	{ mime = "application/vnd.ms-opentype", run = "font" },
 ]
+
+prepend_previewers = [
+    { mime = "{image,audio,video}/*", run = "mediainfo"},
+    { mime = "application/x-subrip", run = "mediainfo"},
+]
+
 previewers = [
 	{ name = "*/", run = "folder", sync = true },
 	# Code

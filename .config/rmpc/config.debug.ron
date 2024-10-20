@@ -2,30 +2,38 @@
 #![enable(unwrap_newtypes)]
 #![enable(unwrap_variant_newtypes)]
 (
-    address: "/tmp/mpd_socket",
-    // address: "127.0.0.1:6600",
+    // address: "/tmp/mpd_socket",
+    // address: "~/.local/share/mpd_socketconfig",
+    address: "127.0.0.1:6600",
+    // password: "test123",
     volume_step: 5,
+    scrolloff: 10,
+    wrap_navigation: true,
     theme: Some("def"),
     cache_dir: Some("/tmp/rmpc/cache"),
-    on_song_change: ["~/.config/rmpc/notify"],
+    on_song_change: ["~/.config/rmpc/scripts/notify"],
+    enable_mouse: true,
     status_update_interval_ms: 1000,
     select_current_song_on_change: false,
     album_art: (
         method: Auto,
-        max_size_px: (width:00, height: 00),
+        max_size_px: (width: 0, height: 0),
+        alignment: BottomCenter,
     ),
     keybinds: (
         global: {
-            "3":       ArtistsTab,
             ",":       VolumeDown,
             "s":       Stop,
             ".":       VolumeUp,
             "c":       ToggleSingle,
-            "1":       QueueTab,
-            "6":       SearchTab,
             "<Right>": NextTab,
             "<Tab>":   NextTab,
-            "5":       PlaylistsTab,
+            "1":       SwitchToTab("Queue"),
+            "2":       SwitchToTab("Directories"),
+            "3":       SwitchToTab("Artists"),
+            "4":       SwitchToTab("Albums"),
+            "5":       SwitchToTab("Playlists"),
+            "6":       SwitchToTab("Search"),
             "<Left>":  PreviousTab,
             "<S-Tab>": PreviousTab,
             "q":       Quit,
@@ -33,46 +41,53 @@
             // "M":       ShowMessages,
             "O":       ShowOutputs,
             ":":       CommandMode,
-            "4":       AlbumsTab,
             "x":       ToggleRandom,
             ">":       NextTrack,
             "<":       PreviousTrack,
             "f":       SeekForward,
             "v":       ToggleConsume,
-            "2":       DirectoriesTab,
             "p":       TogglePause,
             "z":       ToggleRepeat,
             "b":       SeekBack,
+            "R":       Command(command: "test"),
             "T":       ExternalCommand(command: 
-                       [
-                           "sh", "-c", 
+                       [   "sh", "-c", 
                            "rm -f /tmp/rmpc/env &&
                            mkdir -p /tmp/rmpc &&
                            ~/.config/rmpc/scripts/printenv >> /tmp/rmpc/env"
                        ], description: "Save test env"),
+            "Y":       ExternalCommand(command: ["~/.config/rmpc/scripts/ytsearch"], description: "Search selected song on youtube"),
+            "P":       ExternalCommand(command: 
+                       [   "sh", "-c", 
+                           "picard -s \"${XDG_MUSIC_DIR:-$HOME/Music}/$(echo $SELECTED_SONGS | head -n 1)\" 2>&1 >/dev/null"
+                       ], description: "Open in picard"),
         },
         navigation: {
-            "<C-u>":   UpHalf,
-            "N":       PreviousResult,
-            "a":       Add,
-            "r":       Rename,
-            "n":       NextResult,
-            "g":       Top,
-            "<Space>": Select,
-            "G":       Bottom,
-            "h":       Left,
-            "<CR>":    Confirm,
-            "i":       FocusInput,
-            "J":       MoveDown,
-            "j":       Down,
-            "<C-d>":   DownHalf,
-            "/":       EnterSearch,
-            "<C-c>":   Close,
-            "<Esc>":   Close,
-            "K":       MoveUp,
-            "l":       Right,
-            "D":       Delete,
-            "k":       Up,
+            "k":           Up,
+            "j":           Down,
+            "h":           Left,
+            "l":           Right,
+            "<S-Up>":      PaneUp,
+            "<S-Down>":    PaneDown,
+            "<S-Left>":    PaneLeft,
+            "<S-Right>":   PaneRight,
+            "a":           Add,
+            "r":           Rename,
+            "n":           NextResult,
+            "N":           PreviousResult,
+            "g":           Top,
+            "<Space>":     Select,
+            "G":           Bottom,
+            "<CR>":        Confirm,
+            "i":           FocusInput,
+            "J":           MoveDown,
+            "<C-u>":       UpHalf,
+            "<C-d>":       DownHalf,
+            "/":           EnterSearch,
+            "<C-c>":       Close,
+            "<Esc>":       Close,
+            "K":           MoveUp,
+            "D":           Delete,
         },
         queue: {
             "D":       DeleteAll,
@@ -81,6 +96,134 @@
             "a":       AddToPlaylist,
             "d":       Delete,
         },
+        logs: {
+            "D":       Clear,
+        },
     ),
+    search: (
+        case_sensitive: false,
+        mode: Contains,
+        tags: [
+            (value: "any",         label: "Any Tag"),
+            (value: "artist",      label: "Artist"),
+            (value: "album",       label: "Album"),
+            (value: "albumartist", label: "Album Artist"),
+            (value: "title",       label: "Title"),
+            (value: "filename",    label: "Filename"),
+            (value: "genre",       label: "Genre"),
+        ],
+    ),
+    tabs: [
+        (
+            name: "Queue",
+            border_type: None,
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "40%",
+                        pane: Pane(AlbumArt),
+                    ),
+                    (
+                        size: "60%",
+                        pane: Pane(Queue),
+                    ),
+                ],
+            ),
+        ),
+        (
+            name: "Logs",
+            border_type: None,
+            pane: Pane(Logs),
+        ),
+        (
+            name: "Directories",
+            border_type: None,
+            pane: Pane(Directories),
+        ),
+        (
+            name: "Artists",
+            border_type: None,
+            pane: Pane(AlbumThumbnails),
+        ),
+        (
+            name: "Album Artists",
+            border_type: None,
+            pane: Pane(AlbumArtists),
+        ),
+        (
+            name: "Albums",
+            border_type: None,
+            pane: Pane(Albums),
+        ),
+        (
+            name: "Playlists",
+            border_type: None,
+            pane: Pane(Playlists),
+        ),
+        (
+            name: "Search",
+            border_type: None,
+            pane: Pane(Search),
+        ),
+        (
+            name: "Album Art",
+            border_type: None,
+            pane: Pane(AlbumArt),
+        ),
+        (
+            name: "Testing",
+            border_type: Single,
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "40%",
+                        pane: Pane(Queue),
+                    ),
+                    (
+                        size: "60%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "50%",
+                                    pane: Pane(Artists),
+                                ),
+                                (
+                                    size: "50%",
+                                    pane: Split(
+                                        direction: Horizontal,
+                                        panes: [
+                                            (
+                                                size: "40%",
+                                                pane: Pane(AlbumArt),
+                                            ),
+                                            (
+                                                size: "60%",
+                                                pane: Split(
+                                                    direction: Vertical,
+                                                    panes: [
+                                                        (
+                                                            size: "50%",
+                                                            pane: Pane(Search),
+                                                        ),
+                                                        (
+                                                            size: "50%",
+                                                            pane: Pane(Logs),
+                                                        ),
+                                                    ],
+                                                ),
+                                            ),
+                                        ],
+                                    ),
+                                ),
+                            ],
+                        ),
+                    ),
+                ],
+            ),
+        ),
+    ],
 )
 
