@@ -36,19 +36,19 @@ $bottom-gap: 2px;
             padding: 0px 5px;
         }
 
-        .network {
+        &.network {
             color: c.$color-green;
         }
 
-        .cpu {
+        &.cpu {
             color: c.$color-red;
         }
 
-        .disk {
+        &.disk {
             color: c.$color-peach;
         }
 
-        .memory {
+        &.memory {
             color: c.$color-mauve;
         }
 
@@ -116,15 +116,15 @@ $bottom-gap: 2px;
         padding: 0px 0px;
         margin: $top-gap 0px $bottom-gap $screen-gap;
 
-        .workspace-label {
-            margin-right: 5px;
-        }
-
         .workspace {
             border-radius: $widget-radius;
             background-color: $color-bg;
             margin-right: $widget-spacig;
             padding: 0px 5px 0px 10px;
+
+            & .label {
+                margin-right: 5px;
+            }
 
             &:hover {
                 background-color: $color-surface;
@@ -139,11 +139,12 @@ $bottom-gap: 2px;
                 border-color: c.$color-red;
             }
 
-            .app-icon {
+            & .icon {
                 margin: 0px 5px;
             }
         }
     }
+
     .window {
         margin: $top-gap $widget-spacig $bottom-gap 0px;
         padding: 0px 10px;
@@ -158,7 +159,7 @@ $bottom-gap: 2px;
             margin-right: 5px;
         }
 
-        .status-icon {
+        .icon {
             margin-right: 5px;
         }
     }
