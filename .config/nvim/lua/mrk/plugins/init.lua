@@ -30,4 +30,10 @@ return {
 			})
 		end,
 	},
+	{
+		"lewis6991/satellite.nvim",
+		opts = {
+			excluded_filetypes = { "trouble" },
+		},
+	},
 }

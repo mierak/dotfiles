@@ -15,6 +15,55 @@ return {
 			tsserver_max_memory = "8192",
 		},
 	},
+	-- {
+	-- 	"mrcjkb/rustaceanvim",
+	-- 	version = "^5",
+	-- 	lazy = false,
+	-- 	ft = "rust",
+	-- 	init = function()
+	-- 		vim.g.rustaceanvim = {
+	-- 			tools = {
+	-- 				float_win_config = {
+	-- 					border = "single",
+	-- 				},
+	-- 				code_actions = {
+	-- 					ui_select_fallback = false,
+	-- 				},
+	-- 			},
+	-- 			server = {
+	-- 				on_attach = function(client, bufnr)
+	-- 					-- Set keybindings, etc. here.
+	-- 					local key = function(keys, func, desc)
+	-- 						vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
+	-- 					end
+	-- 					-- stylua: ignore start
+	-- 					-- key("<leader>dn",   function() vim.cmd.RustLsp { 'crateGraph', 'x11', '[output]' } end,                           "Go to next diagnostic" )
+	-- 					key("<leader>ca",   function() vim.cmd.RustLsp('codeAction') end,  "Code Actions" )
+	-- 					key("<leader>do",   function() vim.cmd.RustLsp({ 'renderDiagnostic', 'current' }) end,  "Open diagnostics" )
+	-- 					key("<leader>od",   function() vim.cmd.RustLsp('openDocs') end,  "Open docs" )
+	-- 					key("J",   function() vim.cmd.RustLsp('joinLines') end,  "join lines" )
+	-- 				end,
+	-- 				default_settings = {
+	-- 					-- rust-analyzer language server configuration
+	-- 					["rust-analyzer"] = {
+	-- 						cargo = {
+	-- 							features = "all",
+	-- 						},
+	-- 						checkOnSave = {
+	-- 							command = "clippy",
+	-- 						},
+	-- 						procMacro = {
+	-- 							enable = true,
+	-- 							attributes = {
+	-- 								enable = true,
+	-- 							},
+	-- 						},
+	-- 					},
+	-- 				},
+	-- 			},
+	-- 		}
+	-- 	end,
+	-- },
 	{
 		"felpafel/inlay-hint.nvim",
 		event = "LspAttach",
@@ -110,8 +159,7 @@ return {
 			lightbulb = { enable = false },
 		},
 	},
-
-	"folke/neodev.nvim",
+	-- "folke/neodev.nvim",
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -119,7 +167,7 @@ return {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
-			"hrsh7th/cmp-nvim-lsp",
+			-- "hrsh7th/cmp-nvim-lsp",
 		},
 		opts = {
 			autoformat = false,
@@ -134,7 +182,7 @@ return {
 			ensure_installed = { "stylua", "shfmt", "shellcheck" },
 			servers = {
 				bashls = {},
-				tsserver = {},
+				ts_ls = {},
 				clangd = {},
 				jsonls = {},
 				yamlls = {},
@@ -192,11 +240,12 @@ return {
 			},
 		},
 		config = function(_, opts)
-			require("neodev").setup({})
+			-- require("neodev").setup({})
 
 			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 				border = "single",
 			})
+
 			vim.diagnostic.config({ float = { border = "single" } })
 			vim.lsp.set_log_level("off")
 
@@ -236,11 +285,25 @@ return {
 			})
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+			-- capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 			require("mason").setup()
+
+			-- TODO remove this when the issue with RA is solved
+			for _, method in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
+				local default_diagnostic_handler = vim.lsp.handlers[method]
+				vim.lsp.handlers[method] = function(err, result, context, config)
+					if err ~= nil and err.code == -32802 then
+						return
+					end
+					return default_diagnostic_handler(err, result, context, config)
+				end
+			end
+			local toinstall = vim.iter(vim.tbl_keys(opts.servers)):totable()
+			vim.list_extend(toinstall, opts.ensure_installed)
+
 			require("mason-tool-installer").setup({
-				ensure_installed = vim.list_extend(vim.tbl_keys(opts.servers), opts.ensure_installed),
+				ensure_installed = toinstall,
 				auto_update = true,
 				debounce_hourse = 24,
 			})
