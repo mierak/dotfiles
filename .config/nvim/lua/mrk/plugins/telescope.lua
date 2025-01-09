@@ -18,7 +18,6 @@ return {
 
 			telescope.load_extension("ui-select")
 			telescope.load_extension("fzf")
-			telescope.load_extension("harpoon")
 		end,
 		opts = function()
 			local open = require("trouble.sources.telescope").open
@@ -42,7 +41,7 @@ return {
 				},
 				pickers = {
 					find_files = {
-						--find_command = { "fd", "--strip-cwd-prefix", "--type", "f" },
+						find_command = { "fd", "--strip-cwd-prefix", "--type", "f" },
 					},
 				},
 				extensions = {
