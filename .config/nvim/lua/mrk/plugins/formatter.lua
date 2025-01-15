@@ -1,52 +1,29 @@
 return {
-	"mhartington/formatter.nvim",
-	opts = function()
-		return {
-			logging = true,
-			filetype = {
-				lua = {
-					require("formatter.filetypes.lua").stylua,
-				},
-				javascript = {
-					require("formatter.filetypes.javascript").prettier,
-				},
-				javascriptreact = {
-					require("formatter.filetypes.javascriptreact").prettier,
-				},
-				typescript = {
-					require("formatter.filetypes.typescript").prettier,
-				},
-				typescriptreact = {
-					require("formatter.filetypes.typescriptreact").prettier,
-				},
-				astro = {
-					require("formatter.defaults.prettier"),
-				},
-				markdown = {
-					require("formatter.defaults.prettier"),
-				},
-				css = {
-					require("formatter.filetypes.css").prettier,
-				},
-				scss = {
-					require("formatter.filetypes.css").prettier,
-				},
-				json = {
-					require("formatter.filetypes.json").prettier,
-				},
-				jsonc = {
-					require("formatter.filetypes.json").prettier,
-				},
-				rust = {
-					require("formatter.filetypes.rust").rustfmt,
-				},
-				c = {
-					require("formatter.filetypes.c").clangformat,
-				},
-				sh = {
-					require("formatter.filetypes.sh").shfmt,
-				},
-			},
-		}
+	"stevearc/conform.nvim",
+	opts = {
+		formatters_by_ft = {
+			lua = { "stylua" },
+			rust = { "rustfmt" },
+			javascript = { "prettier" },
+			javascriptreact = { "prettier" },
+			typescript = { "prettier" },
+			typescriptreact = { "prettier" },
+			astro = { "prettier" },
+			markdown = { "prettier" },
+			css = { "prettier" },
+			scss = { "prettier" },
+			json = { "prettier" },
+			jsonc = { "prettier" },
+			sh = { "shfmt" },
+		},
+	},
+	config = function(_, opts)
+		require("conform").setup(opts)
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			pattern = "*",
+			callback = function(args)
+				require("conform").format({ bufnr = args.buf })
+			end,
+		})
 	end,
 }

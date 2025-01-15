@@ -13,6 +13,55 @@ return {
 		},
 	},
 	{
+		"mrcjkb/rustaceanvim",
+		version = "^5",
+		lazy = false,
+		ft = "rust",
+		init = function()
+			vim.g.rustaceanvim = {
+				tools = {
+					float_win_config = {
+						border = "single",
+					},
+					code_actions = {
+						ui_select_fallback = false,
+					},
+				},
+				server = {
+					on_attach = function(client, bufnr)
+						-- Set keybindings, etc. here.
+						local key = function(keys, func, desc)
+							vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
+						end
+						-- stylua: ignore start
+						-- key("<leader>dn",   function() vim.cmd.RustLsp { 'crateGraph', 'x11', '[output]' } end,                           "Go to next diagnostic" )
+						key("<leader>ca",   function() vim.cmd.RustLsp('codeAction') end,  "Code Actions" )
+						key("<leader>do",   function() vim.cmd.RustLsp({ 'renderDiagnostic', 'current' }) end,  "Open diagnostics" )
+						key("<leader>od",   function() vim.cmd.RustLsp('openDocs') end,  "Open docs" )
+						key("J",   function() vim.cmd.RustLsp('joinLines') end,  "join lines" )
+					end,
+					default_settings = {
+						-- rust-analyzer language server configuration
+						["rust-analyzer"] = {
+							cargo = {
+								features = "all",
+							},
+							checkOnSave = {
+								command = "clippy",
+							},
+							procMacro = {
+								enable = true,
+								attributes = {
+									enable = true,
+								},
+							},
+						},
+					},
+				},
+			}
+		end,
+	},
+	{
 		"felpafel/inlay-hint.nvim",
 		event = "LspAttach",
 		config = true,
@@ -97,18 +146,6 @@ return {
 		},
 	},
 	{
-		"glepnir/lspsaga.nvim",
-		event = "LspAttach",
-		dependencies = {
-			"nvim-tree/nvim-web-devicons",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		opts = {
-			lightbulb = { enable = false },
-		},
-	},
-	-- "folke/neodev.nvim",
-	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			{ "j-hui/fidget.nvim", opts = {} },
@@ -130,7 +167,6 @@ return {
 			ensure_installed = { "stylua", "shfmt", "shellcheck" },
 			servers = {
 				bashls = {},
-				ts_ls = {},
 				clangd = {},
 				jsonls = {},
 				yamlls = {},
@@ -138,26 +174,25 @@ return {
 				["tailwindcss-language-server"] = {},
 				["css-lsp"] = {},
 				["astro-language-server"] = {},
-				["termux-language-server"] = {},
 				-- eslint = {},
-				rust_analyzer = {
-					settings = {
-						["rust-analyzer"] = {
-							cargo = {
-								features = "all",
-							},
-							checkOnSave = {
-								command = "clippy",
-							},
-							procMacro = {
-								enable = true,
-								attributes = {
-									enable = true,
-								},
-							},
-						},
-					},
-				},
+				-- rust_analyzer = {
+				-- 	settings = {
+				-- 		["rust-analyzer"] = {
+				-- 			cargo = {
+				-- 				features = "all",
+				-- 			},
+				-- 			checkOnSave = {
+				-- 				command = "clippy",
+				-- 			},
+				-- 			procMacro = {
+				-- 				enable = true,
+				-- 				attributes = {
+				-- 					enable = true,
+				-- 				},
+				-- 			},
+				-- 		},
+				-- 	},
+				-- },
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -200,7 +235,7 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 				callback = function(event)
-					local telescope = require("telescope.builtin")
+					-- local telescope = require("telescope.builtin")
 					local key = function(keys, func, desc)
 						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
@@ -208,17 +243,17 @@ return {
                     -- stylua: ignore start
                     key("<leader>dn",   vim.diagnostic.goto_next,                           "Go to next diagnostic" )
                     key("<leader>dp",   vim.diagnostic.goto_prev,                           "Go to prev diagnostic" )
-                    key("<leader>dl",   telescope.diagnostics,                              "List diagnostics" )
+                    -- key("<leader>dl",   telescope.diagnostics,                              "List diagnostics" )
                     key("<leader>do",   vim.diagnostic.open_float,                          "Open diagnostics in float" )
                     key("gD",           vim.lsp.buf.declaration,                            "Go to declaration" )
-                    key("gd",           telescope.lsp_definitions,                          "Go to definition" )
+                    -- key("gd",           telescope.lsp_definitions,                          "Go to definition" )
                     key("K",            vim.lsp.buf.hover,                                  "Hover" )
-                    key("gi",           telescope.lsp_implementations,                      "Go to implementation" )
+                    -- key("gi",           telescope.lsp_implementations,                      "Go to implementation" )
                     key("gt",           vim.lsp.buf.type_definition,                        "Go to type definition" )
-                    key("gr",           telescope.lsp_references,                           "Find references" )
+                    -- key("gr",           telescope.lsp_references,                           "Find references" )
                     key("<leader>ca",   vim.lsp.buf.code_action,                            "Code actions" )
                     key("<leader>rs",   vim.lsp.buf.rename,                                 "Rename" )
-                    key("<leader>fs",   telescope.lsp_dynamic_workspace_symbols,            "Workspace symbols" )
+					-- key("<leader>fs",   telescope.lsp_dynamic_workspace_symbols,            "Workspace symbols" )
 					-- stylua: ignore end
 
 					local client = vim.lsp.get_client_by_id(event.data.client_id)

@@ -1,15 +1,5 @@
 return {
 	{
-		"NeogitOrg/neogit",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"sindrets/diffview.nvim",
-
-			"nvim-telescope/telescope.nvim", -- optional
-		},
-		config = true,
-	},
-	{
 		"tpope/vim-fugitive",
 		config = function()
 			vim.keymap.set("n", "<leader>tb", "<cmd>Git blame<CR>")

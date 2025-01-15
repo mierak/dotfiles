@@ -12,8 +12,6 @@ vim.o.sidescrolloff = 10
 vim.o.cursorline = true
 vim.o.cmdheight = 1
 
--- vim.o.foldmethod = "expr"
--- vim.o.foldexpr = "nvimtreesitter#foldexpr()"
 vim.o.wildmode = "longest,list,full"
 
 vim.o.fillchars = "eob: ,vert:│"
@@ -23,7 +21,3 @@ vim.o.splitright = true
 
 vim.o.smartcase = true
 vim.o.ignorecase = true
-
--- vim.opt.foldenable = false
--- vim.opt.foldmethod = "expr"
--- vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
