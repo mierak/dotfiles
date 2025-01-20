@@ -2,14 +2,27 @@ return {
 	{
 		require("mrk/plugins/lsp/cmp"),
 	},
-	{
-		require("mrk/plugins/lsp/dap"),
-	},
+	-- {
+	-- 	require("mrk/plugins/lsp/dap"),
+	-- },
 	{
 		"pmizio/typescript-tools.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 		opts = {
 			tsserver_max_memory = "8192",
+		},
+	},
+	{
+		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
+		-- used for completion, annotations and signatures of Neovim apis
+		"folke/lazydev.nvim",
+		ft = "lua",
+		opts = {
+			library = {
+				-- Load luvit types when the `vim.uv` word is found
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+				{ path = "/home/mrk/.local/share/nvim/lazy" },
+			},
 		},
 	},
 	{
@@ -43,108 +56,108 @@ return {
 					default_settings = {
 						-- rust-analyzer language server configuration
 						["rust-analyzer"] = {
-							cargo = {
-								features = "all",
-							},
-							checkOnSave = {
-								command = "clippy",
-							},
-							procMacro = {
-								enable = true,
-								attributes = {
-									enable = true,
-								},
-							},
+							-- cargo = {
+							-- 	features = "all",
+							-- },
+							-- checkOnSave = {
+							-- 	command = "clippy",
+							-- },
+							-- procMacro = {
+							-- 	enable = true,
+							-- 	attributes = {
+							-- 		enable = true,
+							-- 	},
+							-- },
 						},
 					},
 				},
 			}
 		end,
 	},
-	{
-		"felpafel/inlay-hint.nvim",
-		event = "LspAttach",
-		config = true,
-		opts = {
-			-- Position of virtual text. Possible values:
-			-- 'eol': right after eol character (default).
-			-- 'right_align': display right aligned in the window.
-			-- 'inline': display at the specified column, and shift the buffer
-			-- text to the right as needed.
-			virt_text_pos = "eol",
-			-- Can be supplied either as a string or as an integer,
-			-- the latter which can be obtained using |nvim_get_hl_id_by_name()|.
-			highlight_group = "LspInlayHint",
-			-- Control how highlights are combined with the
-			-- highlights of the text.
-			-- 'combine': combine with background text color. (default)
-			-- 'replace': only show the virt_text color.
-			hl_mode = "combine",
-			-- line_hints: array with all hints present in current line.
-			-- options: table with this plugin configuration.
-			-- bufnr: buffer id from where the hints come from.
-			display_callback = function(line_hints, options, bufnr)
-				if options.virt_text_pos == "inline" then
-					local lhint = {}
-					for _, hint in pairs(line_hints) do
-						local text = ""
-						local label = hint.label
-						if type(label) == "string" then
-							text = label
-						else
-							for _, part in ipairs(label) do
-								text = text .. part.value
-							end
-						end
-						if hint.paddingLeft then
-							text = " " .. text
-						end
-						if hint.paddingRight then
-							text = text .. " "
-						end
-						lhint[#lhint + 1] = { text = text, col = hint.position.character }
-					end
-					return lhint
-				elseif options.virt_text_pos == "eol" or options.virt_text_pos == "right_align" then
-					local k1 = {}
-					local k2 = {}
-					table.sort(line_hints, function(a, b)
-						return a.position.character < b.position.character
-					end)
-					for _, hint in pairs(line_hints) do
-						local label = hint.label
-						local kind = hint.kind
-						local text = ""
-						if type(label) == "string" then
-							text = label
-						else
-							for _, part in ipairs(label) do
-								text = text .. part.value
-							end
-						end
-						if kind == 1 then
-							k1[#k1 + 1] = text:gsub("^:%s*", "")
-						else
-							k2[#k2 + 1] = text:gsub(":$", "")
-						end
-					end
-					local text = ""
-					if #k2 > 0 then
-						text = "<- (" .. table.concat(k2, ",") .. ")"
-					end
-					if #text > 0 then
-						text = text .. " "
-					end
-					if #k1 > 0 then
-						text = text .. "=> " .. table.concat(k1, ",")
-					end
-
-					return text
-				end
-				return nil
-			end,
-		},
-	},
+	-- {
+	-- 	"felpafel/inlay-hint.nvim",
+	-- 	event = "LspAttach",
+	-- 	config = true,
+	-- 	opts = {
+	-- 		-- Position of virtual text. Possible values:
+	-- 		-- 'eol': right after eol character (default).
+	-- 		-- 'right_align': display right aligned in the window.
+	-- 		-- 'inline': display at the specified column, and shift the buffer
+	-- 		-- text to the right as needed.
+	-- 		virt_text_pos = "eol",
+	-- 		-- Can be supplied either as a string or as an integer,
+	-- 		-- the latter which can be obtained using |nvim_get_hl_id_by_name()|.
+	-- 		highlight_group = "LspInlayHint",
+	-- 		-- Control how highlights are combined with the
+	-- 		-- highlights of the text.
+	-- 		-- 'combine': combine with background text color. (default)
+	-- 		-- 'replace': only show the virt_text color.
+	-- 		hl_mode = "combine",
+	-- 		-- line_hints: array with all hints present in current line.
+	-- 		-- options: table with this plugin configuration.
+	-- 		-- bufnr: buffer id from where the hints come from.
+	-- 		display_callback = function(line_hints, options, bufnr)
+	-- 			if options.virt_text_pos == "inline" then
+	-- 				local lhint = {}
+	-- 				for _, hint in pairs(line_hints) do
+	-- 					local text = ""
+	-- 					local label = hint.label
+	-- 					if type(label) == "string" then
+	-- 						text = label
+	-- 					else
+	-- 						for _, part in ipairs(label) do
+	-- 							text = text .. part.value
+	-- 						end
+	-- 					end
+	-- 					if hint.paddingLeft then
+	-- 						text = " " .. text
+	-- 					end
+	-- 					if hint.paddingRight then
+	-- 						text = text .. " "
+	-- 					end
+	-- 					lhint[#lhint + 1] = { text = text, col = hint.position.character }
+	-- 				end
+	-- 				return lhint
+	-- 			elseif options.virt_text_pos == "eol" or options.virt_text_pos == "right_align" then
+	-- 				local k1 = {}
+	-- 				local k2 = {}
+	-- 				table.sort(line_hints, function(a, b)
+	-- 					return a.position.character < b.position.character
+	-- 				end)
+	-- 				for _, hint in pairs(line_hints) do
+	-- 					local label = hint.label
+	-- 					local kind = hint.kind
+	-- 					local text = ""
+	-- 					if type(label) == "string" then
+	-- 						text = label
+	-- 					else
+	-- 						for _, part in ipairs(label) do
+	-- 							text = text .. part.value
+	-- 						end
+	-- 					end
+	-- 					if kind == 1 then
+	-- 						k1[#k1 + 1] = text:gsub("^:%s*", "")
+	-- 					else
+	-- 						k2[#k2 + 1] = text:gsub(":$", "")
+	-- 					end
+	-- 				end
+	-- 				local text = ""
+	-- 				if #k2 > 0 then
+	-- 					text = "<- (" .. table.concat(k2, ",") .. ")"
+	-- 				end
+	-- 				if #text > 0 then
+	-- 					text = text .. " "
+	-- 				end
+	-- 				if #k1 > 0 then
+	-- 					text = text .. "=> " .. table.concat(k1, ",")
+	-- 				end
+	--
+	-- 				return text
+	-- 			end
+	-- 			return nil
+	-- 		end,
+	-- 	},
+	-- },
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -200,7 +213,9 @@ return {
 								pathStrict = true,
 							},
 							workspace = {
-								library = vim.api.nvim_get_runtime_file("", true),
+								library = {
+									vim.api.nvim_get_runtime_file("", true),
+								},
 								checkThirdParty = false,
 							},
 							diagnostics = {
@@ -256,14 +271,14 @@ return {
 					-- key("<leader>fs",   telescope.lsp_dynamic_workspace_symbols,            "Workspace symbols" )
 					-- stylua: ignore end
 
-					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					-- local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-					if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-						vim.lsp.inlay_hint.enable(true)
-						key("<leader>th", function()
-							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
-						end, "[T]oggle Inlay [H]ints")
-					end
+					-- if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+					-- 	vim.lsp.inlay_hint.enable(true)
+					-- 	key("<leader>th", function()
+					-- 		vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+					-- 	end, "[T]oggle Inlay [H]ints")
+					-- end
 				end,
 			})
 
@@ -273,15 +288,16 @@ return {
 			require("mason").setup()
 
 			-- TODO remove this when the issue with RA is solved
-			for _, method in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
-				local default_diagnostic_handler = vim.lsp.handlers[method]
-				vim.lsp.handlers[method] = function(err, result, context, config)
-					if err ~= nil and err.code == -32802 then
-						return
-					end
-					return default_diagnostic_handler(err, result, context, config)
-				end
-			end
+			-- for _, method in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
+			-- 	local default_diagnostic_handler = vim.lsp.handlers[method]
+			-- 	vim.lsp.handlers[method] = function(err, result, context, config)
+			-- 		if err ~= nil and err.code == -32802 then
+			-- 			return
+			-- 		end
+			-- 		return default_diagnostic_handler(err, result, context, config)
+			-- 	end
+			-- end
+
 			local toinstall = vim.iter(vim.tbl_keys(opts.servers)):totable()
 			vim.list_extend(toinstall, opts.ensure_installed)
 
