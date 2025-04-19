@@ -1,0 +1,6 @@
+#!/bin/env sh
+
+while true; do
+    notify-send "Stretch" "You should stretch right now"
+    sleep 3600
+done
