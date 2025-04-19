@@ -1,0 +1,4 @@
+#!/bin/bash
+# Shorten a path by leaving only the first character of each directory name
+# unless it is a dot directory, in which case leave the dot and the next character
+echo "$1" | awk -F/ '{for(i=1;i<NF;i++) {if(substr($i,1,1) == ".") {printf(".%s/",substr($i,2,1));} else {printf("%s/",substr($i,1,1));}} print $NF}'

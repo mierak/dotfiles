@@ -1,0 +1,167 @@
+# interpreter for shell commands
+set shell sh
+set shellopts '-eu'
+set ifs "\n"
+
+set icons
+set wrapscroll
+set hidden
+set autoquit true
+set info size:time
+set drawbox
+set errorfmt "\033[7;31;40m%s\033[0m"
+set scrolloff 10
+set mouse
+
+# Set image previews
+set previewer ctpv
+set cleaner ctpvclear
+&ctpv -s $id
+&ctpvquit $id
+
+# use enter for shell commands
+map <enter> shell
+
+# execute current file (must be executable)
+map x $$f
+map X !$f
+
+# dedicated keys for file opener actions
+map o &mimeopen $f
+map O $mimeopen --ask $f
+
+# Extract current file with extract function
+map E extract $f
+
+map u upload
+map w $setbg "$f"
+map W wal
+map <c-f> :fzf_jump
+map f :fzf_jump
+map zdi push :zi<space>
+map god $ripdrag -H 32 -x $f
+
+map gv openvimdir
+
+# Map 'a' to exit lf without changing cwd and Q to exit and change cwd
+push m-
+map q push '-Q
+map Q quit
+
+################################################
+#      _                _             _        #
+#  ___| |__   ___  _ __| |_ ___ _   _| |_ ___  #
+# / __| '_ \ / _ \| '__| __/ __| | | | __/ __| #
+# \__ \ | | | (_) | |  | || (__| |_| | |_\__ \ #
+# |___/_| |_|\___/|_|   \__\___|\__,_|\__|___/ #
+#                                              #
+################################################
+
+# Define custom openers for mimetypes that should be swallowed (no setsid)
+cmd open ${{
+    test -L $f && f=$(readlink -f $f)
+    case $(file --mime-type $f -b) in
+        pdf*) zathura $fx;;
+        text/*) $EDITOR $fx;;
+        application/json) $EDITOR $fx;;
+    	image*) sxivopendir $fx ; sleep 0.01;; # sleep as workaround for lf crash when closing an image
+    	video*) mpv $fx;;
+        *) for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done;;
+    esac
+}}
+
+# define a custom 'rename' command without prompt for overwrite
+cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
+map r push :rename<space>
+
+# make sure trash folder exists
+# %mkdir -p ~/.trash
+
+# move current file or selected files to trash folder
+# (also see 'man mv' for backup/overwrite options)
+cmd trash %set -f; mv $fx ~/.trash
+
+# define a custom 'delete' command
+# cmd delete ${{
+#     set -f
+#     printf "$fx\n"
+#     printf "delete?[y/n]"
+#     read ans
+#     [ "$ans" = "y" ] && rm -rf $fx
+# }}
+
+# use '<delete>' key for either 'trash' or 'delete' command
+# map <delete> trash
+# map <delete> delete
+
+# extract the current file with the right command
+# (xkcd link: https://xkcd.com/1168/)
+cmd extract ${{
+    set -f
+    case $f in
+        *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf $f;;
+        *.tar.gz|*.tgz) tar xzvf $f;;
+        *.tar.xz|*.txz) tar xJvf $f;;
+        *.zip) unzip $f;;
+        *.rar) unrar x $f;;
+        *.7z) 7z x $f;;
+    esac
+}}
+
+# compress current file or selected files with tar and gunzip
+cmd tar ${{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    tar czf $1.tar.gz $1
+    rm -rf $1
+}}
+
+# compress current file or selected files with zip
+cmd zip ${{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    zip -r $1.zip $1
+    rm -rf $1
+}}
+
+cmd upload ${{
+    setsid -f puush $f
+}}
+cmd wal ${{
+    wal -i "$f"
+}}
+
+# Zoxide integration
+cmd z %{{
+    result="$(zoxide query --exclude "${PWD}" -- "$@")"
+    lf -remote "send ${id} cd '${result}'"
+}}
+
+cmd zi ${{
+    result="$(zoxide query -i -- "$@")"
+    lf -remote "send ${id} cd '${result}'"
+}}
+
+cmd fzf_jump ${{
+    res="$(find . -maxdepth 1 | fzf --preview 'if [[ -d {} ]]; then exa -la {}; else bat --color=always --style=numbers --line-range=:500 {}; fi' --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    if [ -d "$res" ] ; then
+        cmd="cd"
+    elif [ -f "$res" ] ; then
+        cmd="select"
+    else
+        exit 0
+    fi
+    lf -remote "send $id $cmd \"$res\""
+}}
+
+cmd openvimdir ${{
+    $EDITOR $PWD
+}}
+
+cmd copypath ${{
+    printf "$f" | wl-copy
+}}
+
+source "~/.config/lf/bookmarks"

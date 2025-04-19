@@ -1,0 +1,134 @@
+let mapleader = " "
+
+set shiftwidth=4
+set tabstop=4
+set hlsearch
+set incsearch
+set scrolloff=5
+set number
+set relativenumber
+set ignorecase
+set smartcase
+
+" Highlight copied text
+Plug 'machakann/vim-highlightedyank'
+" Commentary plugin
+Plug 'tpope/vim-commentary'
+
+vmap gc <Action>(CommentByLineComment)<Esc>
+
+set NERDTree
+nnoremap <leader>tt :NERDTreeToggle<CR>
+nnoremap <leader>tf :NERDTreeFocus<CR>
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"map \r <Action>(ReformatCode)
+"map <leader>d <Action>(Debug)
+"map \b <Action>(ToggleLineBreakpoint)
+
+map [1;5C [1;5D
+"map C-d and C-u to always center cursor
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+" Convenience to to yank to plus register(sys clipboard)
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+nnoremap <leader>Y "+Y
+
+nnoremap <leader>p "+p
+vnoremap <leader>p "+p
+nnoremap <leader>P "+P
+
+" goto
+nmap gd <Action>(GotoDeclaration)zz
+nmap gi <Action>(GotoImplementation)zz
+nmap gi <Action>(GotoImplementation)zz
+nmap gr <Action>(ShowUsages)zz
+nmap gR <Action>(FindUsages)
+nmap <leader>gt :action GotoTest)
+nmap <C-o> <Action>(Back)zz
+nmap <C-i> <Action>(Forward)zz
+nmap <C-t> <Action>(Back)zz
+
+" find
+nmap <leader>fh <Action>(FindInPath)
+vmap <leader>fh <Action>(FindInPath)
+nmap <leader>ff <Action>(GotoFile)
+nmap <C-p> <Action>(GoToFile)
+nmap <leader>fa <Action>(GotoAction)
+nmap <leader>fr <Action>(FindUsages)
+nmap <C-y> <Action>(EditorChooseLookupItem)
+imap <C-y> <Action>(EditorChooseLookupItem)
+
+nmap <leader>ca <Action>(ShowIntentionActions)
+vmap <leader>ca <Action>(ShowIntentionActions)
+nmap <leader>rs <Action>(RenameElement)
+vmap <leader>rs <Action>(RenameElement)
+
+nmap <leader>os <Action>(FileStructurePopup)
+nmap <leader>u <Action>(EvaluateExpression)
+vmap <leader>u <Action>(EvaluateExpression)
+
+nmap <leader>tgb <Action>(Annotate)
+nmap <leader>tb <Action>(ToggleLineBreakpoint)
+
+" diagnostic
+nmap <leader>do <Action>(ShowErrorDescription)
+nmap <leader>dn <Action>(GotoNextError)
+
+nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+
+nmap <leader>d <Action>(ChooseDebugConfiguration)
+nmap <leader>i <Action>(ImplementMethods)
+nmap <leader>m <Action>(MakeModule)
+nmap <leader>n <Action>(Maven.Reimport)
+
+nmap <leader>p <Action>(ParameterInfo)
+nmap <leader>[ <Action>(EditorCodeBlockStart)
+nmap <leader>] <Action>(EditorCodeBlockEnd)
+nmap <leader>w <Action>(GotoPreviousError)zz
+nmap <leader>s <Action>(GotoNextError)zz
+nmap <leader>e <Action>(ShowErrorDescription)
+nmap <leader>q <Action>(HideAllWindows)
+nmap <leader>r <Action>(ActivateTerminalToolWindow)
+
+nmap <leader><C-f> <Action>(ShowReformatFileDialog)
+vmap <leader><C-f> <Action>(ShowReformatFileDialog)
+
+" Set whether vim or idea handles given hotkey
+sethandler <S-CR> a:vim
+sethandler <C-S-2> a:vim
+sethandler <C-S-6> a:vim
+sethandler <C-;> a:vim
+sethandler <C-S-;> a:vim
+sethandler <C-A> a:ide
+sethandler <C-B> a:vim
+sethandler <C-C> a:vim
+sethandler <C-D> a:vim
+sethandler <C-E> a:vim
+sethandler <C-F> a:vim
+sethandler <C-G> a:ide
+sethandler <C-H> a:vim
+sethandler <C-I> a:vim
+sethandler <C-J> a:vim
+sethandler <C-K> a:vim
+sethandler <C-L> a:vim
+sethandler <C-M> a:vim
+sethandler <C-N> a:vim
+sethandler <C-O> a:vim                                                                                                                                                                                                                  
+sethandler <C-P> a:vim
+sethandler <C-Q> a:vim
+sethandler <C-R> a:vim
+sethandler <C-S> a:vim
+sethandler <C-T> a:vim
+sethandler <C-U> a:vim
+sethandler <C-V> a:vim
+sethandler <C-W> a:vim
+sethandler <C-X> a:ide
+sethandler <C-Y> a:vim
+sethandler <C-[> a:vim
+sethandler <C-]> a:vimset ideajoin

@@ -1,0 +1,588 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    address: "/tmp/mpd_socket",
+    // address: "~/.local/share/mpd_socketconfig",
+    // address: "127.0.0.1:6600",
+    // password: "test123",
+    volume_step: 5,
+    scrolloff: 5,
+    wrap_navigation: true,
+    max_fps: 144,
+    theme: "cattpuccin-macchiato",
+    cache_dir: "/tmp/rmpc/cache",
+    lyrics_dir: "~/Music",
+    on_song_change: ["~/.config/rmpc/scripts/autolrc"],
+    on_resize: ["~/.config/rmpc/scripts/onresize"],
+    enable_mouse: true,
+    status_update_interval_ms: 1000,
+    select_current_song_on_change: true,
+    album_art: (
+        method: Auto,
+        // max_size_px: (width: 500, height: 500),
+        max_size_px: (width: 0, height: 0),
+        vertical_align: Center,
+        horizontal_align: Center,
+    ),
+    keybinds: (
+        global: {
+            ",":       VolumeDown,
+            "s":       Stop,
+            ".":       VolumeUp,
+            "c":       ToggleSingle,
+            "<Right>": NextTab,
+            "<Tab>":   NextTab,
+            "<Left>":  PreviousTab,
+            "<S-Tab>": PreviousTab,
+            "1":       SwitchToTab("Queue"),
+            "2":       SwitchToTab("Directories"),
+            "3":       SwitchToTab("Artists"),
+            "4":       SwitchToTab("Album Artists"),
+            "5":       SwitchToTab("Albums"),
+            "6":       SwitchToTab("Playlists"),
+            "7":       SwitchToTab("Search"),
+            "q":       Quit,
+            "~":       ShowHelp,
+            "I":       ShowCurrentSongInfo,
+            // "M":       ShowMessages,
+            "O":       ShowOutputs,
+            "<C-p>":       ShowDecoders,
+            ":":       CommandMode,
+            "x":       ToggleRandom,
+            ">":       NextTrack,
+            "<":       PreviousTrack,
+            "f":       SeekForward,
+            "v":       ToggleConsume,
+            "p":       TogglePause,
+            "z":       ToggleRepeat,
+            "b":       SeekBack,
+            "R":       Command(command: "test"),
+            "T":       ExternalCommand(command: 
+                       [   "sh", "-c", 
+                           "rm -f /tmp/rmpc/env &&
+                           mkdir -p /tmp/rmpc &&
+                           ~/.config/rmpc/scripts/printenv >> /tmp/rmpc/env"
+                       ], description: "Save test env"),
+            "Y":       ExternalCommand(command: ["~/.config/rmpc/scripts/ytsearch"], description: "Search selected song on youtube"),
+            "P":       ExternalCommand(command: 
+                       [   "sh", "-c", 
+                           "picard -s \"${XDG_MUSIC_DIR:-$HOME/Music}/$(echo $SELECTED_SONGS | head -n 1)\" 2>&1 >/dev/null"
+                       ], description: "Open in picard"),
+            "W":       ExternalCommand(command: ["~/.config/rmpc/scripts/printenv"], description: "Search selected song on youtube"),
+        },
+        navigation: {
+            "k":           Up,
+            "j":           Down,
+            "h":           Left,
+            "l":           Right,
+            "<S-Up>":      PaneUp,
+            "<S-Down>":    PaneDown,
+            "<S-Left>":    PaneLeft,
+            "<S-Right>":   PaneRight,
+            "a":           Add,
+            "A":           AddAll,
+            "r":           Rename,
+            "n":           NextResult,
+            "N":           PreviousResult,
+            "g":           Top,
+            "<Space>":     Select,
+            "<C-Space>":     InvertSelection,
+            "G":           Bottom,
+            "<CR>":        Confirm,
+            "i":           FocusInput,
+            "J":           MoveDown,
+            "<C-u>":       UpHalf,
+            "<C-d>":       DownHalf,
+            "/":           EnterSearch,
+            "<C-c>":       Close,
+            "<Esc>":       Close,
+            "K":           MoveUp,
+            "D":           Delete,
+        },
+        queue: {
+            "D":       DeleteAll,
+            "<CR>":    Play,
+            "<C-s>":   Save,
+            "a":       AddToPlaylist,
+            "d":       Delete,
+            "i":       ShowInfo,
+            "C":       JumpToCurrent,
+        },
+        logs: {
+            "D":       Clear,
+            "S":       ToggleScroll,
+        },
+    ),
+    artists: (
+        album_display_mode: SplitByDate,
+        album_sort_by: Date,
+    ),
+    search: (
+        case_sensitive: false,
+        mode: Contains,
+        tags: [
+            (value: "any",         label: "Any Tag"),
+            (value: "artist",      label: "Artist"),
+            (value: "album",       label: "Album"),
+            (value: "albumartist", label: "Album Artist"),
+            (value: "title",       label: "Title"),
+            (value: "filename",    label: "Filename"),
+            (value: "genre",       label: "Genre"),
+        ],
+    ),
+    tabs: [
+        (
+            name: "Queue",
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "100%",
+                        pane: Pane(Queue),
+                    ),
+                ],
+            ),
+        ),
+        // (
+        //     name: "Logs",
+        //     border_type: None,
+        //     pane: Pane(Logs),
+        // ),
+        (
+            name: "Directories",
+            border_type: None,
+            pane: Pane(Directories),
+        ),
+        (
+            name: "Artists",
+            border_type: None,
+            pane: Pane(Artists),
+            // pane: Pane(AlbumThumbnails),
+        ),
+        (
+            name: "Album Artists",
+            border_type: None,
+            pane: Pane(AlbumArtists),
+        ),
+        (
+            name: "Albums",
+            border_type: None,
+            pane: Pane(Albums),
+        ),
+        (
+            name: "Playlists",
+            border_type: None,
+            pane: Pane(Playlists),
+        ),
+        (
+            name: "Search",
+            border_type: None,
+            pane: Pane(Search),
+        ),
+        (
+            name: "Testing",
+            border_type: Single,
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "40%",
+                        pane: Pane(Queue),
+                    ),
+                    (
+                        size: "60%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "50%",
+                                    pane: Pane(Artists),
+                                ),
+                                (
+                                    size: "50%",
+                                    pane: Split(
+                                        direction: Horizontal,
+                                        panes: [
+                                            // (
+                                            //     size: "40%",
+                                            //     pane: Pane(AlbumArt),
+                                            // ),
+                                            (
+                                                size: "60%",
+                                                pane: Split(
+                                                    direction: Vertical,
+                                                    panes: [
+                                                        (
+                                                            size: "50%",
+                                                            pane: Pane(Search),
+                                                        ),
+                                                        // (
+                                                        //     size: "50%",
+                                                        //     pane: Pane(Logs),
+                                                        // ),
+                                                    ],
+                                                ),
+                                            ),
+                                        ],
+                                    ),
+                                ),
+                            ],
+                        ),
+                    ),
+                ],
+            ),
+        ),
+        (
+            name: "Testing2",
+            border_type: Full,
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "40%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "50%",
+                                    pane: Split(
+                                        direction: Vertical,
+                                        panes: [
+                                            (
+                                                size: "3",
+                                                pane: Pane(Lyrics),
+                                            ),
+                                        ]
+                                    )
+                                ),
+                                (
+                                    size: "50%",
+                                    pane: Split(
+                                        direction: Vertical,
+                                        panes: [
+                                            (
+                                                size: "3",
+                                                pane: Pane(Lyrics),
+                                            ),
+                                            (
+                                                size: "100%",
+                                                pane: Pane(Artists),
+                                            ),
+                                        ]
+                                    )
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        size: "60%",
+                        pane: Pane(Queue),
+                    ),
+                ],
+            ),
+        ),
+        (
+            name: "Testing3",
+            border_type: Single,
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "20%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        size: "20%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "25%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "25%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "25%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "25%",
+                                    pane: Pane(Directories),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        size: "20%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        size: "20%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "25%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "25%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "25%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "25%",
+                                    pane: Pane(Directories),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        size: "20%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    borders: "RIGHT | BOTTOM",
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                            ]
+                        ),
+                    ),
+                ],
+            ),
+        ),
+        (
+            name: "Testing4",
+            border_type: Full,
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "20%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        size: "20%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "3",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Lyrics),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Lyrics),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Lyrics),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        size: "20%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Lyrics),
+                                ),
+                                (
+                                    size: "40%",
+                                    pane: Pane(Directories),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        size: "20%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Lyrics),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        size: "20%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Lyrics),
+                                ),
+                                (
+                                    size: "20%",
+                                    pane: Pane(Directories),
+                                ),
+                            ]
+                        ),
+                    ),
+                ],
+            ),
+        ),
+    ],
+)
+

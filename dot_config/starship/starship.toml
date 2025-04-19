@@ -1,0 +1,55 @@
+format = """
+[╭](fg:current_line)\
+$os\
+$username\
+$directory\
+$git_branch\
+$git_metrics\
+$fill\
+$cmd_duration\
+$line_break\
+$character\
+"""
+
+add_newline = true
+
+[os]
+format = '[](fg:bright-black)[ $symbol ](fg:blue bg:bright-black)'
+disabled = false
+
+[cmd_duration]
+min_time = 0
+format = '[](fg:blue)[ $duration ](fg:black bg:blue)[](fg:blue)[─](fg:white)'
+
+[username]
+format = '[  ](fg:white bg:bright-black)[$user ](fg:white bg:bright-black)[](fg:bright-black)'
+show_always = true
+
+[os.symbols]
+Arch = ''
+NixOS = ''
+Ubuntu = ''
+Windows = ''
+
+[directory]
+format = '[─](fg:white)[](fg:white)[ 󰷏 ](fg:black bg:white)[$read_only$truncation_symbol$path ](fg:black bg:white)[](fg:white)'
+truncation_length = 2
+
+[git_branch]
+format = '[─](fg:white)[](fg:yellow)[ $symbol $branch(:$remote_branch)](fg:black bg:yellow)'
+symbol = ''
+
+[git_metrics]
+added_style = 'bold blue'
+format = '[ +$added](fg:black bg:yellow)[/](fg:black bg:yellow)[-$deleted ](fg:black bg:yellow)[](fg:yellow)'
+disabled = false
+
+[fill]
+symbol = '─'
+style = 'fg:current_line'
+
+[character]
+format = """
+[╰─$symbol](fg:current_line) """
+success_symbol = '[λ](fg:bold white)'
+error_symbol = '[×](fg:bold red)'

@@ -1,0 +1,40 @@
+[config]
+alignment = left
+
+[global]
+    monitor = 2
+    frame_color = "#3f485a"
+    separator_color= frame
+    follow = none
+    width = (100,550)
+    height = 350
+    offset = 10x38
+    padding = 15
+    horizontal_padding = 15
+    transparency = 5
+    font = Monospace 12
+    format = "<b>%s</b>\n%b"
+    enable_recursive_icon_lookup = true
+    min_icon_size = 24
+    max_icon_size = 96
+    icon_theme = Adwaita
+    separator_height = 3
+    dmenu = "rofi -dmenu -p dunst"
+    corner_radius = 10
+    browser = xdg-open
+
+[urgency_low]
+    background = "#1e222a"
+    foreground = "#c8ccd4"
+    timeout = 3
+
+[urgency_normal]
+    background = "#1e222a"
+    foreground = "#c8ccd4"
+    timeout = 5
+
+[urgency_critical]
+    background = "#1e222a"
+    foreground = "#c8ccd4"
+    frame_color = "#e06c75"
+    timeout = 10

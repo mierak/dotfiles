@@ -1,0 +1,19 @@
+[user]
+	email = mrkpwnz@gmail.com
+	name = mrk
+	signingkey = 83F0F6C439FB9594
+[credential]
+	credentialStore = gpg
+	helper = 
+	helper = /usr/bin/git-credential-manager-core
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[diff]
+	tool = nvimdiff
+[commit]
+	gpgsign = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

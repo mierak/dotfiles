@@ -1,0 +1,37 @@
+configuration {
+//	modes: "window,drun,run,combi,calc";
+	modi: "run,drun,window";
+	show-icons: true;
+	terminal: "alacritty";
+	//drun-display-format: "{icon} {name}";
+    window-format: "<span fgalpha='65%'>[{w:-1}] </span><b>{c:-1}</b> <span weight='light' fgalpha='65%' size='small'>{t:-1}</span>";
+    drun-display-format: "<b>{name}</b>[ <span weight='light' size='small'><i>({generic})</i></span>][ <span weight='light' fgalpha='65%' size='small'>{exec}</span>]";
+	window-format: "{icon} {title}";
+	location: 0;
+	display-drun: "󰀻  Apps ";
+    display-run: "  Run ";
+	display-window: "  Window";
+	display-combi: "  Combi";
+	display-Network: " 󰤨  Network";
+    sidebar-mode: true;
+
+	kb-accept-entry: "Control+m,Return,KP_Enter";
+	kb-remove-to-eol: "";
+	kb-mode-next: "Control+j";
+	kb-mode-previous: "Control+k";
+	kb-delete-entry: "Control+Delete";
+  timeout {
+      action: "kb-cancel";
+      delay:  0;
+  }
+  filebrowser {
+      directories-first: true;
+      sorting-method:    "name";
+  }
+  icon {
+      theme: "hicolor";
+  }
+}
+
+// @theme "catppuccin-macchiato"
+@theme "singlecol"

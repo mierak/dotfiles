@@ -1,0 +1,98 @@
+font-size = 12
+
+font-family = VictorMono NF Regular
+font-family-italic = VictorMono NF Italic
+font-family-bold = VictorMono NF Bold
+font-family-bold-italic = VictorMono NF Bold Italic
+
+adjust-cell-width = -10%
+mouse-scroll-multiplier = 0.5
+auto-update = off
+background-opacity = 0.95
+window-padding-color = background
+window-padding-balance = false
+shell-integration = zsh
+window-inherit-working-directory = true
+
+window-theme = ghostty
+gtk-adwaita = true
+gtk-titlebar=true
+window-decoration = false
+gtk-tabs-location = bottom
+
+unfocused-split-opacity = 1.0
+
+
+keybind = ctrl+shift+plus=increase_font_size:1
+keybind = ctrl+minus=decrease_font_size:1
+keybind = ctrl+equal=reset_font_size
+
+# keybind = ctrl+a>c=new_tab
+# keybind = ctrl+a>n=next_tab
+# keybind = ctrl+a>p=previous_tab
+# keybind = ctrl+a>x=close_surface
+
+fullscreen = false
+bold-is-bright = true
+# background = #1f1f28
+# foreground = #dcd7ba
+# selection-background = #2d4f67
+# selection-foreground = #c8c093
+# cursor-color = #c8c093
+# palette = 0=#090618
+# palette = 1=#c34043
+# palette = 2=#76946a
+# palette = 3=#c0a36e
+# palette = 4=#7e9cd8
+# palette = 5=#957fb8
+# palette = 6=#6a9589
+# palette = 7=#c8c093
+# palette = 8=#727169
+# palette = 9=#e82424
+# palette = 10=#98bb6c
+# palette = 11=#e6c384
+# palette = 12=#7fb4ca
+# palette = 13=#938aa9
+# palette = 14=#7aa89f
+# palette = 15=#dcd7ba
+
+# foreground = #CAD3F5
+# background = #24273A
+# palette = 0=#494D64
+# palette = 1=#ED8796
+# palette = 2=#A6DA95
+# palette = 3=#EED49F
+# palette = 4=#8AADF4
+# palette = 5=#F5BDE6
+# palette = 6=#8BD5CA
+# palette = 7=#B8C0E0
+# palette = 8=#5B6078
+# palette = 9=#ED8796
+# palette = 10=#A6DA95
+# palette = 11=#EED49F
+# palette = 12=#8AADF4
+# palette = 13=#F5BDE6
+# palette = 14=#8BD5CA
+# palette = 15=#A5ADCB
+
+background = #1a1b26
+foreground = #c0caf5
+palette = 0=#15161e
+palette = 1=#f7768e
+palette = 2=#9ece6a
+palette = 3=#e0af68
+palette = 4=#7aa2f7
+palette = 5=#bb9af7
+palette = 6=#7dcfff
+palette = 7=#a9b1d6
+palette = 8=#414868
+palette = 9=#f7768e
+palette = 10=#9ece6a
+palette = 11=#e0af68
+palette = 12=#7aa2f7
+palette = 13=#bb9af7
+palette = 14=#7dcfff
+palette = 15=#c0caf5
+palette = 16=#ff9e64
+palette = 17=#db4b4b
+

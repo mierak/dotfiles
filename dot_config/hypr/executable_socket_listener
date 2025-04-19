@@ -1,0 +1,97 @@
+#!/bin/bash
+mon_r="HDMI-A-2"
+mon_m="DP-1"
+mon_l="HDMI-A-1"
+
+config="$HOME/.config/hypr/ipc_config.json"
+
+# if directory /tmp/hypr/mrk does not exist, create it
+if [ ! -d "/tmp/hypr/mrk" ]; then
+    mkdir -p /tmp/hypr/mrk
+fi
+
+handle() {
+    case "$1" in
+    # createworkspacev2*)
+    #     ws="${1:19:2}"
+    #     ws="${ws//,/}"
+    #     handle_workspaces "$ws"
+    #     ;;
+    windowtitle*) handle_firefox "${1:13:19}" ;;
+    openwindow*) handle_steam "${1:12}" ;;
+    workspacev2*) handle_workspace "${1:13}" ;;
+    esac
+}
+
+handle_workspace() {
+    if [ -f "$config" ]; then
+        disable_wallpaper_shuffle=$(jq -r '.disable_wallpaper_shuffle' "$config")
+        if [ "$disable_wallpaper_shuffle" == "true" ]; then
+            return
+        fi
+    fi
+    monitor="$(hyprctl workspaces -j | jq -r --arg id "$(echo "$1" | cut --delimiter="," -f1)" '.[] | select(.id == ($id | tonumber)) | .monitor')"
+    find ~/Pictures/wallpapers -regextype posix-extended -regex ".*(png|jpg|webp|jpeg)$" |
+        shuf -n 1 |
+        xargs -I {} swww img --resize crop -t none --transition-duration 0.125 --transition-fps 60 {} --outputs "$monitor"
+}
+
+### Kills the Update News window that pops up every time steam is started
+handle_steam() {
+    address=$(echo "$1" | cut -d, -f1)
+    client=$(hyprctl clients -j | jq --arg addr "0x$address" '.[] | select(.address == $addr)')
+    class=$(echo "$client" | jq -r '.class')
+    title=$(echo "$client" | jq -r '.title')
+
+    if [[ $class != "steam" ]]; then
+        return
+    fi
+
+    if [[ $title == "Special Offers" ]]; then
+        hyprctl dispatch closewindow address:"0x$address" >/dev/null
+    fi
+}
+
+### Moves firefox windows to the correct workspaces, only once
+left_moved=0
+main_moved=0
+handle_firefox() {
+    # Move only once, at startup
+    if [[ $left_moved == 1 && $main_moved == 1 ]]; then
+        return
+    fi
+
+    local class
+    local title
+    local client
+
+    client=$(hyprctl clients -j | jq --arg addr "0x$1" '.[] | select(.address == $addr)')
+    class=$(echo "$client" | jq -r '.class')
+    title=$(echo "$client" | jq -r '.title')
+
+    if [[ $class != "firefox" ]]; then
+        return
+    elif [[ $title =~ \[Main\]* && $main_moved == 0 ]]; then
+        main_moved=1
+        hyprctl dispatch movetoworkspacesilent 1,address:"0x$1" >/dev/null
+    elif [[ $title =~ ^\[Left\ Mon\]* && $left_moved == 0 ]]; then
+        left_moved=1
+        hyprctl dispatch movetoworkspacesilent 21,address:"0x$1" >/dev/null
+    fi
+}
+
+### Moves workspaces to the correct monitors when they are created
+handle_workspaces() {
+    # WS 1-10 -> middle monitor
+    if [[ $1 -gt 0 && $1 -lt 11 ]]; then
+        hyprctl dispatch moveworkspacetomonitor "$1" "$mon_m" >/dev/null
+    # WS 11-20 -> left monitor
+    elif [[ $1 -gt 10 && $1 -lt 21 ]]; then
+        hyprctl dispatch moveworkspacetomonitor "$1" "$mon_l" >/dev/null
+    # WS 21-30 -> right monitor
+    elif [[ $1 -gt 20 && $1 -lt 31 ]]; then
+        hyprctl dispatch moveworkspacetomonitor "$1" "$mon_r" >/dev/null
+    fi
+}
+
+socat - UNIX-CONNECT:"$XDG_RUNTIME_DIR"/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock | while read -r line; do handle "$line"; done

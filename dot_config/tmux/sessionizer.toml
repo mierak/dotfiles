@@ -1,0 +1,56 @@
+no_banner = true
+# preview_cmd = "exa -lh --git --icons --color=auto --group-directories-first {{workdir}}"
+preview_cmd = { running =  "tmux capture-pane -pe -t $(tmux list-panes -F '#{pane_id}' -s -t '{{name}}' -f '#{window_active}')", not_running = "exa -lh --git --icons --color=auto --group-directories-first {{workdir}}" }
+preview_width = 40
+default_dir = "$HOME"
+history_location = "/home/mrk/.cache/tms/hist"
+
+[[entry]]
+kind = "Dir"
+name = "Repos - {{name}}"
+workdir = "~/Repos"
+excludes = []
+
+[[entry]]
+kind = "Dir"
+name = "Projects - {{name}}"
+workdir = "$HOME/Projects"
+excludes = []
+
+[[entry]]
+kind = "Dir"
+name = "Nom - {{name}}"
+workdir = "$HOME/Projects/nom"
+excludes = []
+
+[[entry]]
+kind = "Plain"
+name = "System"
+workdir = "$HOME"
+
+[[entry]]
+kind = "Plain"
+name = "awesome"
+workdir = "$HOME/.config/awesome"
+default = true
+
+[[entry]]
+kind = "Plain"
+name = "nvim"
+workdir = "$HOME/.config/nvim"
+default = true
+
+[[entry]]
+kind = "Plain"
+name = "config"
+workdir = "$HOME/.config"
+
+[[entry]]
+kind = "Plain"
+name = "ags"
+workdir = "$HOME/.config/ags"
+
+[[entry]]
+kind = "Plain"
+name = "hyprland"
+workdir = "$HOME/.config/hypr"

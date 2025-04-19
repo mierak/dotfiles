@@ -1,0 +1,74 @@
+mpd_music_dir = "~/Music"
+lyrics_directory = ~/.local/share/lyrics
+# mpd_port = 6600
+# media_library_primary_tag = genre
+
+# Visualizer
+visualizer_look = ●●
+visualizer_data_source = "/tmp/mpd.fifo"
+visualizer_output_name = "my_fifo"
+visualizer_in_stereo = "no"
+# visualizer_type = "spectrum"
+visualizer_fps = 360
+visualizer_spectrum_smooth_look = yes
+visualizer_spectrum_dft_size = 2
+visualizer_autoscale = yes
+visualizer_spectrum_log_scale_y = yes
+visualizer_spectrum_log_scale_x = yes
+
+# Album Covers
+# startup_screen = visualizer
+# startup_slave_screen = playlist
+# startup_slave_screen_focus = yes
+# locked_screen_width_part = 35
+
+
+# Interface & colors
+user_interface = alternative
+# playlist_display_mode = columns
+song_columns_list_format = "(20)[]{a} (40)[]{t} (35)[]{b} (5)[]{l}"
+
+# song_library_format = {%n - }{%t}|{%f} TEST
+
+# Playlist
+playlist_disable_highlight_delay = 0
+playlist_separate_albums = no
+
+# Current song format
+current_item_prefix = $(blue)$r
+current_item_suffix = $/r$(end)
+now_playing_prefix = $(blue)$b
+now_playing_suffix = $/b$(end)
+
+# Statusbar
+statusbar_visibility = yes
+statusbar_color = blue
+
+progressbar_look = .
+
+# Misc
+clock_display_seconds = yes
+search_engine_display_mode = classic
+mouse_support = yes
+autocenter_mode = yes
+header_visibility = no
+cyclic_scrolling = yes
+display_bitrate = yes
+lines_scrolled = 1
+# execute_on_song_change="~/.config/ncmpcpp/ncmpcpp-ueberzug/ncmpcpp_cover_art_kitty"
+
+#Borders
+active_window_border = blue
+
+# Colors
+#main_window_color = 253
+main_window_color = 253
+alternative_ui_separator_color = 253
+# Colors - progressbar
+progressbar_elapsed_color = blue:b
+progressbar_color = black:b
+statusbar_time_color = white
+volume_color = white
+
+def_key "t"
+  toggle_space_mode

@@ -1,0 +1,10 @@
+directory: ~/Music
+library: ~/.local/share/beet/musiclibrary.db
+plugins: fetchart embedart fuzzy
+fetchart:
+  auto: yes
+  quality: 90
+embedart:
+  auto: yes
+chroma:
+  auto: yes
