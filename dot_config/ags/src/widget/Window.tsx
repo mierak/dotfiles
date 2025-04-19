@@ -1,7 +1,8 @@
 import { Gdk } from "astal/gtk3";
 import { bind, Binding, Variable } from "astal";
 import Hyprland from "gi://AstalHyprland";
-import { HyprToGdkMonitor, windowIcon } from "../utils";
+import { HyprToGdkMonitor } from "../utils";
+import { getAppIcon, windowIcon } from "../icons";
 
 export default function Window(props: {
     gdkmonitor: Gdk.Monitor;
@@ -22,7 +23,7 @@ export default function Window(props: {
             icon_size={16}
             className="app-icon"
             icon={bind(hyprland, "focusedClient").as((client) => {
-                return client?.class ?? "";
+                return getAppIcon(client?.class);
             })}
         />
     );
@@ -54,13 +55,15 @@ export default function Window(props: {
         <button
             className="window"
             visible={bind(hyprland, "focusedMonitor").as((mon) => HyprToGdkMonitor(mon) === props.gdkmonitor)}
-        >
-            <box>
-                {floatingIcon}
-                {maximizedIcon}
-                {appIcon}
-                <label className="title" label={bind(title)} truncate={true} />
-            </box>
-        </button>
+            onClicked={() => undefined}
+            child={
+                <box>
+                    {floatingIcon}
+                    {maximizedIcon}
+                    {appIcon}
+                    <label className="title" label={bind(title)} truncate={true} />
+                </box>
+            }
+        ></button>
     );
 }

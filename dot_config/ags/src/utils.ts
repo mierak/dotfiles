@@ -8,6 +8,3 @@ export function HyprToGdkMonitor(monitor: Hyprland.Monitor): Gdk.Monitor | undef
         return undefined;
     }
 }
-export function windowIcon(name: string): string {
-    return `/home/mrk/.config/ags/assets/window-icons/${name}.png`;
-}

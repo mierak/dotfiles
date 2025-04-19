@@ -2,18 +2,13 @@ import { Gtk, Gdk } from "astal/gtk3";
 import { bind, Variable } from "astal";
 import Hyprland from "gi://AstalHyprland";
 import { HyprToGdkMonitor } from "../utils";
-import Apps from "gi://AstalApps";
-import app from "../../../../../usr/share/astal/gjs/gtk3/app";
-
-const apps = new Apps.Apps({
-    nameMultiplier: 2,
-    entryMultiplier: 0,
-    executableMultiplier: 2,
-});
+import { getAppIcon } from "../icons";
 
 const workspaceRename = Array.from({ length: 30 }, (_, i) => i % 10);
 
 const hyprland = Hyprland.get_default();
+
+const ignoredClients = ["xwaylandvideobridge"];
 
 class Workspace {
     readonly id: number;
@@ -44,7 +39,11 @@ class Workspace {
             return result.join(" ");
         });
 
-        this.clients = Variable(hyprland.clients.filter((client) => client?.workspace?.id === args?.id));
+        this.clients = Variable(
+            hyprland.clients.filter(
+                (client) => client?.workspace?.id === args?.id && !ignoredClients.includes(client.class),
+            ),
+        );
         this.visible = Variable.derive(
             [this.active, this.clients],
             (active, clients) => !this.translatedId.startsWith("special:") && (active || !!clients.length),
@@ -59,17 +58,17 @@ class Workspace {
                     this.isDestroyed = true;
                     this.className.drop();
                 }}
-            >
-                <box>
-                    <label className="label" label={this.translatedId.toString()} />
-                    {bind(this.clients).as((clients) =>
-                        clients.map((client) => {
-                            const icon = apps.fuzzy_query(client.class)?.[0]?.iconName ?? client.class;
-                            return <icon className="icon" icon={icon} />;
-                        }),
-                    )}
-                </box>
-            </button>
+                child={
+                    <box>
+                        <label className="label" label={this.translatedId.toString()} />
+                        {bind(this.clients).as((clients) =>
+                            clients.map((client) => {
+                                return <icon className="icon" icon={getAppIcon(client?.class)} />;
+                            }),
+                        )}
+                    </box>
+                }
+            ></button>
         );
     }
 
@@ -135,30 +134,15 @@ export default function Workspaces(props: { gdkmonitor: Gdk.Monitor }) {
         }
 
         if (eventName === "openwindow") {
-            // const [address, _wsId, _wsName] = data.split(",");
-            //
-            // const client = hyprland.clients.find((client) => address === client.address);
-            // const workspace = workspaces.get().find((ws) => ws.id === client?.workspace.id);
-            // const clients: Hyprland.Client[] = JSON.parse(hyprland.message("j/clients"));
-            // workspace?.reload(clients);
             workspaces.set(fetchWorkspaces(props.gdkmonitor));
         }
+
         if (eventName === "movewindowv2" || eventName === "closewindow") {
-            // const clients: Hyprland.Client[] = JSON.parse(hyprland.message("j/clients"));
-            // for (const ws of workspaces.get()) {
-            //     ws.reload(clients);
-            // }
             workspaces.set(fetchWorkspaces(props.gdkmonitor));
         }
     });
 
-    return (
-        <box className="workspaces">
-            {bind(workspaces).as((workspaces) => {
-                return workspaces.map((ws) => ws.widget);
-            })}
-        </box>
-    );
+    return <box className="workspaces">{bind(workspaces).as((workspaces) => workspaces.map((ws) => ws.widget))}</box>;
 }
 
 function fetchWorkspaces(monitor: Gdk.Monitor): Workspace[] {
