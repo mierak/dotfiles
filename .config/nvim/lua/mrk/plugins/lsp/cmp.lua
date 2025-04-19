@@ -36,7 +36,15 @@ return {
 			-- Default list of enabled providers defined so that you can extend it
 			-- elsewhere in your config, without redefining it, due to `opts_extend`
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer" },
+				default = { "lsp", "path", "snippets", "buffer", "copilot" },
+				providers = {
+					copilot = {
+						name = "copilot",
+						module = "blink-cmp-copilot",
+						score_offset = 100,
+						async = true,
+					},
+				},
 			},
 			completion = {
 				menu = {
@@ -107,5 +115,19 @@ return {
 				max_width = 60,
 			})
 		end,
+	},
+	{
+		"zbirenbaum/copilot.lua",
+		event = "InsertEnter",
+		opts = {
+			suggestion = { enabled = false },
+			panel = { enabled = false },
+		},
+	},
+	{
+		"giuxtaposition/blink-cmp-copilot",
+		dependencies = {
+			"zbirenbaum/copilot.lua",
+		},
 	},
 }

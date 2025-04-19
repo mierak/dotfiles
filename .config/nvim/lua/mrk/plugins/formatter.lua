@@ -1,6 +1,18 @@
 return {
 	"stevearc/conform.nvim",
 	opts = {
+		formatters = {
+			rustfmt = {
+				args = function(self, ctx)
+					local util = require("conform.util")
+					local args = { "+nightly", "--unstable-features", "--skip-children", "--emit=stdout" }
+					local edition = util.parse_rust_edition(ctx.dirname) or self.options.default_edition
+					table.insert(args, "--edition=" .. edition)
+
+					return args
+				end,
+			},
+		},
 		formatters_by_ft = {
 			lua = { "stylua" },
 			rust = { "rustfmt" },
@@ -21,7 +33,7 @@ return {
 			if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
 				return
 			end
-			return { timeout_ms = 500, lsp_format = "fallback" }
+			return { timeout_ms = 1000, lsp_format = "fallback" }
 		end,
 	},
 	config = function(_, opts)
@@ -54,7 +66,7 @@ return {
 					["end"] = { args.line2, end_line:len() },
 				}
 			end
-			require("conform").format({ async = true, lsp_format = "fallback", range = range })
+			require("conform").format({ async = true, lsp_format = "never", range = range })
 		end, { range = true })
 	end,
 }

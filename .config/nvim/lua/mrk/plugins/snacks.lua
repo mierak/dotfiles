@@ -15,6 +15,7 @@ return {
 				enabled = false,
 			},
 		},
+		input = {},
 	},
     -- stylua: ignore
     keys = {
