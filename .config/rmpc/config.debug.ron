@@ -2,24 +2,30 @@
 #![enable(unwrap_newtypes)]
 #![enable(unwrap_variant_newtypes)]
 (
-    // address: "/tmp/mpd_socket",
+    address: "/tmp/mpd_socket",
     // address: "~/.local/share/mpd_socketconfig",
-    address: "127.0.0.1:6600",
+    // address: "127.0.0.1:6600",
     // password: "test123",
     volume_step: 5,
-    scrolloff: 10,
+    scrolloff: 5,
     wrap_navigation: true,
-    theme: Some("def"),
-    cache_dir: Some("/tmp/rmpc/cache"),
-    on_song_change: ["~/.config/rmpc/scripts/notify"],
+    max_fps: 144,
+    theme: "def",
+    cache_dir: "/tmp/rmpc/cache",
+    lyrics_dir: "~/Music",
+    on_song_change: ["~/.config/rmpc/scripts/autolrc"],
+    // on_resize: ["~/.config/rmpc/scripts/onresize"],
     enable_mouse: true,
     status_update_interval_ms: 1000,
-    select_current_song_on_change: false,
+    select_current_song_on_change: true,
     album_art: (
         method: Auto,
+        // max_size_px: (width: 500, height: 500),
         max_size_px: (width: 0, height: 0),
-        alignment: BottomCenter,
+        vertical_align: Center,
+        horizontal_align: Center,
     ),
+    browser_song_sort: [Disc, Title, Artist],
     keybinds: (
         global: {
             ",":       VolumeDown,
@@ -28,18 +34,21 @@
             "c":       ToggleSingle,
             "<Right>": NextTab,
             "<Tab>":   NextTab,
+            "<Left>":  PreviousTab,
+            "<S-Tab>": PreviousTab,
             "1":       SwitchToTab("Queue"),
             "2":       SwitchToTab("Directories"),
             "3":       SwitchToTab("Artists"),
-            "4":       SwitchToTab("Albums"),
-            "5":       SwitchToTab("Playlists"),
-            "6":       SwitchToTab("Search"),
-            "<Left>":  PreviousTab,
-            "<S-Tab>": PreviousTab,
+            "4":       SwitchToTab("Album Artists"),
+            "5":       SwitchToTab("Albums"),
+            "6":       SwitchToTab("Playlists"),
+            "7":       SwitchToTab("Search"),
             "q":       Quit,
             "~":       ShowHelp,
+            "I":       ShowCurrentSongInfo,
             // "M":       ShowMessages,
             "O":       ShowOutputs,
+            "<C-p>":       ShowDecoders,
             ":":       CommandMode,
             "x":       ToggleRandom,
             ">":       NextTrack,
@@ -61,6 +70,7 @@
                        [   "sh", "-c", 
                            "picard -s \"${XDG_MUSIC_DIR:-$HOME/Music}/$(echo $SELECTED_SONGS | head -n 1)\" 2>&1 >/dev/null"
                        ], description: "Open in picard"),
+            "W":       ExternalCommand(command: ["~/.config/rmpc/scripts/printenv"], description: "Search selected song on youtube"),
         },
         navigation: {
             "k":           Up,
@@ -72,11 +82,13 @@
             "<S-Left>":    PaneLeft,
             "<S-Right>":   PaneRight,
             "a":           Add,
+            "A":           AddAll,
             "r":           Rename,
             "n":           NextResult,
             "N":           PreviousResult,
             "g":           Top,
             "<Space>":     Select,
+            "<C-Space>":     InvertSelection,
             "G":           Bottom,
             "<CR>":        Confirm,
             "i":           FocusInput,
@@ -95,10 +107,17 @@
             "<C-s>":   Save,
             "a":       AddToPlaylist,
             "d":       Delete,
+            "i":       ShowInfo,
+            "C":       JumpToCurrent,
         },
         logs: {
             "D":       Clear,
+            "S":       ToggleScroll,
         },
+    ),
+    artists: (
+        album_display_mode: SplitByDate,
+        album_sort_by: Date,
     ),
     search: (
         case_sensitive: false,
@@ -116,12 +135,12 @@
     tabs: [
         (
             name: "Queue",
-            border_type: None,
             pane: Split(
                 direction: Horizontal,
                 panes: [
                     (
                         size: "40%",
+                        borders: "RIGHT",
                         pane: Pane(AlbumArt),
                     ),
                     (
@@ -132,19 +151,39 @@
             ),
         ),
         (
-            name: "Logs",
-            border_type: None,
-            pane: Pane(Logs),
+            name: "Queue2",
+                            background_color: "red",
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "40%",
+                        borders: "RIGHT",
+                        pane: Pane(AlbumArt),
+                    ),
+                    (
+                        size: "60%",
+                            background_color: "red",
+                        pane: Pane(Queue),
+                    ),
+                ],
+            ),
         ),
+        // (
+        //     name: "Logs",
+        //     border_type: None,
+        //     pane: Pane(Logs),
+        // ),
         (
-            name: "Directories",
             border_type: None,
+            name: "Directories",
             pane: Pane(Directories),
         ),
         (
             name: "Artists",
             border_type: None,
-            pane: Pane(AlbumThumbnails),
+            pane: Pane(Artists),
+            // pane: Pane(AlbumThumbnails),
         ),
         (
             name: "Album Artists",
@@ -157,6 +196,11 @@
             pane: Pane(Albums),
         ),
         (
+            name: "Genre",
+            border_type: None,
+            pane: Pane(Browser(root_tag: "genre", separator: "/")),
+        ),
+        (
             name: "Playlists",
             border_type: None,
             pane: Pane(Playlists),
@@ -166,64 +210,409 @@
             border_type: None,
             pane: Pane(Search),
         ),
-        (
-            name: "Album Art",
-            border_type: None,
-            pane: Pane(AlbumArt),
-        ),
-        (
-            name: "Testing",
-            border_type: Single,
-            pane: Split(
-                direction: Horizontal,
-                panes: [
-                    (
-                        size: "40%",
-                        pane: Pane(Queue),
-                    ),
-                    (
-                        size: "60%",
-                        pane: Split(
-                            direction: Vertical,
-                            panes: [
-                                (
-                                    size: "50%",
-                                    pane: Pane(Artists),
-                                ),
-                                (
-                                    size: "50%",
-                                    pane: Split(
-                                        direction: Horizontal,
-                                        panes: [
-                                            (
-                                                size: "40%",
-                                                pane: Pane(AlbumArt),
-                                            ),
-                                            (
-                                                size: "60%",
-                                                pane: Split(
-                                                    direction: Vertical,
-                                                    panes: [
-                                                        (
-                                                            size: "50%",
-                                                            pane: Pane(Search),
-                                                        ),
-                                                        (
-                                                            size: "50%",
-                                                            pane: Pane(Logs),
-                                                        ),
-                                                    ],
-                                                ),
-                                            ),
-                                        ],
-                                    ),
-                                ),
-                            ],
-                        ),
-                    ),
-                ],
-            ),
-        ),
+        // (
+        //     name: "Testing",
+        //     border_type: Single,
+        //     pane: Split(
+        //         direction: Horizontal,
+        //         panes: [
+        //             (
+        //                 size: "40%",
+        //                 pane: Pane(Queue),
+        //             ),
+        //             (
+        //                 size: "60%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             size: "50%",
+        //                             pane: Pane(Artists),
+        //                         ),
+        //                         (
+        //                             size: "50%",
+        //                             pane: Split(
+        //                                 direction: Horizontal,
+        //                                 panes: [
+        //                                     // (
+        //                                     //     size: "40%",
+        //                                     //     pane: Pane(AlbumArt),
+        //                                     // ),
+        //                                     (
+        //                                         size: "60%",
+        //                                         pane: Split(
+        //                                             direction: Vertical,
+        //                                             panes: [
+        //                                                 (
+        //                                                     size: "50%",
+        //                                                     pane: Pane(Search),
+        //                                                 ),
+        //                                                 // (
+        //                                                 //     size: "50%",
+        //                                                 //     pane: Pane(Logs),
+        //                                                 // ),
+        //                                             ],
+        //                                         ),
+        //                                     ),
+        //                                 ],
+        //                             ),
+        //                         ),
+        //                     ],
+        //                 ),
+        //             ),
+        //         ],
+        //     ),
+        // ),
+        // (
+        //     name: "Testing2",
+        //     border_type: Full,
+        //     pane: Split(
+        //         direction: Horizontal,
+        //         panes: [
+        //             (
+        //                 size: "40%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             size: "50%",
+        //                             pane: Split(
+        //                                 direction: Vertical,
+        //                                 panes: [
+        //                                     (
+        //                                         size: "3",
+        //                                         pane: Pane(Lyrics),
+        //                                     ),
+        //                                 ]
+        //                             )
+        //                         ),
+        //                         (
+        //                             size: "50%",
+        //                             pane: Split(
+        //                                 direction: Vertical,
+        //                                 panes: [
+        //                                     (
+        //                                         size: "3",
+        //                                         pane: Pane(Lyrics),
+        //                                     ),
+        //                                     (
+        //                                         size: "100%",
+        //                                         pane: Pane(Artists),
+        //                                     ),
+        //                                 ]
+        //                             )
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //             (
+        //                 size: "60%",
+        //                 pane: Pane(Queue),
+        //             ),
+        //         ],
+        //     ),
+        // ),
+        // (
+        //     name: "Testing3",
+        //     border_type: Single,
+        //     pane: Split(
+        //         direction: Horizontal,
+        //         panes: [
+        //             (
+        //                 size: "20%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //             (
+        //                 size: "20%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "25%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "25%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "25%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "25%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //             (
+        //                 size: "20%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //             (
+        //                 size: "20%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "25%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "25%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "25%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "25%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //             (
+        //                 size: "20%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             borders: "RIGHT | BOTTOM",
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //         ],
+        //     ),
+        // ),
+        // (
+        //     name: "Testing4",
+        //     border_type: Full,
+        //     pane: Split(
+        //         direction: Horizontal,
+        //         panes: [
+        //             (
+        //                 size: "20%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //             (
+        //                 size: "20%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             size: "3",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Lyrics),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Lyrics),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Lyrics),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //             (
+        //                 size: "20%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Lyrics),
+        //                         ),
+        //                         (
+        //                             size: "40%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //             (
+        //                 size: "20%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Lyrics),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //             (
+        //                 size: "20%",
+        //                 pane: Split(
+        //                     direction: Vertical,
+        //                     panes: [
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Lyrics),
+        //                         ),
+        //                         (
+        //                             size: "20%",
+        //                             pane: Pane(Directories),
+        //                         ),
+        //                     ]
+        //                 ),
+        //             ),
+        //         ],
+        //     ),
+        // ),
     ],
 )
 

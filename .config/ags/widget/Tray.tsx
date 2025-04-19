@@ -1,33 +1,25 @@
 import { bind, Variable } from "astal";
-import { Gdk } from "astal/gtk3";
 import Tray from "gi://AstalTray";
-import Astal from "gi://Astal?version=3.0";
 
-const tray = Tray.get_default();
-
-export default function CollapsibleWidget() {
+export default function SysTray() {
+    const tray = Tray.get_default();
     return (
         <button className="widget tray">
             <box>
                 {bind(tray, "items").as((items) =>
                     items.map((item) => {
-                        const menu = item.create_menu();
                         return (
-                            <button
+                            <menubutton
+                                //@ts-ignore
                                 tooltipMarkup={bind(item, "tooltipMarkup")}
-                                onClick={(self, ev) => {
-                                    if (ev.button === Astal.MouseButton.PRIMARY) {
-                                        item.activate(ev.x, ev.y);
-                                    } else if (ev.button === Astal.MouseButton.SECONDARY) {
-                                        menu?.popup_at_widget(self, Gdk.Gravity.SOUTH, Gdk.Gravity.NORTH_EAST, null);
-                                    }
-                                }}
-                                onDestroy={() => {
-                                    menu?.destroy();
-                                }}
+                                //@ts-ignore
+                                actionGroup={bind(item, "action-group").as((ag) => ["dbusmenu", ag])}
+                                //@ts-ignore
+                                menuModel={bind(item, "menu-model")}
+                                usePopover={false}
                             >
-                                <icon icon={item.iconName} />
-                            </button>
+                                <icon gIcon={bind(item, "gicon")} />
+                            </menubutton>
                         );
                     }),
                 )}

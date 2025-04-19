@@ -1,13 +1,31 @@
 #![enable(implicit_some)]
 #![enable(unwrap_newtypes)]
 #![enable(unwrap_variant_newtypes)]
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
 (
-    album_art_position: Right,
-    album_art_width_percent: 40,
     default_album_art_path: None,
     draw_borders: false,
     show_song_table_header: false,
     symbols: (song: "🎵", dir: "📁", marker: "\u{e0b0}"),
+    layout: Split(
+        direction: Vertical,
+        panes: [
+            (
+                pane: Pane(Header),
+                size: "1",
+            ),
+            (
+                pane: Pane(TabContent),
+                size: "100%",
+            ),
+            (
+                pane: Pane(ProgressBar),
+                size: "1",
+            ),
+        ],
+    ),
     progress_bar: (
         symbols: ["", "⭘", " "],
         track_style: (bg: "#1e2030"),
@@ -25,11 +43,8 @@
     background_color: "#24273a",
     header_background_color: "#1e2030",
     modal_background_color: None,
-    tab_bar: (
-        enabled: false,
-        active_style: (fg: "black", bg: "#c6a0f6", modifiers: "Bold"),
-        inactive_style: (),
-    ),
+    modal_backdrop: false,
+    tab_bar: (active_style: (fg: "black", bg: "#c6a0f6", modifiers: "Bold"), inactive_style: ()),
     borders_style: (fg: "#6e738d"),
     highlighted_item_style: (fg: "#c6a0f6", modifiers: "Bold"),
     current_item_style: (fg: "black", bg: "#b7bdf8", modifiers: "Bold"),
@@ -37,17 +52,17 @@
     song_table_format: [
         (
             prop: (kind: Property(Artist), style: (fg: "#b7bdf8"), default: (kind: Text("Unknown"))),
-            width_percent: 49,
+            width: "50%",
             alignment: Right,
         ),
         (
             prop: (kind: Text("-"), style: (fg: "#b7bdf8"), default: (kind: Text("Unknown"))),
-            width_percent: 2,
+            width: "1",
             alignment: Center,
         ),
         (
             prop: (kind: Property(Title), style: (fg: "#7dc4e4"), default: (kind: Text("Unknown"))),
-            width_percent: 49,
+            width: "50%",
         ),
     ],
     header: (

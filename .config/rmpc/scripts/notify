@@ -18,6 +18,14 @@ if ! rmpc albumart --output "$ALBUM_ART_PATH"; then
     # Use default album art if rmpc returns non-zero exit code
     ALBUM_ART_PATH="${DEFAULT_ALBUM_ART_PATH}"
 fi
+# magick convert "$ALBUM_ART_PATH" -resize 320x240^ "$ALBUM_ART_PATH"
 
 # Send the notification
 notify-send -i "${ALBUM_ART_PATH}" -a "rmpc" "Now Playing" "$ARTIST - $TITLE"
+
+sticker=$(rmpc sticker get "$FILE" "playCount" | jq -r '.value')
+if [ -z "$sticker" ]; then
+    rmpc sticker set "$FILE" "playCount" "1"
+else
+    rmpc sticker set "$FILE" "playCount" "$((sticker + 1))"
+fi

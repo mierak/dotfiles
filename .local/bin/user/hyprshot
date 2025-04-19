@@ -59,6 +59,18 @@ prompt_target() {
 
 }
 
+restore_shader() {
+    if [ -n "$shader" ]; then
+        hyprshade on "$shader"
+    fi
+}
+
+save_shader() {
+    shader=$(hyprshade current)
+    hyprshade off
+    # trap restore_shader EXIT
+}
+
 image_type="png"
 date=$(date '+%Y-%m-%d-%H-%M-%S')
 
@@ -70,19 +82,25 @@ save_to_target() {
     prompt_target
     case "$target" in
     "clipboard")
+        save_shader
         eval "$1 -" | wl-copy
+        restore_shader
         notify-send "Screenshot" "Image copied to clipboard" -a "Screenshot"
         ;;
     "puush")
         temp_file="/tmp/screenshot.$image_type"
+        save_shader
         eval "$1 $temp_file"
+        restore_shader
         puush "$temp_file" >/dev/null
         rm -f "$temp_file"
         ;;
     "file")
         filename="$date-$2"
         path="${XDG_PICTURES_DIR:-$HOME/Pictures}/screenshots/$filename.$image_type"
+        save_shader
         eval "$1 $path"
+        restore_shader
         notify-send "Screenshot" "Image saved to '$path'" -a "Screenshot"
         ;;
     esac

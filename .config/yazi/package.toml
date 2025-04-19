@@ -1,5 +1,12 @@
-[plugin]
-deps = [{ use = "Ape/mediainfo", rev = "c69314e" }, { use = "dawsers/fuse-archive", rev = "678eb1d" }]
+[[plugin.deps]]
+use = "dawsers/fuse-archive"
+rev = "a58327c"
+hash = "6a6d24880ce7666048fb81ad758c48d3"
+
+[[plugin.deps]]
+use = "boydaihungst/mediainfo"
+rev = "447fe95"
+hash = "dcaebc8bc261206f6b59e2c67464af5"
 
 [flavor]
 deps = []

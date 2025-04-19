@@ -10,10 +10,10 @@ export default function Window(props: {
     const hyprland = Hyprland.get_default();
     const floatingIcon = <icon className="icon" icon={windowIcon("floating")} visible={false} />;
     const maximizedIcon = <icon className="icon" icon={windowIcon("maximized")} visible={false} />;
-    const title = Variable(hyprland.focusedClient.title);
+    const title = Variable(hyprland.focusedClient?.title ?? "");
 
     bind(hyprland, "focusedClient").subscribe((client) => {
-        title.set(client.title);
+        title.set(client?.title ?? "");
     });
 
     const appIcon = (

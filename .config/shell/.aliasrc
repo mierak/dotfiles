@@ -42,7 +42,6 @@ alias \
     myip='echo $(curl -s https://api.my-ip.io/ip)' \
     cat="bat --paging=auto" \
     cd="z" \
-    ssh="kitty +kitten ssh" \
     tms='exec tmux attach -t "$(\tms -e)"'
 
 alias bathelp='bat --plain --language=help'

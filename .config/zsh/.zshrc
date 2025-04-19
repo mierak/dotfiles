@@ -1,4 +1,7 @@
-eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/theme.omp.json)"
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+eval "$(starship init zsh)"
+
+# eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/theme.omp.json)"
 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
@@ -36,6 +39,7 @@ zstyle ':completion::complete:*' gain-privileges 1
 zstyle ':fzf-tab:complete:*' fzf-preview 'exit'
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+zstyle ':completion:*:git-checkout:*' sort false
 
 # Use vim keys in tab complete menu:
 bindkey -v

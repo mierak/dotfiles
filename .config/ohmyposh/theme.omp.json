@@ -1,7 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-  "version": 2,
-  "final_space": true,
+  "transient_prompt": {
+    "template": "❯ ",
+    "background": "transparent",
+    "foreground_templates": [
+      "{{if gt .Code 0}}red{{end}}",
+      "{{if eq .Code 0}}white{{end}}"
+    ]
+  },
   "console_title_template": "{{.Shell}} :: {{.PWD}}",
   "blocks": [
     {
@@ -9,110 +15,129 @@
       "alignment": "left",
       "segments": [
         {
-          "type": "text",
-          "style": "plain",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "\u256d\u2500",
           "foreground": "white",
-          "template": "╭─"
+          "type": "text",
+          "style": "plain"
         },
         {
-          "type": "os",
-          "style": "diamond",
-          "powerline_symbol": "",
-          "foreground": "blue",
-          "background": "darkGray",
+          "properties": {
+            "cache_duration": "none"
+          },
           "template": " {{.Icon}} ",
-          "properties": {}
+          "foreground": "blue",
+          "powerline_symbol": "\ue0b0",
+          "background": "darkGray",
+          "type": "os",
+          "style": "diamond"
         },
         {
-          "type": "shell",
-          "style": "powerline",
-          "powerline_symbol": "",
+          "properties": {
+            "cache_duration": "none"
+          },
           "template": "<b>{{ .UserName }}</b> ",
           "foreground": "white",
-          "background": "darkGray"
+          "powerline_symbol": "\ue0b0",
+          "background": "darkGray",
+          "type": "shell",
+          "style": "powerline"
         },
         {
-          "type": "text",
-          "style": "powerline",
-          "powerline_symbol": "",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "a",
           "foreground": "transparent",
+          "powerline_symbol": "\ue0b0",
           "background": "transparent",
-          "template": "a"
+          "type": "text",
+          "style": "powerline"
         },
         {
-          "type": "path",
-          "style": "powerline",
-          "powerline_symbol": "",
+          "properties": {
+            "cache_duration": "none",
+            "style": "full"
+          },
           "template": " <b>{{ .Path }}</b> ",
           "foreground": "black",
+          "powerline_symbol": "\ue0b0",
           "background": "white",
-          "properties": {
-            "style": "full"
-          }
+          "type": "path",
+          "style": "powerline"
         },
         {
-          "type": "text",
-          "style": "powerline",
-          "powerline_symbol": "",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "a",
           "foreground": "transparent",
+          "powerline_symbol": "\ue0b0",
           "background": "transparent",
-          "template": "a"
+          "type": "text",
+          "style": "powerline"
         },
         {
-          "type": "git",
-          "style": "powerline",
-          "powerline_symbol": "",
-          "foreground": "black",
-          "background": "yellow",
-          "template": " <b>{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uF044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uF046 {{ .Staging.String }}{{ end }}</b> ",
           "properties": {
-            "fetch_status": true,
+            "branch_icon": "\udb81\ude2c ",
+            "cache_duration": "none",
             "commit_icon": "@",
-            "branch_icon": "󰘬 "
-          }
+            "fetch_status": true
+          },
+          "template": " <b>{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}</b> ",
+          "foreground": "black",
+          "powerline_symbol": "\ue0b0",
+          "background": "yellow",
+          "type": "git",
+          "style": "powerline"
         },
         {
-          "type": "text",
-          "style": "powerline",
-          "powerline_symbol": "",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "a",
           "foreground": "transparent",
+          "powerline_symbol": "\ue0b0",
           "background": "transparent",
-          "template": "a"
+          "type": "text",
+          "style": "powerline"
         },
         {
+          "properties": {
+            "always_enabled": true,
+            "cache_duration": "none"
+          },
+          "template": " <b>{{ .Code }}</b> ",
+          "foreground": "black",
+          "powerline_symbol": "\ue0b0",
+          "background": "green",
           "type": "status",
           "style": "powerline",
-          "powerline_symbol": "",
-          "foreground": "black",
-          "background": "green",
-          "background_templates": ["{{ if .Error }}red{{ end }}"],
-          "template": " <b>{{ .Code }}</b> ",
-          "properties": {
-            "always_enabled": true
-          }
+          "background_templates": [
+            "{{ if .Error }}red{{ end }}"
+          ]
         }
       ]
     },
     {
-      "alignment": "left",
       "type": "prompt",
-      "newline": true,
+      "alignment": "left",
       "segments": [
         {
-          "type": "text",
-          "style": "plain",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "\u2570\u2500",
           "foreground": "white",
-          "template": "╰─"
+          "type": "text",
+          "style": "plain"
         }
-      ]
+      ],
+      "newline": true
     }
   ],
-  "transient_prompt": {
-    "template": "❯ ",
-    "foreground_templates": [
-      "{{if gt .Code 0}}red{{end}}",
-      "{{if eq .Code 0}}white{{end}}"
-    ],
-    "background": "transparent"
-  }
+  "version": 3,
+  "final_space": true
 }

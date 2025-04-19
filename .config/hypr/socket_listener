@@ -1,6 +1,6 @@
 #!/bin/bash
 mon_r="HDMI-A-2"
-mon_m="DP-2"
+mon_m="DP-1"
 mon_l="HDMI-A-1"
 
 config="$HOME/.config/hypr/ipc_config.json"
@@ -12,11 +12,11 @@ fi
 
 handle() {
     case "$1" in
-    createworkspacev2*)
-        ws="${1:19:2}"
-        ws="${ws//,/}"
-        handle_workspaces "$ws"
-        ;;
+    # createworkspacev2*)
+    #     ws="${1:19:2}"
+    #     ws="${ws//,/}"
+    #     handle_workspaces "$ws"
+    #     ;;
     windowtitle*) handle_firefox "${1:13:19}" ;;
     openwindow*) handle_steam "${1:12}" ;;
     workspacev2*) handle_workspace "${1:13}" ;;
@@ -31,7 +31,7 @@ handle_workspace() {
         fi
     fi
     monitor="$(hyprctl workspaces -j | jq -r --arg id "$(echo "$1" | cut --delimiter="," -f1)" '.[] | select(.id == ($id | tonumber)) | .monitor')"
-    find ~/Pictures/wallpapers -regextype posix-extended -regex ".*(png|jpg|webp)$" |
+    find ~/Pictures/wallpapers -regextype posix-extended -regex ".*(png|jpg|webp|jpeg)$" |
         shuf -n 1 |
         xargs -I {} swww img --resize crop -t none --transition-duration 0.125 --transition-fps 60 {} --outputs "$monitor"
 }

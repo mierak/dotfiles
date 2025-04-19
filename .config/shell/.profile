@@ -15,6 +15,7 @@ export FZF_DEFAULT_OPTS="--preview 'if [[ -d {} ]]; then exa -la {}; else bat --
 # ~/ Cleanup of home directory
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_MUSIC_DIR="$HOME/Music"
 export XDG_CACHE_HOME="$HOME/.cache"
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 export WGETRC="${XDG_CONFIG_HOME:-$HOME/.config}/wget/.wgetrc"

@@ -1,6 +1,6 @@
 # fuse-archive.yazi
 
-[fuse-archive.yazi](https://github.com/dawsers7/fuse-archive.yazi)
+[fuse-archive.yazi](https://github.com/dawsers/fuse-archive.yazi)
 uses [fuse-archive](https://github.com/google/fuse-archive) to
 transparently mount and unmount archives in read-only mode, allowing you to
 navigate inside, view, and extract individual or groups of files.
@@ -13,7 +13,7 @@ than [fuse-archive](https://github.com/google/fuse-archive).
 It also supports very few file types compared to this plugin, and you need to
 mount and unmount the archives manually.
 
-[fuse-archive.yazi](https://github.com/dawsers7/fuse-archive.yazi) supports
+[fuse-archive.yazi](https://github.com/dawsers/fuse-archive.yazi) supports
 mounting the following file extensions: `.zip`, `.gz`, `.bz2`, `.tar`, `.tgz`,
 `.tbz2`, `.txz`, `.xz`, `.tzs`, `.zst`, `.iso`, `.rar`, `.7z`, `.cpio`, `.lz`,
 `.lzma`, `.shar`, `.a`, `.ar`, `.apk`, `.jar`, `.xpi`, `.cab`.
@@ -36,7 +36,7 @@ ya pack -a dawsers/fuse-archive
 Modify your `~/.config/yazi/init.lua` to include:
 
 ``` lua
-require(fuse-archive):setup()
+require("fuse-archive"):setup()
 ```
 
 ### Options
@@ -46,11 +46,41 @@ The plugin supports the following options, which can be assigned during setup:
 1. `smart_enter`: If `true`, when *entering* a file it will be *opened*, while
 directories will always be *entered*. The default value is `false`.
 
+2. `mount_dir`: An absolute path. If set, archives will be mounted to that
+directory instead of the default one. If not set, the default directory is
+chosen by testing, in this order: `$XDG_STATE_HOME`, `$HOME/.local/state`
+and `/tmp`. `fuse-archive.yazi` will append `yazi/fuse-archive` to the chosen
+directory.
+
 ``` lua
-require(fuse-archive):setup({
+require("fuse-archive"):setup({
   smart_enter = true,
+  mount_dir = "/tmp",
 })
 ```
+
+### Possible Conflicts
+
+You may run into trouble with certain archives if `yazi.toml` has an opener
+that extracts archives (the default opener defined as preset does that):
+
+``` toml
+extract = [
+	{ run = 'ya pub extract --list "$@"', desc = "Extract here", for = "unix" },
+	{ run = 'ya pub extract --list %*',   desc = "Extract here", for = "windows" },
+]
+```
+
+The plugin still works, but the UI may be confusing.
+In that case, modify your `yazi.toml` to contain:
+
+``` toml
+extract = [
+]
+```
+
+and now *fuse-archive* will be the one mounting and showing the contents of the
+archive.
 
 ## Usage
 
@@ -84,3 +114,4 @@ following three in order of preference:
 2. `$HOME/.local/state/yazi/fuse-archive/...`
 3. `/tmp/yazi/fuse-archive/...`
 
+or the directory you set in `mount_dir`, if any.

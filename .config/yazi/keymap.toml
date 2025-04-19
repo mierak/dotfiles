@@ -3,10 +3,10 @@
 "$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
 
 [manager]
-prepend_keymap = [
-    { on   = [ "l" ], run = "plugin fuse-archive --args=mount", desc = "Enter or Mount selected archive" },
-    { on   = [ "h" ], run = "plugin fuse-archive --args=unmount", desc = "Leave or Unmount selected archive" },
-]
+# prepend_keymap = [
+#     { on   = [ "l" ], run = "plugin fuse-archive --args=mount", desc = "Enter or Mount selected archive" },
+#     { on   = [ "h" ], run = "plugin fuse-archive --args=unmount", desc = "Leave or Unmount selected archive" },
+# ]
 
 keymap = [
 	{ on = "<Esc>", run = "escape",             desc = "Exit visual mode, clear selected, or cancel search" },
@@ -17,8 +17,10 @@ keymap = [
 	{ on = "<C-z>", run = "suspend",            desc = "Suspend the process" },
 
 	# Hopping
-	{ on = "k", run = "plugin --sync wrap --args=-1", desc = "Move cursor up" },
-	{ on = "j", run = "plugin --sync wrap --args=+1",  desc = "Move cursor down" },
+	{ on = "k", run = "plugin wrap -1", desc = "Move cursor up" },
+	{ on = "j", run = "plugin wrap 1",  desc = "Move cursor down" },
+	{ on = "k", run = "plugin wrap -1", desc = "Move cursor up" },
+	{ on = "j", run = "plugin wrap 1",  desc = "Move cursor down" },
 
 	{ on = "<Up>",    run = "arrow -1", desc = "Move cursor up" },
 	{ on = "<Down>",  run = "arrow 1",  desc = "Move cursor down" },
@@ -33,8 +35,8 @@ keymap = [
 	{ on = "<PageUp>",     run = "arrow -100%", desc = "Move cursor up one page" },
 	{ on = "<PageDown>",   run = "arrow 100%",  desc = "Move cursor down one page" },
 
-	{ on = [ "g", "g" ], run = "arrow -99999999", desc = "Move cursor to the top" },
-	{ on = "G",          run = "arrow 99999999",  desc = "Move cursor to the bottom" },
+	{ on = [ "g", "g" ], run = "arrow top", desc = "Move cursor to the top" },
+	{ on = "G",          run = "arrow bot",  desc = "Move cursor to the bottom" },
 
 	# Navigation
 	{ on = "h", run = "leave", desc = "Go back to the parent directory" },
@@ -51,11 +53,11 @@ keymap = [
 	{ on = "J", run = "seek 5",  desc = "Seek down 5 units in the preview" },
 
 	# Selection
-	{ on = "<Space>", run = [ "select --state=none", "arrow 1" ], desc = "Toggle the current selection state" },
+	{ on = "<Space>", run = [ "toggle --state=none", "arrow 1" ], desc = "Toggle the current selection state" },
 	{ on = "v",       run = "visual_mode",                        desc = "Enter visual mode (selection mode)" },
 	{ on = "V",       run = "visual_mode --unset",                desc = "Enter visual mode (unset mode)" },
-	{ on = "<C-a>",   run = "select_all --state=true",            desc = "Select all files" },
-	{ on = "<C-r>",   run = "select_all --state=none",            desc = "Inverse selection of all files" },
+	{ on = "<C-a>",   run = "toggle_all --state=true",            desc = "Select all files" },
+	{ on = "<C-r>",   run = "toggle_all --state=none",            desc = "Inverse selection of all files" },
 
 	# Operation
 	{ on = "o",         run = "open",                        desc = "Open selected files" },

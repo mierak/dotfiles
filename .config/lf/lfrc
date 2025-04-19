@@ -11,6 +11,7 @@ set info size:time
 set drawbox
 set errorfmt "\033[7;31;40m%s\033[0m"
 set scrolloff 10
+set mouse
 
 # Set image previews
 set previewer ctpv
