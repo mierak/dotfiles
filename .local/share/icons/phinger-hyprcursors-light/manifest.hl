@@ -1,0 +1,4 @@
+name = phinger-cursors-light
+description = Most likely the most over engineered cursor theme
+version = 2.1
+cursors_directory = hyprcursors
