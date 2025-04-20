@@ -3,6 +3,7 @@
 #![enable(unwrap_variant_newtypes)]
 (
     draw_borders: false,
+    format_tag_separator: " | ",
     show_song_table_header: true,
     background_color: "black",
     default_album_art_path: None,

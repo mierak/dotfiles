@@ -46,12 +46,3 @@ export PATH="$PATH:$GOPATH/bin:$CARGO_HOME/bin"
 
 # Start graphical server on user's current tty if not already running.
 [ "$(tty)" = "/dev/tty1" ] && ! pidof -s Hyprland >/dev/null 2>&1 && Hyprland
-
-# Regenerate bookmarks on login
-if command -v crossmarks >/dev/null 2>&1; then
-    crossmarks \
-        --input "${XDG_CONFIG_HOME:-HOME/.config}"/shell/bookmarks \
-        --lf "${XDG_CONFIG_HOME:-HOME/.config}"/lf/bookmarks \
-        --zsh "${XDG_CONFIG_HOME:-HOME/.config}"/zsh/zshnameddir \
-        --cd-alias "${XDG_CONFIG_HOME:-HOME/.config}"/shell/cdalias
-fi
