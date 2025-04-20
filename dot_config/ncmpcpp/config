@@ -3,6 +3,9 @@ lyrics_directory = ~/.local/share/lyrics
 # mpd_port = 6600
 # media_library_primary_tag = genre
 
+tags_separator = " bbbbb "
+show_duplicate_tags = no
+
 # Visualizer
 visualizer_look = ●●
 visualizer_data_source = "/tmp/mpd.fifo"

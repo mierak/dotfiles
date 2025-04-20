@@ -25,55 +25,55 @@ return {
 			},
 		},
 	},
-	-- {
-	-- 	"mrcjkb/rustaceanvim",
-	-- 	version = "^5",
-	-- 	lazy = false,
-	-- 	ft = "rust",
-	-- 	init = function()
-	-- 		vim.g.rustaceanvim = {
-	-- 			tools = {
-	-- 				float_win_config = {
-	-- 					border = "single",
-	-- 				},
-	-- 				code_actions = {
-	-- 					ui_select_fallback = false,
-	-- 				},
-	-- 			},
-	-- 			server = {
-	-- 				on_attach = function(client, bufnr)
-	-- 					-- Set keybindings, etc. here.
-	-- 					local key = function(keys, func, desc)
-	-- 						vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
-	-- 					end
-	-- 					-- stylua: ignore start
-	-- 					-- key("<leader>dn",   function() vim.cmd.RustLsp { 'crateGraph', 'x11', '[output]' } end,                           "Go to next diagnostic" )
-	-- 					key("<leader>ca",   function() vim.cmd.RustLsp('codeAction') end,  "Code Actions" )
-	-- 					key("<leader>do",   function() vim.cmd.RustLsp({ 'renderDiagnostic', 'current' }) end,  "Open diagnostics" )
-	-- 					key("<leader>od",   function() vim.cmd.RustLsp('openDocs') end,  "Open docs" )
-	-- 					key("J",   function() vim.cmd.RustLsp('joinLines') end,  "join lines" )
-	-- 				end,
-	-- 				default_settings = {
-	-- 					-- rust-analyzer language server configuration
-	-- 					["rust-analyzer"] = {
-	-- 						-- cargo = {
-	-- 						-- 	features = "all",
-	-- 						-- },
-	-- 						-- checkOnSave = {
-	-- 						-- 	command = "clippy",
-	-- 						-- },
-	-- 						-- procMacro = {
-	-- 						-- 	enable = true,
-	-- 						-- 	attributes = {
-	-- 						-- 		enable = true,
-	-- 						-- 	},
-	-- 						-- },
-	-- 					},
-	-- 				},
-	-- 			},
-	-- 		}
-	-- 	end,
-	-- },
+	{
+		"mrcjkb/rustaceanvim",
+		version = "^5",
+		lazy = false,
+		ft = "rust",
+		init = function()
+			vim.g.rustaceanvim = {
+				tools = {
+					float_win_config = {
+						border = "single",
+					},
+					code_actions = {
+						ui_select_fallback = false,
+					},
+				},
+				server = {
+					on_attach = function(client, bufnr)
+						-- Set keybindings, etc. here.
+						local key = function(keys, func, desc)
+							vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
+						end
+						-- stylua: ignore start
+						-- key("<leader>dn",   function() vim.cmd.RustLsp { 'crateGraph', 'x11', '[output]' } end,                           "Go to next diagnostic" )
+						key("<leader>ca",   function() vim.cmd.RustLsp('codeAction') end,  "Code Actions" )
+						key("<leader>do",   function() vim.cmd.RustLsp({ 'renderDiagnostic', 'current' }) end,  "Open diagnostics" )
+						key("<leader>od",   function() vim.cmd.RustLsp('openDocs') end,  "Open docs" )
+						key("J",   function() vim.cmd.RustLsp('joinLines') end,  "join lines" )
+					end,
+					default_settings = {
+						-- rust-analyzer language server configuration
+						["rust-analyzer"] = {
+							-- cargo = {
+							-- 	features = "all",
+							-- },
+							-- checkOnSave = {
+							-- 	command = "clippy",
+							-- },
+							-- procMacro = {
+							-- 	enable = true,
+							-- 	attributes = {
+							-- 		enable = true,
+							-- 	},
+							-- },
+						},
+					},
+				},
+			}
+		end,
+	},
 	{
 		"felpafel/inlay-hint.nvim",
 		event = "LspAttach",
@@ -188,24 +188,24 @@ return {
 				["css-lsp"] = {},
 				["astro-language-server"] = {},
 				-- eslint = {},
-				rust_analyzer = {
-					settings = {
-						["rust-analyzer"] = {
-							cargo = {
-								features = "all",
-							},
-							checkOnSave = {
-								command = "clippy",
-							},
-							procMacro = {
-								enable = true,
-								attributes = {
-									enable = true,
-								},
-							},
-						},
-					},
-				},
+				-- rust_analyzer = {
+				-- 	settings = {
+				-- 		["rust-analyzer"] = {
+				-- 			cargo = {
+				-- 				features = "all",
+				-- 			},
+				-- 			checkOnSave = {
+				-- 				command = "clippy",
+				-- 			},
+				-- 			procMacro = {
+				-- 				enable = true,
+				-- 				attributes = {
+				-- 					enable = true,
+				-- 				},
+				-- 			},
+				-- 		},
+				-- 	},
+				-- },
 				lua_ls = {
 					settings = {
 						Lua = {

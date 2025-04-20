@@ -1,7 +1,9 @@
+**/*.log
+**/*.sql
+
 **/node_modules/
 **/@girs/
 .config/mpd/playlists
-**/*.log
 .config/tmux/plugins
 .config/yazi/plugins
 .config/zsh/.zcompcache/
