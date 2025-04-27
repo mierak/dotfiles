@@ -1,32 +1,43 @@
 [Default Applications]
-text/x-shellscript=text.desktop;
-x-scheme-handler/mailto=mail.desktop;
-text/plain=text.desktop;
-application/postscript=pdf.desktop;
-application/pdf=pdf.desktop;
+# image
 image/png=img.desktop;
 image/jpeg=img.desktop;
 image/gif=img.desktop;
-application/rss+xml=rss.desktop
+
+# video
+video/webm=mpv.desktop
 video/x-matroska=video.desktop
+
+# x-scheme
+x-scheme-handler/mailto=mail.desktop;
 x-scheme-handler/lbry=lbry.desktop
-inode/directory=file.desktop
 x-scheme-handler/msteams=teams.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=browser.desktop
 x-scheme-handler/chrome=firefox.desktop
+x-scheme-handler/test=test.desktop
+x-scheme-handler/media-player=media-player.desktop
+x-scheme-handler-https=browser.desktop
+x-scheme-handler/magnet=torrent.desktop;
+x-scheme-handler/jetbrains-gateway=jetbrains-gateway.desktop
+
+# text
+text/plain=text.desktop;
+text/x-shellscript=text.desktop;
 text/html=firefox.desktop
+
+# application
+application/postscript=pdf.desktop;
+application/pdf=pdf.desktop;
+application/rss+xml=rss.desktop
 application/x-extension-htm=firefox.desktop
 application/x-extension-html=firefox.desktop
 application/x-extension-shtml=firefox.desktop
 application/xhtml+xml=firefox.desktop
 application/x-extension-xhtml=firefox.desktop
 application/x-extension-xht=firefox.desktop
-x-scheme-handler/test=test.desktop
-x-scheme-handler/media-player=media-player.desktop
-x-scheme-handler-https=browser.desktop
-x-scheme-handler/magnet=torrent.desktop;
 application/x-bittorrent=torrent.desktop;
-x-scheme-handler/jetbrains-gateway=jetbrains-gateway.desktop
+
+inode/directory=file.desktop
 
 [Added Associations]
