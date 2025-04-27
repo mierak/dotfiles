@@ -28,31 +28,16 @@
                                 panes: [
                                     (
                                         size: "23",
-                                        pane: Pane(Property(
-                                            content: [
-                                                (kind: Text("["), style: (fg: "yellow", modifiers: "Bold")),
-                                                (kind: Property(Status(StateV2())), style: (fg: "yellow", modifiers: "Bold")),
-                                                (kind: Text("]"), style: (fg: "yellow", modifiers: "Bold")),
-                                            ], align: Left,
-                                        )),
+                                        pane: Pane(Property(format: "$'['{fg: yellow, mods: bold}$state(){fg: yellow, mods: bold}$']'{fg: yellow, mods: bold}", align: Left)),
                                     ),
                                     (
                                         size: "100%",
                                         borders: "LEFT | RIGHT",
-                                        pane: Pane(Property(
-                                            content: [
-                                                (kind: Property(Song(Filename)), style: (modifiers: "Bold"),
-                                                    default: (kind: Text("No Song"), style: (modifiers: "Bold")))
-                                            ], align: Center, scroll_speed: 1
-                                        )),
+                                        pane: Pane(Property(format: "$s:title{mods: bold}|$'No Song'{mods: bold}", align: Center, scroll_speed: 1)),
                                     ),
                                     (
                                         size: "23",
-                                        pane: Pane(Property(
-                                            content: [
-                                                (kind: Property(Widget(Volume)), style: (fg: "blue", modifiers: "Bold"))
-                                            ], align: Right
-                                        )),
+                                        pane: Pane(Property( format: "$w:volume{fg: blue, mods: bold}", align: Right)),
                                     ),
                                 ],
                             ),
@@ -65,63 +50,22 @@
                                 panes: [
                                     (
                                         size: "23",
-                                        pane: Pane(Property(
-                                            content: [
-                                                (kind: Property(Status(Elapsed))), 
-                                                (kind: Text(" / ")), 
-                                                (kind: Property(Status(Duration))), 
-                                                (kind: Group([
-                                                    (kind: Text(" (")), 
-                                                    (kind: Property(Status(Bitrate))), 
-                                                    (kind: Text(" kbps)")),
-                                                ])),
-                                            ], align: Left,
-                                        )),
+                                        pane: Pane(Property(format: "$elapsed$' / '$duration$[$' ('$bitrate$' kpbs)']", align: Left)),
                                     ),
                                     (
                                         size: "100%",
                                         borders: "LEFT | RIGHT",
-                                        pane: Pane(Property(
-                                            content: [
-                                                (kind: Property(Song(Artist)), style: (fg: "yellow", modifiers: "Bold"),
-                                                    default: (kind: Text("Unknown"), style: (fg: "yellow", modifiers: "Bold"))),
-                                                (kind: Text(" - ")),
-                                                (kind: Property(Song(Album)), default: (kind: Text("Unknown Album")))
-                                            ], align: Center, scroll_speed: 2
-                                        )),
+                                        pane: Pane(Property(format: "$s:artist{fg: yellow, mods: bold}|$'Unknown Artist'{fg: yellow, mods: bold}$' - '$s:album{fg: yellow, mods: bold}|$'Unknown Album'", align: Center, scroll_speed: 2)),
                                     ),
                                     (
                                         size: "23",
-                                        pane: Pane(Property(content: [
-                                            (kind: Property(Status(RepeatV2(
-                                                on_label: " ",
-                                                off_label: " ",
-                                                on_style: (fg: "yellow", modifiers: "Bold"),
-                                                off_style: (fg: "blue", modifiers: "Dim"),
-                                            )))),
-                                            (kind: Property(Status(RandomV2(
-                                                on_label: " ",
-                                                off_label: " ",
-                                                on_style: (fg: "yellow", modifiers: "Bold"),
-                                                off_style: (fg: "blue", modifiers: "Dim"),
-                                            )))),
-                                            (kind: Property(Status(SingleV2(
-                                                on_label: "󰑘 ",
-                                                off_label: "󰑘 ",
-                                                oneshot_label: "󰑘 ",
-                                                on_style: (fg: "yellow", modifiers: "Bold"),
-                                                off_style: (fg: "blue", modifiers: "Dim"),
-                                                oneshot_style: (fg: "red", modifiers: "Bold"),
-                                            )))),
-                                            (kind: Property(Status(ConsumeV2(
-                                                on_label: " ",
-                                                off_label: " ",
-                                                oneshot_label: "",
-                                                on_style: (fg: "yellow", modifiers: "Bold"),
-                                                off_style: (fg: "blue", modifiers: "Dim"),
-                                                oneshot_style: (fg: "red", modifiers: "Dim"),
-                                            )))),
-                                        ], align: Right)),
+                                        pane: Pane(Property(
+                                            format: "
+                                                $repeat(onLabel: ' ', offLabel: ' ', onStyle:  {fg: yellow, mods: bold}, offStyle: {fg: yellow, mods: dim})
+                                                $random(onLabel: ' ', offLabel: ' ', onStyle: {fg: yellow, mods: bold}, offStyle: {fg: yellow, mods: dim})
+                                                $single(onLabel: '󰑘 ', offLabel: '󰑘 ', oneshotLabel: '󰑘 ', onStyle: {fg: yellow, mods: bold}, offStyle: {fg: yellow, mods: dim}, oneshotStyle: {fg: red, mods: bold})
+                                                $consume(onLabel: ' ', offLabel: ' ', oneshotLabel: ' ', onStyle: {fg: yellow, mods: bold}, offStyle: {fg: yellow, mods: dim}, oneshotStyle: {fg: red, mods: dim})
+                                            ", align: Right)),
                                     ),
                                 ],
                             ),
@@ -147,9 +91,9 @@
                     direction: Horizontal,
                     panes: [
                         (
-                            pane: Pane(Property(content: [(kind: Property(Status(StateV2(playing_label: "  ", paused_label: "  ", stopped_label: "  ",
-                                playing_style: (fg: "blue"), paused_style: (fg: "green"), stopped_style: (fg: "red")
-                            ))))], align: Left)),
+                            pane: Pane(Property(
+                                format: "$state(playingLabel: '  ', pausedLabel: '  ', stoppedLabel: '  ', playingStyle: {fg: blue}, pausedStyle: {fg: green}, stoppedStyle: {fg: red})",
+                                align: Left)),
                             size: "3",
                         ),
                         (
@@ -158,13 +102,7 @@
                         ),
                         (
                             size: "13",
-                            pane: Pane(Property(
-                                content: [
-                                    (kind: Property(Status(Elapsed))),
-                                    (kind: Text(" / ")),
-                                    (kind: Property(Status(Duration))),
-                                ], align: Right,
-                            )),
+                            pane: Pane(Property(format: "$elapsed$' / '$duration", align: Right)),
                         ),
                     ]
                 ),
@@ -190,22 +128,7 @@
         thumb_style: (fg: "blue"),
     ),
     browser_column_widths: [20, 38, 42],
-    browser_song_format: [
-        (
-            kind: Group([
-                (kind: Property(Track)),
-                (kind: Text(" ")),
-            ])
-        ),
-        (
-            kind: Group([
-                (kind: Property(Artist)),
-                (kind: Text(" - ")),
-                (kind: Property(Title)),
-            ]),
-            default: (kind: Property(Filename))
-        ),
-    ],
+    browser_song_format_v2: "$[$s:track$' ']$[$s:artist$' - '$s:title]|$s:filename$'.'$s:fileextension",
     tab_bar: (
         active_style: (fg: "black", bg: "blue", modifiers: "Bold"),
         inactive_style: (),
@@ -215,25 +138,10 @@
     borders_style: (fg: "blue", modifiers: "Bold"),
     highlight_border_style: (fg: "red"),
     song_table_format: [
-        (
-            prop: (kind: Property(Other("albumartist")), default: (kind: Property(Artist), default: (kind: Text("Unknown")))),
-            width: "20%",
-            label: "Artist"
-        ),
-        (
-            prop: (kind: Property(Title), default: (kind: Text("Unknown"))),
-            width: "35%",
-        ),
-        (
-            prop: (kind: Property(Album), default: (kind: Text("Unknown Album"))),
-            width: "45%",
-        ),
-        (
-            prop: (kind: Property(Duration),default: (kind: Text("-"))),
-            width: "5",
-            alignment: Right,
-            label: "Len"
-        ),
+        (format: "$s:albumartist|$s:artist|$'unknown'", width: "20%", label: "Artist"),
+        (format: "$s:title|$'Unknown'", width: "35%"),
+        (format: "$s:album|$'Unknown Album'", width: "45%"),
+        (format: "$s:duration|$'-'", width: "5", alignment: Right, label: "Len"),
     ],
     header: (rows: []),
 )

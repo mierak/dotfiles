@@ -11,6 +11,7 @@ vim.o.scrolloff = 6
 vim.o.sidescrolloff = 10
 vim.o.cursorline = true
 vim.o.cmdheight = 1
+vim.o.breakindent = true
 
 vim.o.wildmode = "longest,list,full"
 

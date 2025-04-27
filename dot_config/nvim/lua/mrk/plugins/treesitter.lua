@@ -21,6 +21,9 @@ return {
 			vim.filetype.add({
 				pattern = { [".*%.mdx"] = "markdown" },
 			})
+			vim.filetype.add({
+				pattern = { [".*local/share/chezmoi.*modify_.*"] = "bash" },
+			})
 			require("nvim-treesitter.configs").setup(opts)
 		end,
 	},

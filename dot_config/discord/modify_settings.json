@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat | jq '.SKIP_HOST_UPDATE |= true'

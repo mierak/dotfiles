@@ -3,7 +3,6 @@ no_banner = true
 preview_cmd = { running =  "tmux capture-pane -pe -t $(tmux list-panes -F '#{pane_id}' -s -t '{{name}}' -f '#{window_active}')", not_running = "exa -lh --git --icons --color=auto --group-directories-first {{workdir}}" }
 preview_width = 40
 default_dir = "$HOME"
-history_location = "/home/mrk/.cache/tms/hist"
 
 [[entry]]
 kind = "Dir"

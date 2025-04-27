@@ -53,7 +53,13 @@ class Workspace {
             <button
                 visible={bind(this.visible)}
                 className={bind(this.className)}
-                onClick={() => hyprland.dispatch("workspace", this.id.toString())}
+                onClick={() => {
+                    try {
+                        hyprland.dispatch("workspace", this.id.toString());
+                    } catch (e) {
+                        console.error("Error dispatching workspace:", e);
+                    }
+                }}
                 onDestroy={() => {
                     this.isDestroyed = true;
                     this.className.drop();
