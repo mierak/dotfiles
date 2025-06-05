@@ -10,4 +10,5 @@ require("lazy").setup("mrk.plugins", {
 require("mrk.remap")
 require("mrk.set")
 require("mrk.autocmd")
+require("mrk.chezmoi")
 require("mrk.globals")

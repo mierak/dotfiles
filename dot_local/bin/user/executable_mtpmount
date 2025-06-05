@@ -1,0 +1,26 @@
+#!/bin/sh
+# Automatically mounts/unmounts an MTP device
+
+mtp_address=$(gio mount -li | grep -Po "(?<=activation_root=)(mtp:\/\/.*$)")
+
+if [ -z "$mtp_address" ]; then
+	notify-send -u critical "No connected MTP device found"
+	exit 1
+fi
+
+case "$(printf "mount\nunmount" | rofi -dmenu -l 2 -p "What do do? Address: $mtp_address")" in
+	"mount")
+		if message=$(gio mount "$mtp_address" 2>&1); then
+			notify-send "MTP device mounted successfuly"
+		else
+			notify-send -u critical "MTP device could not be mounted" "Reason: \"$message\""
+		fi ;;
+	"unmount")
+		if message=$(gio mount -u "$mtp_address" 2>&1); then
+			notify-send "MTP device unmounted successfuly"
+  		else
+  			notify-send -u critical "MTP device could not be unmounted" "Reason: \"$message\""
+		fi ;;
+	*)
+		notify-send "Selection canceled" ;;
+esac

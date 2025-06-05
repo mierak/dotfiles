@@ -1,0 +1,7 @@
+#!/bin/sh
+
+hyprctl clients -j |
+    jq -r '.[] | select(.title | length > 0) | "\(.title) - \(.address)"' |
+    rofi -dmenu -i |
+    grep -Po ".* - \K.*" |
+    xargs -I {} hyprctl dispatch focuswindow address:{}

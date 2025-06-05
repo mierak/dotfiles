@@ -1,0 +1,12 @@
+#!/bin/sh
+
+xclip -o -selection clipboard | wget -i - -q --show-progress --progress=bar -P /tmp/downloadedimages
+nsxiv -t /tmp/downloadedimages
+
+printf "Do you wish to clean up temporary files? (y/n) "
+read -r yn
+case "$yn" in 
+	[Nn]) exit 0;;
+	*) rm -rfv /tmp/downloadedimages ;;
+esac
+

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+icon_path=/tmp/transadd_icon.png
+[ ! -f "$icon_path" ] && font2png "" "$(xrdbcolor 2)" "$icon_path"
+
+pidof transmission-daemon >/dev/null || (transmission-daemon && notify-send "Torrent" "Starting transmission daemon..." -t 3000 -i "$icon_path" -a "Transmission Daemon" && sleep 3)
+
+if transmission-remote -a "$@" > /dev/null 2>&1; then
+    case $(notify-send "Torrent" "Torrent added." -i "$icon_path" -a "Transmission Daemon" -A "Open in Browser") in
+        "0") xdg-open "http://localhost:9091" ;;
+    esac
+fi

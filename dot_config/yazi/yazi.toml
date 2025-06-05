@@ -39,7 +39,7 @@ open = [
 	{ run = 'start "" "%1"', orphan = true, desc = "Open", for = "windows" },
 ]
 imgopen = [
-	{ run = 'nsxivopendir $0', desc = "Open image dir" },
+	{ run = 'qimgv "$1"', desc = "Open image dir" },
 ]
 reveal = [
 	{ run = 'xdg-open "$(dirname "$1")"',           desc = "Reveal", for = "linux" },

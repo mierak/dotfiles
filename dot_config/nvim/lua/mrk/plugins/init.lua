@@ -1,7 +1,5 @@
 return {
-	-- "github/copilot.vim",
 	"christoomey/vim-tmux-navigator",
-
 	{
 		"folke/trouble.nvim",
 		dependencies = "nvim-tree/nvim-web-devicons",
@@ -13,7 +11,6 @@ return {
 			})
 		end,
 	},
-
 	{
 		"echasnovski/mini.nvim",
 		config = function()

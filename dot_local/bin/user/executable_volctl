@@ -1,0 +1,71 @@
+#!/bin/sh
+# Convenience script to control/get status of volume levels
+# Notifies polybar to update if it is running
+# Shows dunst notification with volume bar
+# when "-sound" is passed as a second argument, also plays a sound
+
+icon_path=/tmp/volctl_icon.png
+icon_muted_path=/tmp/volctl_muted_icon.png
+icon_mic_path=/tmp/volctl_mic_icon.png
+icon_mic_muted_path=/tmp/volctl_mic_muted_icon.png
+notif_appname="Volume Control"
+
+create_icon() {
+    font2png "$1" "$(xrdbcolor 4)" "$2"
+}
+
+notify_mic_volume() {
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/vol").update_mic_volume()'
+    case $(dunstify -h int:value:"$(pamixer --default-source --get-volume)" "Mic Volume" -r 102 "$(pamixer --default-source --get-volume)%" -a "$notif_appname" -i "$icon_mic_path" -A "dec," -A "inc,") in
+        "dec") pamixer --default-source --allow-boost -d 3; notify_mic_volume ;;
+        "inc") pamixer --default-source --allow-boost -i 3; notify_mic_volume ;;
+    esac
+}
+notify_mic_icon() {
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/vol").update_mic_status()'
+    status=""
+    if [ "$(pamixer --default-source --get-mute)" = true ]; then
+        status="Muted"
+        dunstify "Microphone" "$status" -r 103 -a "$notif_appname" -i "$icon_mic_muted_path"
+    else
+        status="Unmuted"
+        dunstify "Microphone" "$status" -r 103 -a "$notif_appname" -i "$icon_mic_path"
+    fi
+}
+notify_volume() {
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/vol").update_volume()'
+    
+    case $(dunstify -h int:value:"$(pamixer --get-volume)" "Volume" -r 100 "$(pamixer --get-volume)%" -A "dec," -A "inc," -a "$notif_appname" -i "$icon_path") in
+        "dec") pamixer --allow-boost -d 3; notify_volume;;
+        "inc") pamixer --allow-boost -i 3; notify_volume;;
+    esac
+}
+notify_icon() {
+	[ "$(pgrep awesome)" ] && awesome-client 'require("bar/widgets/vol").update_status()'
+    status=""
+    if [ "$(pamixer --get-mute)" = true ]; then
+        status="Muted"
+        dunstify "Spakers" "$status" -r 101 -a "$notif_appname" -i "$icon_muted_path"
+    else
+        status="Unmuted"
+        dunstify "Spakers" "$status" -r 101 -a "$notif_appname" -i "$icon_path"
+    fi
+}
+
+[ ! -f "$icon_path" ] && create_icon "" "$icon_path"
+[ ! -f "$icon_muted_path" ] && create_icon "󰖁" "$icon_muted_path"
+[ ! -f "$icon_mic_path" ] && create_icon "󰍬" "$icon_mic_path"
+[ ! -f "$icon_mic_muted_path" ] && create_icon "󰍭" "$icon_mic_muted_path"
+
+case $1 in
+    "status")         if [ "$(pamixer --get-mute)" = "true" ]; then echo "󰖁"; else echo ""; fi ;;
+    "mic-status")     if [ "$(pamixer --default-source --get-mute)" = "true" ]; then echo "󰍭"; else echo "󰍬"; fi ;;
+    "volume")         pamixer --get-volume ;;
+    "mic-volume")     pamixer --default-source --get-volume ;;
+    "inc-volume")     pamixer --allow-boost -i 3; notify_volume ;;
+    "dec-volume")     pamixer --allow-boost -d 3; notify_volume ;;
+    "mic-inc-volume") pamixer --default-source --allow-boost -i 3; notify_mic_volume ;;
+    "mic-dec-volume") pamixer --default-source --allow-boost -d 3; notify_mic_volume ;;
+    "toggle")         pamixer -t; notify_icon ;;
+    "mic-toggle")     pamixer --default-source -t; notify_mic_icon ;;
+esac

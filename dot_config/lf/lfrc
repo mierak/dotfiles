@@ -64,7 +64,7 @@ cmd open ${{
         pdf*) zathura $fx;;
         text/*) $EDITOR $fx;;
         application/json) $EDITOR $fx;;
-    	image*) sxivopendir $fx ; sleep 0.01;; # sleep as workaround for lf crash when closing an image
+    	image*) qimgv $fx ; sleep 0.01;; # sleep as workaround for lf crash when closing an image
     	video*) mpv $fx;;
         *) for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done;;
     esac

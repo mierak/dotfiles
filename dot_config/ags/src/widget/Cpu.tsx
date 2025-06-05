@@ -1,6 +1,6 @@
 import { bind, Variable } from "astal";
 
-const disk = Variable({ active: 0, total: 0, usage: 0 }).poll(5000, ["head", "-n1", "/proc/stat"], (out, prev) => {
+const cpu = Variable({ active: 0, total: 0, usage: 0 }).poll(5000, ["head", "-n1", "/proc/stat"], (out, prev) => {
     let idle = 0;
     let total = 0;
     let index = 0;
@@ -27,18 +27,27 @@ const disk = Variable({ active: 0, total: 0, usage: 0 }).poll(5000, ["head", "-n
         usage,
     };
 });
+const temp = Variable(0).poll(5000, ["sh", "-c", "sensors -j | jq '.\"k10temp-pci-00c3\".Tctl.temp1_input'"], (out) => {
+    return Math.round(Number(out.trim()));
+});
 
 export default function FileSystem() {
+    const cpuAndTemp = Variable.derive([cpu, temp], (cpu, temp) => {
+        return `  ${cpu.usage}% ${temp}°C`;
+    });
+
     return (
         <button
             onClick={() => {
-                disk.stopPoll();
-                disk.startPoll();
+                cpu.stopPoll();
+                cpu.startPoll();
+                temp.stopPoll();
+                temp.startPoll();
             }}
             className="widget cpu"
         >
-            {bind(disk).as(({ usage }) => {
-                return `  ${usage}%`;
+            {bind(cpuAndTemp).as((str) => {
+                return str;
             })}
         </button>
     );

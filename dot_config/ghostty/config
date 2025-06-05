@@ -1,10 +1,12 @@
 font-size = 12
 
-font-family = VictorMono NF Regular
-font-family-italic = VictorMono NF Italic
-font-family-bold = VictorMono NF Bold
-font-family-bold-italic = VictorMono NF Bold Italic
+font-family = Maple Mono NF
+# font-family-italic = Maple Mono
+# font-family-italic = VictorMono Nerd Font Propo
+# font-family-bold = VictorMono Nerd Font Propo
+# font-family-bold-italic = VictorMono Nerd Font Propo
 
+font-feature = -calt, +cv01, +cv02
 adjust-cell-width = -10%
 mouse-scroll-multiplier = 0.5
 auto-update = off
@@ -26,6 +28,7 @@ unfocused-split-opacity = 1.0
 keybind = ctrl+shift+plus=increase_font_size:1
 keybind = ctrl+minus=decrease_font_size:1
 keybind = ctrl+equal=reset_font_size
+keybind = ctrl+shift+a=unbind
 
 # keybind = ctrl+a>c=new_tab
 # keybind = ctrl+a>n=next_tab

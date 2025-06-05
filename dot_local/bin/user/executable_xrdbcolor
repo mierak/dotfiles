@@ -1,0 +1,6 @@
+#!/bin/sh
+# Queries xrdb for terminal color.
+# param $1 Number of color to be returned
+
+xrdb -q | grep -Po ".*color$1:\s+\K#[0-9a-fA-F]+"
+

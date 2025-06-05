@@ -11,7 +11,7 @@
     cache_dir: Some("/tmp/rmpc/cache"),
     lyrics_dir: "~/Music",
     on_song_change: ["~/.config/rmpc/scripts/notify"],
-    on_resize: ["~/.config/rmpc/scripts/onresize"],
+    // on_resize: ["~/.config/rmpc/scripts/onresize"],
     status_update_interval_ms: 1000,
     enable_mouse: true,
     enable_config_hot_reload: true,
@@ -27,6 +27,7 @@
             "~":       ShowHelp,
             "O":       ShowOutputs,
             "I":       ShowCurrentSongInfo,
+            "<C-p>":   ShowDecoders,
             ":":       CommandMode,
             ".":       VolumeUp,
             ",":       VolumeDown,
@@ -124,8 +125,8 @@
                         direction: Vertical,
                             panes: [
                                 (
-                                    size: "3",
-                                    pane: Pane(Lyrics),
+                                    size: "10",
+                                    pane: Pane(Cava),
                                 ),
                                 (
                                     size: "100%",

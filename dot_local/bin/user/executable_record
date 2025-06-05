@@ -1,0 +1,79 @@
+#!/bin/sh
+
+if [ -f /tmp/recordingpid ]; then
+	choice=$(printf " Stop| Stop and Upload" | rofi -sep "|" -dmenu -p "What to do?" -l 2)
+else
+	choice=$(printf " Area|󰹑  Screen" | rofi -sep "|" -dmenu -p "What to record?" -l 2)
+fi
+framerate=60
+output_dir="$HOME"/Videos
+encoding="h264_nvenc"
+record_icon=⏺️
+
+update_icon() {
+	echo "$1" > /tmp/recordingicon
+    [ -n "$(pgrep -x dwmblocks)" ] && kill -40 "$(pidof dwmblocks)"
+    barstatus set "$1"
+}
+
+cache_filename() {
+	echo "$1" > /tmp/recordingfn
+}
+
+record_area() {
+	dimension_args=$(slop -f "-s %wx%h -i :0.0+%x,%y")
+	size=$(echo "$dimension_args" | grep -Po '(?<=\-s\ ).+?(?=\ )')
+	display=$(echo "$dimension_args" | grep -Po '(?<=\-i\ ).+?$')
+	filename="$output_dir"/vid-area-"$(date '+%y%m%d-%H%M-%S')".mp4
+	cache_filename "$filename"
+	ffmpeg -f x11grab \
+		-framerate "$framerate" \
+		-s "$size" \
+		-i "$display" \
+		-c:v "$encoding" \
+		-qp 0 \
+		"$filename" > /dev/null 2>&1 & 
+			echo $! > /tmp/recordingpid
+	update_icon "$record_icon Live"
+}
+
+record_screen() {
+	filename="$output_dir"/vid-screen-"$(date '+%y%m%d-%H%M-%S')".mp4
+	cache_filename "$filename"
+	ffmpeg -f x11grab \
+		-framerate "$framerate" \
+		-s "$1" \
+		-i ":0.0+$2" \
+		-c:v "$encoding" \
+		-qp 0 \
+		"$filename" > /dev/null 2>&1 & 
+			echo $! > /tmp/recordingpid
+	update_icon "$record_icon Live"
+}
+
+stop_recording() {
+	recordingpid="$(cat /tmp/recordingpid)"
+	rm -f /tmp/recordingpid
+	kill -15 "$recordingpid"
+	update_icon ""
+	sleep 3
+	kill -9 "$recordingpid"
+	filename=$(cat /tmp/recordingfn)
+	rm -f /tmp/recordingfn
+	[ "$1" = 1 ] && update_icon "  Uploading..." && puush "$filename" && update_icon ""
+	exit
+}
+
+select_screen() {
+	screen=$(xrandr | grep -Po '(?<= )\d+x\d+\+\d+\+\d+' | tr '\n' '|' | rofi -dmenu -sep "|" -p "Choose a screen" -l 3)
+	size="${screen%%+*}"
+	display="${screen#*+}"
+	record_screen "$size" "$display"
+}
+
+case "$choice" in
+	" Area") record_area;;
+	"󰹑  Screen") select_screen;;
+	" Stop") stop_recording;;
+	" Stop and Upload") stop_recording 1;;
+esac

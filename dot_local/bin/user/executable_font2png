@@ -1,0 +1,7 @@
+#!/bin/sh
+# Converts font glyph to png
+# param $1 Text to convert
+# param $2 color
+# param $3 output path
+
+magick -size 128:128 xc:transparent -fill "$2" -font 'JetBrainsMono-NFM-Regular' -pointsize 192 -draw "gravity center text 0 0 \"$1\"" "$3"

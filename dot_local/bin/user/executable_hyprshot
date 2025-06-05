@@ -1,0 +1,190 @@
+#!/bin/sh
+
+mode=""   # "record" or "screenshot"
+source="" # "area" or "screen"
+target="" # "clipboard", "file" or "puush"
+
+while [ "$1" != "" ]; do
+    PARAM=$(echo "$1" | cut -d= -f1)
+    VALUE=$(echo "$1" | cut -d= -f2)
+
+    case $PARAM in
+    --mode) mode="$VALUE" ;;
+    --source) source="$VALUE" ;;
+    --target) target="$VALUE" ;;
+    --help)
+        printf "Usage: hyprshot [OPTION]...
+    --mode=MODE      Mode of operation: record or screenshot
+    --source=SOURCE  Source of the recording or screenshot: area or screen
+    --target=TARGET  Destination of the screenshot: clipboard, file or puush
+    --help           Display this help and exit\n"
+        exit
+        ;;
+    # -?*) ;;
+    *) # Default case: If no more options then break out of the loop.
+        printf 'ERROR: Unknown option: %s\n' "$1" >&2
+        exit 1
+        ;;
+    esac
+    shift
+done
+
+if [ -z "$mode" ]; then
+    mode=$(printf " Record|󰹑 Screenshot" | rofi -sep "|" -dmenu -p "What to do?" -l 2)
+    case "$mode" in
+    " Record") mode="record" ;;
+    "󰹑 Screenshot") mode="screenshot" ;;
+    esac
+fi
+
+prompt_source() {
+    if [ -z "$source" ]; then
+        source=$(printf " Area|󰹑  Screen" | rofi -sep "|" -dmenu -p "What to $mode?" -l 2)
+        case "$source" in
+        " Area") source="area" ;;
+        "󰹑  Screen") source="screen" ;;
+        esac
+    fi
+}
+
+prompt_target() {
+    if [ -z "$target" ]; then
+        target=$(printf "󰅍 Clipboard|祝 Puush| File" | rofi -sep "|" -dmenu -p "Destination" -l 3)
+        case "$target" in
+        "󰅍 Clipboard") target="clipboard" ;;
+        "祝 Puush") target="puush" ;;
+        " File") target="file" ;;
+        esac
+    fi
+
+}
+
+restore_shader() {
+    if [ -n "$shader" ]; then
+        hyprshade on "$shader"
+    fi
+}
+
+save_shader() {
+    shader=$(hyprshade current)
+    hyprshade off
+    # trap restore_shader EXIT
+}
+
+image_type="png"
+date=$(date '+%Y-%m-%d-%H-%M-%S')
+
+output_dir="$HOME"/Videos
+encoding="hevc_vaapi"
+record_icon=⏺️
+
+save_to_target() {
+    prompt_target
+    case "$target" in
+    "clipboard")
+        save_shader
+        eval "$1 -" | wl-copy
+        restore_shader
+        notify-send "Screenshot" "Image copied to clipboard" -a "Screenshot"
+        ;;
+    "puush")
+        temp_file="/tmp/screenshot.$image_type"
+        save_shader
+        eval "$1 $temp_file"
+        restore_shader
+        puush "$temp_file" >/dev/null
+        rm -f "$temp_file"
+        ;;
+    "file")
+        filename="$date-$2"
+        path="${XDG_PICTURES_DIR:-$HOME/Pictures}/screenshots/$filename.$image_type"
+        save_shader
+        eval "$1 $path"
+        restore_shader
+        notify-send "Screenshot" "Image saved to '$path'" -a "Screenshot"
+        ;;
+    esac
+}
+
+update_icon() {
+    echo "$1" >/tmp/recordingicon
+    [ -n "$(pgrep -x waybar)" ] && pkill -SIGRTMIN+10 waybar
+}
+
+stop_recording() {
+    recordingpid="$(cat /tmp/recordingpid)"
+    filename=$(cat /tmp/recordingfn)
+    kill -15 "$recordingpid"
+
+    count=0
+    while kill -0 "$recordingpid" >/dev/null 2>&1; do
+        if [ "$count" -gt 40 ]; then
+            kill -9 "$recordingpid"
+            notify-send "Recording" "Recording process killed because if was not responding" -a "Recording"
+        fi
+
+        sleep 0.25
+        count=$((count + 1))
+    done
+
+    rm -f /tmp/recordingpid
+    rm -f /tmp/recordingfn
+
+    if [ "$1" = 1 ]; then
+        update_icon "  Uploading..."
+        puush "$filename" >/dev/null
+    fi
+
+    update_icon ""
+
+    exit
+}
+
+monitor_prompt() {
+    hyprctl monitors -j |
+        jq -r 'sort_by(.x) | .[] | "\(.x),\(.y) \(.width)x\(.height)"' |
+        rofi -dmenu -p "Choose a screen" -l 3
+}
+
+area_prompt() {
+    # move mouse back and forth so it reappears if it is hidden by the compositor
+    ydotool mousemove -x 1 -y 0
+    ydotool mousemove -x -1 -y 0
+    slurp -d
+}
+
+case "$mode" in
+"record")
+    if [ -f /tmp/recordingpid ]; then
+        case "$(printf " Stop| Stop and Upload" | rofi -sep "|" -dmenu -p "What to do?" -l 2)" in
+        " Stop") stop_recording ;;
+        " Stop and Upload") stop_recording 1 ;;
+        esac
+    else
+        prompt_source
+        case "$source" in
+        "area")
+            filename="$output_dir"/recording-area-"$date".mp4
+            wf-recorder --audio="$(pactl get-default-sink).monitor" -g "$(area_prompt)" -f "$filename" -c "$encoding" >/dev/null 2>&1 &
+            echo $! >/tmp/recordingpid
+            update_icon "$record_icon"
+            echo "$filename" >/tmp/recordingfn
+            ;;
+        "screen")
+            filename="$output_dir"/recording-screen-"$date".mp4
+            wf-recorder --audio="$(pactl get-default-sink).monitor" -g "$(monitor_prompt)" -f "$filename" -c "$encoding" >/dev/null 2>&1 &
+            echo $! >/tmp/recordingpid
+            update_icon "$record_icon"
+            echo "$filename" >/tmp/recordingfn
+            ;;
+        esac
+    fi
+    ;;
+"screenshot")
+    prompt_source
+    case "$source" in
+    "area") save_to_target "grim -g \"$(area_prompt)\"" area ;;
+    "screen") sleep 0.5 && save_to_target "grim -g \"$(monitor_prompt)\"" screen ;;
+    esac
+    ;;
+esac
