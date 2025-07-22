@@ -43,8 +43,7 @@ export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 # Adds GO/CARGO bin to $PATH
 export PATH="$PATH:$GOPATH/bin:$CARGO_HOME/bin"
 
-
-{{- if contains "CZ00" .chezmoi.hostname -}}
+{{- if contains "CZ00" .chezmoi.hostname }}
 export XAUTHORITY="$HOME/.Xauthority"
 
 export PATH="$PATH:$HOME/.dotnet"
@@ -59,12 +58,11 @@ export CX_LICENSE="{{- (keepassxc "WORK_Q/Environment/CX_LICENSE").Password }}"
 export CX_LIC_SERVER="{{- (keepassxc "WORK_Q/Environment/CX_LIC_SERVER").Password }}"
 
 export NVD_PW="{{- (keepassxc "WORK_Q/Environment/NVD_PW").Password }}"
-{{- else -}}
+{{- else }}
 
 export XAUTHORITY="${XDG_RUNTIME_DIR:-$HOME}/Xauthority"
 
 # Start graphical server on user's current tty if not already running.
 [ "$(tty)" = "/dev/tty1" ] && ! pidof -s Hyprland >/dev/null 2>&1 && Hyprland
 
-{{- end -}}
-
+{{- end }}

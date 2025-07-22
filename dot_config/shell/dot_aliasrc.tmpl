@@ -40,11 +40,11 @@ alias \
 # Utilities
 alias \
     myip='echo $(curl -s https://api.my-ip.io/ip)' \
-{{- if contains "CZ00" .chezmoi.hostname -}}
+{{- if contains "CZ00" .chezmoi.hostname }}
     cat="batcat --paging=auto" \
-{{- else -}}
+{{- else }}
     cat="bat --paging=auto" \
-{{- end -}}
+{{- end }}
     cd="z" \
     tms='exec tmux attach -t "$(\tms -e)"' \
     ce='chezmoi edit --watch'
