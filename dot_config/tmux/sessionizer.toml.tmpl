@@ -1,0 +1,5 @@
+{{- if contains "CZ00" .chezmoi.hostname -}}
+{{-   include "dot_config/tmux/.sessionizer_work.toml" -}}
+{{- else -}}
+{{-   include "dot_config/tmux/.sessionizer_personal.toml" -}}
+{{- end -}}

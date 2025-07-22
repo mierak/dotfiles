@@ -5,7 +5,7 @@ subdirs="$(find ~/.local/bin -type d -printf %p:)"
 export PATH="$PATH:${subdirs%%:}"
 
 export EDITOR="nvim"
-export TERMINAL="alacritty"
+export TERMINAL="ghostty"
 export BROWSER="firefox"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT="-c"
@@ -35,14 +35,36 @@ export STACK_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/stack"
 export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
-export XAUTHORITY="${XDG_RUNTIME_DIR:-$HOME}/Xauthority"
 export WINEPREFIX="$XDG_DATA_HOME"/wine
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 
 export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 
-# Adds GO bin to $PATH
+# Adds GO/CARGO bin to $PATH
 export PATH="$PATH:$GOPATH/bin:$CARGO_HOME/bin"
+
+
+{{- if contains "CZ00" .chezmoi.hostname -}}
+export XAUTHORITY="$HOME/.Xauthority"
+
+export PATH="$PATH:$HOME/.dotnet"
+export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:/home/{{- .chezmoi.username }}/.dotnet/tools"
+export DOTNET_ROOT="$HOME/.dotnet"
+export PATH="$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools"
+export INTERACTIVE_ARTIFACTORY_USERNAME="{{- (keepassxc "WORK_Q/Environment/INTERACTIVE_ARTIFACTORY_USERNAME").Password }}"
+export INTERACTIVE_ARTIFACTORY_PASSWORD="{{- (keepassxc "WORK_Q/Environment/INTERACTIVE_ARTIFACTORY_PASSWORD").Password }}"
+export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+export CX_LICENSE="{{- (keepassxc "WORK_Q/Environment/CX_LICENSE").Password }}"
+export CX_LIC_SERVER="{{- (keepassxc "WORK_Q/Environment/CX_LIC_SERVER").Password }}"
+
+export NVD_PW="{{- (keepassxc "WORK_Q/Environment/NVD_PW").Password }}"
+{{- else -}}
+
+export XAUTHORITY="${XDG_RUNTIME_DIR:-$HOME}/Xauthority"
 
 # Start graphical server on user's current tty if not already running.
 [ "$(tty)" = "/dev/tty1" ] && ! pidof -s Hyprland >/dev/null 2>&1 && Hyprland
+
+{{- end -}}
+

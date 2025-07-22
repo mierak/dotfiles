@@ -1,5 +1,4 @@
 no_banner = true
-# preview_cmd = "exa -lh --git --icons --color=auto --group-directories-first {{workdir}}"
 preview_cmd = { running =  "tmux capture-pane -pe -t $(tmux list-panes -F '#{pane_id}' -s -t '{{name}}' -f '#{window_active}')", not_running = "exa -lh --git --icons --color=auto --group-directories-first {{workdir}}" }
 preview_width = 40
 default_dir = "$HOME"
@@ -17,21 +16,9 @@ workdir = "$HOME/Projects"
 excludes = []
 
 [[entry]]
-kind = "Dir"
-name = "Nom - {{name}}"
-workdir = "$HOME/Projects/nom"
-excludes = []
-
-[[entry]]
 kind = "Plain"
 name = "System"
 workdir = "$HOME"
-
-[[entry]]
-kind = "Plain"
-name = "awesome"
-workdir = "$HOME/.config/awesome"
-default = true
 
 [[entry]]
 kind = "Plain"
@@ -53,3 +40,4 @@ workdir = "$HOME/.config/ags"
 kind = "Plain"
 name = "hyprland"
 workdir = "$HOME/.config/hypr"
+

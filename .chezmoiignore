@@ -13,3 +13,11 @@
 .config/lf/bookmarks 
 .config/shell/cdalias
 .config/ags/assets/app-icons
+
+{{- if contains "CZ00" .chezmoi.hostname -}}
+.config/gtk-2.0
+.config/gtk-2.0/gtkrc-2.0
+.config/gtk-3.0
+.config/gtk-4.0
+.config/mimeapps.list
+{{- end -}}
