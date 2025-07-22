@@ -10,7 +10,7 @@
     modal_background_color: None,
     modal_backdrop: true,
     format_tag_separator: " | ",
-    mutliple_tag_resolution_strategy: Last,
+    multiple_tag_resolution_strategy: Last,
     text_color: None,
     preview_label_style: (fg: "yellow"),
     preview_metadata_group_style: (fg: "yellow", modifiers: "Bold"),
@@ -20,6 +20,58 @@
         error: (fg: "red", bg: "black"),
         debug: (fg: "light_green", bg: "black"),
         trace: (fg: "magenta", bg: "black"),
+    ),
+    cava: (
+        // bar_symbol: "█",
+        // bar_symbols: [''],
+        // inverted_bar_symbols: [''],
+        // bar_symbol: "▁▂▃▄▅▆▇█",
+        // bar_symbol: "󱗼",
+        // bar_symbols:          ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'],
+        // inverted_bar_symbols: ['▔', '🮂', '🮃', '▀', '🮄', '🮅', '🮆', '█'],
+        bar_width: 2,
+        bar_spacing: 1,
+        orientation: Bottom,
+
+        // bg_color: "green",
+        // bar_color: Single("blue"),
+        // bar_color: Rows([
+        //     // "red",
+        //     "red",
+        //     "green",
+        //     "green",
+        //     "blue",
+        // ])
+        // bar_color: Gradient(
+        //     {
+        //           0: "rgb(  0, 200,  40)",
+        //          20: "rgb(  0,   0, 255)",
+        //         100: "rgb(200,   0,  50)",
+        //     }
+        // )
+        // bar_color: Rows([
+        //     "#FF2D7D",
+        //     "#FF4FA3",
+        //     "#FF6EC7",
+        //     "#D67EFF",
+        //     "#9D8AFF",
+        //     "#6A9AFF",
+        //     "#38B6FF",
+        //     "#00D0E0",
+        // ]),
+        bar_color: Gradient({
+              0: "#FF2D7D",
+             14: "#FF4FA3",
+             28: "#FF6EC7",
+             42: "#D67EFF",
+             56: "#9D8AFF",
+             70: "#6A9AFF",
+             84: "#38B6FF",
+            100: "#00D0E0",
+        }),
+    ),
+    lyrics: (
+        timestamp: false,
     ),
     components: {
         "state": Pane(Property(
@@ -32,25 +84,38 @@
         "title": Pane(Property(
             content: [
                 (kind: Property(Song(Title)), style: (modifiers: "Bold"),
-                    default: (kind: Text("No Song"), style: (modifiers: "Bold")))
+                    default: (kind: Text("No Song"), style: (modifiers: "Bold"))),
+                (kind: Text(" / ")), 
+                (kind: Property(Status(QueueTimeRemaining(separator: " "))), style: (modifiers: "Bold")),
+                // (kind: Text("Current partition: ")), 
+                // (kind: Property(Status(Partition)), style: (modifiers: "Bold")),
             ], align: Center, scroll_speed: 1
         )),
-        "volume": Pane(Property(
-            content: [
-                (kind: Property(Widget(Volume)), style: (fg: "blue", modifiers: "Bold")),
-            ], align: Right
-        )),
+        "volume": Split(
+            direction: Horizontal,
+            panes: [
+                (size: "100%", pane: Pane(Volume(kind: Slider(symbols: ["━", "━", "●", "━", "━"])))),
+                (size: "3", pane: Pane(Property(content: [(kind: Property(Status(Volume)), style: (fg: "blue"))], align: Right))),
+                (size: "1", pane: Pane(Property(content: [(kind: Text("%"), style: (fg: "blue"))]))),
+            ]
+        ),
         "elapsed_and_bitrate": Pane(Property(
-            content: [
-                (kind: Property(Status(Elapsed))), 
-                (kind: Text(" / ")), 
-                (kind: Property(Status(Duration))), 
-                (kind: Group([
-                    (kind: Text(" (")), 
-                    (kind: Property(Status(Bitrate))), 
-                    (kind: Text(" kbps)")),
-                ])),
-            ], align: Left,
+            // format: "$st:el' / '$st:dur{mods: bold}[' ('$st:br ' kbps)']",
+            format: "['sup'] ' ' %trunc(content: \"sup\"{fg: red}, length: 3)  $elapsed ' / ' $cduration [' (' $bitrate ' kbps)']",
+            // format: "%truncate(content: $tag(value:'date'), length: 4, from_start: false)",
+            // format: "%truncate(content: $title , length: 4, from_start: true)",
+            // format: "$tag(value: 'date')",
+            // content: [
+            //     (kind: Property(Status(Elapsed))), 
+            //     (kind: Text(" / ")), 
+            //     (kind: Property(Status(Duration))), 
+            //     (kind: Group([
+            //         (kind: Text(" (")), 
+            //         (kind: Property(Status(Bitrate))), 
+            //         (kind: Text(" kbps)")),
+            //     ])),
+            // ],
+            align: Left,
         )),
         "artist_album": Pane(Property(
             content: [
@@ -188,6 +253,7 @@
     symbols: (
         song: "🎵",
         dir: "📁",
+        playlist: "🎼",
         marker: "\u{e0b0}",
         ellipsis: "…",
         song_style: None,
@@ -199,6 +265,7 @@
         elapsed_style: (fg: "blue"),
         thumb_style: (fg: "blue", bg: "#1e2030"),
     ),
+    // scrollbar: None,
     scrollbar: (
         symbols: ["│", "█", "▲", "▼"],
         track_style: (),
@@ -208,13 +275,25 @@
     browser_column_widths: [20, 38, 42],
     browser_song_format: [
         (
-            kind: Group([
-                (kind: Property(Artist)),
-                (kind: Text(" - ")),
-                (kind: Property(Title)),
-            ]),
-            default: (kind: Property(Filename))
-        ),
+            kind: Property(Other("name")),
+            default: (
+                // kind: Transform(Truncate(
+                //     content: (kind: Group([
+                //         (kind: Property(Artist)),
+                //         (kind: Text(" - ")),
+                //         (kind: Property(Title)),
+                //     ])),
+                //     length: 43,
+                //     from_start: true,
+                // )),
+                kind: Group([
+                    (kind: Property(Artist)),
+                    (kind: Text(" - ")),
+                    (kind: Property(Title)),
+                ]),
+                default: (kind: Property(Filename))
+            ),
+        )
     ],
     tab_bar: (
         active_style: (fg: "black", bg: "blue", modifiers: "Bold"),
@@ -224,7 +303,19 @@
     current_item_style: (fg: "black", bg: "blue", modifiers: "Bold"),
     borders_style: (fg: "blue"),
     highlight_border_style: (fg: "red"),
+    song_table_album_separator: Underline,
     song_table_format: [
+        (
+            prop: (kind: Property(Position)),
+            width: "2",
+            alignment: Right,
+            label: ""
+        ),
+        // (
+        //     prop: (kind: Transform(Truncate( content: (kind: Property(Other("date"))), from_start: false, length: 4))),
+        //     width: "20%",
+        //     label: "Date"
+        // ),
         (
             prop: (kind: Property(Other("albumartist")), default: (kind: Property(Artist), default: (kind: Text("Unknown")))),
             width: "20%",
@@ -237,6 +328,10 @@
         (
             prop: (kind: Property(Album), default: (kind: Text("Unknown Album"))),
             width: "45%",
+        ),
+        (
+            prop: (kind: Sticker("playCount")),
+            width: "5",
         ),
         (
             prop: (kind: Property(Duration),default: (kind: Text("-"))),

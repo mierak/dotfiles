@@ -17,16 +17,14 @@ export default function Window(props: {
         title.set(client?.title ?? "");
     });
 
-    const appIcon = (
-        <icon
-            vexpand={false}
-            icon_size={16}
-            className="app-icon"
-            icon={bind(hyprland, "focusedClient").as((client) => {
-                return getAppIcon(client?.class);
-            })}
-        />
-    );
+    // const appIcon = (
+    //     <icon
+    //         className="app-icon"
+    //         icon={bind(hyprland, "focusedClient").as((client) => {
+    //             return getAppIcon(client?.class);
+    //         })}
+    //     />
+    // );
 
     hyprland.connect("event", (_, ev, data) => {
         if (HyprToGdkMonitor(hyprland.focusedMonitor) !== props.gdkmonitor) {
@@ -58,9 +56,9 @@ export default function Window(props: {
             onClicked={() => undefined}
             child={
                 <box>
-                    {floatingIcon}
-                    {maximizedIcon}
-                    {appIcon}
+                    {/* {floatingIcon} */}
+                    {/* {maximizedIcon} */}
+                    {/*{appIcon}*/}
                     <label className="title" label={bind(title)} truncate={true} />
                 </box>
             }

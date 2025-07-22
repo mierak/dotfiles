@@ -13,6 +13,9 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]])
 vim.keymap.set("n", "<leader>P", [["+P]])
 
+vim.keymap.set({ "n", "v" }, "<leader>d", [["+d]])
+vim.keymap.set("n", "<leader>D", [["+D]])
+
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- Nvim Tree

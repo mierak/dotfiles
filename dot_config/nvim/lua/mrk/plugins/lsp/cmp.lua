@@ -44,6 +44,14 @@ return {
 						score_offset = 100,
 						async = true,
 					},
+					lsp = {
+						transform_items = function(_ctx, items)
+							if #items > 0 then
+								items[1].score_offset = 1000
+							end
+							return items
+						end,
+					},
 				},
 			},
 			completion = {

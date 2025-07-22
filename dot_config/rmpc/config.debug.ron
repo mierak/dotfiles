@@ -3,9 +3,6 @@
 #![enable(unwrap_variant_newtypes)]
 (
     address: "/tmp/mpd_socket",
-    // address: "~/.local/share/mpd_socketconfig",
-    // address: "127.0.0.1:6600",
-    // password: "test123",
     volume_step: 5,
     scrolloff: 2,
     wrap_navigation: true,
@@ -16,10 +13,12 @@
     cache_dir: "/tmp/rmpc/cache/",
     lyrics_dir: "~/Music",
     // on_song_change: ["~/.config/rmpc/scripts/autolrc"],
+    on_song_change: ["sh", "-c", "~/.config/rmpc/scripts/printenv > /tmp/test"],
     // on_resize: ["~/.config/rmpc/scripts/onresize"],
     enable_mouse: true,
     status_update_interval_ms: 1000,
     select_current_song_on_change: true,
+    // mpd_idle_read_timeout_ms: 2000,
     center_current_song_on_change: true,
     album_art: (
         method: Auto,
@@ -28,24 +27,29 @@
         vertical_align: Center,
         horizontal_align: Center,
     ),
+    show_playlists_in_browser: All,
     browser_song_sort: [Disc, Track, Title, Artist],
-    directories_sort: SortFormat(group_directories_first: true, reverse: false),
+    directories_sort: SortFormat(group_by_type: true, reverse: false),
     cava: (
         framerate: 60,
-        lower_cutoff_freq: 50,
-        higher_cutoff_freq: 10000,
+        autosens: true,
+        sensitivity: 120,
         input: (
             method: Fifo,
-            source: "/tmp/mpd.fifo",
+            source: "/tmp/mpd2.fifo",
+            sample_rate: 44100,
+            channels: 2,
+            samble_bits: 16,
         ),
         smoothing: (
-            noise_reduction: 77,
+            noise_reduction: 20,
             monstercat: false,
+            waves: false,
         ),
     ),
     keybinds: (
         global: {
-            // "R":       AddRandom,
+            "R":       AddRandom,
             ",":       VolumeDown,
             "s":       Stop,
             ".":       VolumeUp,
@@ -53,20 +57,20 @@
             "<Tab>":   NextTab,
             "<Left>":  PreviousTab,
             "<S-Tab>": PreviousTab,
-            "1":       SwitchToTab("Queue"),
-            "2":       SwitchToTab("Directories"),
-            "3":       SwitchToTab("Artists"),
-            "4":       SwitchToTab("Album Artists"),
-            "5":       SwitchToTab("Albums"),
-            "6":       SwitchToTab("Playlists"),
-            "7":       SwitchToTab("Search"),
+            "1":       SwitchToTab("queue"),
+            "2":       SwitchToTab("directories"),
+            "3":       SwitchToTab("artists"),
+            "4":       SwitchToTab("album Artists"),
+            "5":       SwitchToTab("albums"),
+            "6":       SwitchToTab("playlists"),
+            "7":       SwitchToTab("search"),
             "q":       Quit,
             "~":       ShowHelp,
             "I":       ShowCurrentSongInfo,
             // "M":       ShowMessages,
             "O":       ShowOutputs,
-            "P":       SwitchPartition,
-            "<C-p>":       ShowDecoders,
+            "P":       Partition(),
+            // "<C-p>":       ShowDecoders,
             ":":       CommandMode,
             "x":       ToggleRandom,
             ">":       NextTrack,
@@ -78,7 +82,7 @@
             "z":       ToggleRepeat,
             "b":       SeekBack,
             // "<C-z>":   ExternalCommand(command: ["rmpc", "addrandom", "album", "2"]),
-            "<C-z>":   Command(command: "addrandom album 2"),
+            // "<C-z>":   Command(command: "addrandom album 2"),
             "T":       ExternalCommand(command: 
                        [   "sh", "-c", 
                            "rm -f /tmp/rmpc/env &&
@@ -91,6 +95,8 @@
             //                "picard -s \"${XDG_MUSIC_DIR:-$HOME/Music}/$(echo $SELECTED_SONGS | head -n 1)\" 2>&1 >/dev/null"
             //            ], description: "Open in picard"),
             "W":       ExternalCommand(command: ["sh", "-c", "~/.config/rmpc/scripts/printenv > /tmp/test"], description: "Search selected song on youtube"),
+            "u": Update,
+            "U": Rescan,
         },
         navigation: {
             "k":           Up,
@@ -103,8 +109,7 @@
             "<S-Right>":   PaneRight,
             "a":           Add,
             "A":           AddAll,
-            "<C-a>":           AddReplace,
-            "<C-S-a>":           AddAllReplace,
+            "<C-A>":     AddAllReplace,
             "r":           Rename,
             "n":           NextResult,
             "N":           PreviousResult,
@@ -123,12 +128,17 @@
             "K":           MoveUp,
             "D":           Delete,
             "B":           ShowInfo,
+            // "<C-a>":       AddOptions(kind: Modal([])),
+            "<C-b>":       AddOptions(kind: Modal([
+                               ("End of queue and play", (autoplay: First, all: false, position: EndOfQueue)),
+                               ("Replace queue and play", (autoplay: First, all: false, position: Replace)),
+                           ])),
+            "<C-z>":       ContextMenu(),
         },
         queue: {
             "D":       DeleteAll,
             "<CR>":    Play,
             "<C-s>":   Save,
-            "a":       AddToPlaylist,
             "d":       Delete,
             "C":       JumpToCurrent,
             "X":       Shuffle,
@@ -144,6 +154,7 @@
     ),
     search: (
         case_sensitive: false,
+        ignore_diacritics: false,
         mode: Contains,
         tags: [
             (value: "any",         label: "Any Tag"),
@@ -169,12 +180,11 @@
                             direction: Vertical,
                             panes: [
                                 (
-                                    size: "3",
-                                    // pane: Pane(Property(content: [(kind: Property(Status(QueueLength())))])),
+                                    size: "100%",
                                     pane: Pane(Lyrics)
                                 ),
                                 (
-                                    size: "100%",
+                                    size: "0.409090909r",
                                     pane: Pane(AlbumArt),
                                 ),
                             ],
@@ -191,8 +201,7 @@
                                 ),
                                 (
                                     borders: "TOP",
-                                    size: "20",
-                                    // pane: Pane(Property(content: [(kind: Property(Status(QueueLength())))])),
+                                    size: "13",
                                     pane: Pane(Cava)
                                 ),
                             ],
