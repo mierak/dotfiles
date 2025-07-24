@@ -7,7 +7,11 @@ export PATH="$PATH:${subdirs%%:}"
 export EDITOR="nvim"
 export TERMINAL="ghostty"
 export BROWSER="firefox"
+{{- if contains "CZ00" .chezmoi.hostname }}
+export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+{{- else }}
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+{{- end }}
 export MANROFFOPT="-c"
 
 export FZF_DEFAULT_OPTS="--preview 'if [[ -d {} ]]; then exa -la {}; else bat --color=always --style=numbers --line-range=:500 {}; fi' --reverse"
