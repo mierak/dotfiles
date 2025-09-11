@@ -97,6 +97,7 @@ return {
 				jsonls = {},
 				yamlls = {},
 				helm_ls = {},
+				qmlls = {},
 				["tailwindcss-language-server"] = {},
 				["css-lsp"] = {},
 				["astro-language-server"] = {},

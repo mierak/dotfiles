@@ -13,6 +13,7 @@
 .config/lf/bookmarks 
 .config/shell/cdalias
 .config/ags/assets/app-icons
+.config/quickshell/.qmlls.ini
 
 {{- if contains "CZ00" .chezmoi.hostname -}}
 .config/gtk-2.0

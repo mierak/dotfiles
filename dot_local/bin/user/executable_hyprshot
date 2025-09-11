@@ -153,6 +153,7 @@ area_prompt() {
     slurp -d
 }
 
+hyprctl keyword windowrule "noscreenshare 0, class:discord"
 case "$mode" in
 "record")
     if [ -f /tmp/recordingpid ]; then
@@ -188,3 +189,4 @@ case "$mode" in
     esac
     ;;
 esac
+hyprctl keyword windowrule "noscreenshare 1, class:discord"

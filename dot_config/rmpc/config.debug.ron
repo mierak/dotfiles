@@ -10,7 +10,8 @@
     reflect_changes_to_playlist: false,
     max_fps: 144,
     theme: "def",
-    cache_dir: "/tmp/rmpc/cache/",
+    ignore_leading_the: true,
+    cache_dir: "/tmp/rmpc/cache",
     lyrics_dir: "~/Music",
     // on_song_change: ["~/.config/rmpc/scripts/autolrc"],
     on_song_change: ["sh", "-c", "~/.config/rmpc/scripts/printenv > /tmp/test"],
@@ -36,20 +37,20 @@
         sensitivity: 120,
         input: (
             method: Fifo,
-            source: "/tmp/mpd2.fifo",
+            source: "/tmp/mpd.fifo",
             sample_rate: 44100,
             channels: 2,
             samble_bits: 16,
         ),
         smoothing: (
-            noise_reduction: 20,
+            noise_reduction: 40,
             monstercat: false,
             waves: false,
         ),
     ),
     keybinds: (
         global: {
-            "R":       AddRandom,
+            // "R":       AddRandom,
             ",":       VolumeDown,
             "s":       Stop,
             ".":       VolumeUp,
@@ -69,8 +70,8 @@
             "I":       ShowCurrentSongInfo,
             // "M":       ShowMessages,
             "O":       ShowOutputs,
-            "P":       Partition(),
-            // "<C-p>":       ShowDecoders,
+            // "P":       SwitchPartition,
+            "<C-p>":       ShowDecoders,
             ":":       CommandMode,
             "x":       ToggleRandom,
             ">":       NextTrack,
@@ -82,7 +83,7 @@
             "z":       ToggleRepeat,
             "b":       SeekBack,
             // "<C-z>":   ExternalCommand(command: ["rmpc", "addrandom", "album", "2"]),
-            // "<C-z>":   Command(command: "addrandom album 2"),
+            "<C-z>":   Command(command: "addrandom album 2"),
             "T":       ExternalCommand(command: 
                        [   "sh", "-c", 
                            "rm -f /tmp/rmpc/env &&
@@ -109,7 +110,8 @@
             "<S-Right>":   PaneRight,
             "a":           Add,
             "A":           AddAll,
-            "<C-A>":     AddAllReplace,
+            "<C-a>":           AddReplace,
+            "<C-S-a>":           AddAllReplace,
             "r":           Rename,
             "n":           NextResult,
             "N":           PreviousResult,
@@ -128,17 +130,12 @@
             "K":           MoveUp,
             "D":           Delete,
             "B":           ShowInfo,
-            // "<C-a>":       AddOptions(kind: Modal([])),
-            "<C-b>":       AddOptions(kind: Modal([
-                               ("End of queue and play", (autoplay: First, all: false, position: EndOfQueue)),
-                               ("Replace queue and play", (autoplay: First, all: false, position: Replace)),
-                           ])),
-            "<C-z>":       ContextMenu(),
         },
         queue: {
             "D":       DeleteAll,
             "<CR>":    Play,
             "<C-s>":   Save,
+            "a":       AddToPlaylist,
             "d":       Delete,
             "C":       JumpToCurrent,
             "X":       Shuffle,
@@ -201,7 +198,7 @@
                                 ),
                                 (
                                     borders: "TOP",
-                                    size: "13",
+                                    size: "15",
                                     pane: Pane(Cava)
                                 ),
                             ],
@@ -253,4 +250,3 @@
         ),
     ],
 )
-

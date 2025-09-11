@@ -101,20 +101,20 @@
         ),
         "elapsed_and_bitrate": Pane(Property(
             // format: "$st:el' / '$st:dur{mods: bold}[' ('$st:br ' kbps)']",
-            format: "['sup'] ' ' %trunc(content: \"sup\"{fg: red}, length: 3)  $elapsed ' / ' $cduration [' (' $bitrate ' kbps)']",
+            // format: "['sup'] ' ' %trunc(content: \"sup\"{fg: red}, length: 3)  $elapsed ' / ' $cduration [' (' $bitrate ' kbps)']",
             // format: "%truncate(content: $tag(value:'date'), length: 4, from_start: false)",
             // format: "%truncate(content: $title , length: 4, from_start: true)",
             // format: "$tag(value: 'date')",
-            // content: [
-            //     (kind: Property(Status(Elapsed))), 
-            //     (kind: Text(" / ")), 
-            //     (kind: Property(Status(Duration))), 
-            //     (kind: Group([
-            //         (kind: Text(" (")), 
-            //         (kind: Property(Status(Bitrate))), 
-            //         (kind: Text(" kbps)")),
-            //     ])),
-            // ],
+            content: [
+                (kind: Property(Status(Elapsed))), 
+                (kind: Text(" / ")), 
+                (kind: Property(Status(Duration))), 
+                (kind: Group([
+                    (kind: Text(" (")), 
+                    (kind: Property(Status(Bitrate))), 
+                    (kind: Text(" kbps)")),
+                ])),
+            ],
             align: Left,
         )),
         "artist_album": Pane(Property(

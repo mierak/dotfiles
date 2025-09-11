@@ -80,18 +80,4 @@ handle_firefox() {
     fi
 }
 
-### Moves workspaces to the correct monitors when they are created
-handle_workspaces() {
-    # WS 1-10 -> middle monitor
-    if [[ $1 -gt 0 && $1 -lt 11 ]]; then
-        hyprctl dispatch moveworkspacetomonitor "$1" "$mon_m" >/dev/null
-    # WS 11-20 -> left monitor
-    elif [[ $1 -gt 10 && $1 -lt 21 ]]; then
-        hyprctl dispatch moveworkspacetomonitor "$1" "$mon_l" >/dev/null
-    # WS 21-30 -> right monitor
-    elif [[ $1 -gt 20 && $1 -lt 31 ]]; then
-        hyprctl dispatch moveworkspacetomonitor "$1" "$mon_r" >/dev/null
-    fi
-}
-
 socat - UNIX-CONNECT:"$XDG_RUNTIME_DIR"/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock | while read -r line; do handle "$line"; done

@@ -8,7 +8,7 @@ font-family = Maple Mono NF
 
 font-feature = -calt, +cv01, +cv02
 adjust-cell-width = -10%
-mouse-scroll-multiplier = 0.5
+mouse-scroll-multiplier = 0.25
 auto-update = off
 background-opacity = 0.95
 window-padding-color = background
