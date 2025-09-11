@@ -90,7 +90,7 @@ return {
 					severity_sort = true,
 				},
 			},
-			ensure_installed = { "stylua", "shfmt", "shellcheck", "typescript-language-server" },
+			ensure_installed = { "stylua", "shfmt", "shellcheck" },
 			servers = {
 				bashls = {},
 				clangd = {},
