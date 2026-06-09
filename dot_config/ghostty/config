@@ -1,6 +1,7 @@
 font-size = 12
 
 font-family = Maple Mono NF
+# font-family = UbuntuSansMono Nerd Font
 # font-family-italic = Maple Mono
 # font-family-italic = VictorMono Nerd Font Propo
 # font-family-bold = VictorMono Nerd Font Propo
@@ -8,19 +9,16 @@ font-family = Maple Mono NF
 
 font-feature = -calt, +cv01, +cv02
 adjust-cell-width = -10%
-mouse-scroll-multiplier = 0.25
+mouse-scroll-multiplier = 1
 auto-update = off
-background-opacity = 0.95
+background-opacity = 1
 window-padding-color = background
 window-padding-balance = false
 shell-integration = zsh
-window-inherit-working-directory = true
+window-inherit-working-directory = false
 
 window-theme = ghostty
-gtk-adwaita = true
-gtk-titlebar=true
 window-decoration = false
-gtk-tabs-location = bottom
 
 unfocused-split-opacity = 1.0
 

@@ -39,6 +39,6 @@ application/x-extension-xhtml=firefox.desktop
 application/x-extension-xht=firefox.desktop
 application/x-bittorrent=torrent.desktop
 
-inode/directory=file.desktop
+inode/directory=org.kde.dolphin.desktop
 
 [Added Associations]

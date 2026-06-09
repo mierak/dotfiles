@@ -1,6 +1,6 @@
 # A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
-"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
+# "$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
 
 [mgr]
 # prepend_keymap = [
@@ -17,10 +17,8 @@ keymap = [
 	{ on = "<C-z>", run = "suspend",            desc = "Suspend the process" },
 
 	# Hopping
-	{ on = "k", run = "plugin wrap -1", desc = "Move cursor up" },
-	{ on = "j", run = "plugin wrap 1",  desc = "Move cursor down" },
-	{ on = "k", run = "plugin wrap -1", desc = "Move cursor up" },
-	{ on = "j", run = "plugin wrap 1",  desc = "Move cursor down" },
+	{ on = "k", run = "arrow prev", desc = "Move cursor up" },
+	{ on = "j", run = "arrow next",  desc = "Move cursor down" },
 
 	{ on = "<Up>",    run = "arrow -1", desc = "Move cursor up" },
 	{ on = "<Down>",  run = "arrow 1",  desc = "Move cursor down" },

@@ -31,6 +31,7 @@ compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 bashcompinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 _comp_options+=(globdots)
 zinit cdreplay -q
+source <(jj util completion zsh)
 
 # Case insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'

@@ -10,7 +10,7 @@ export BROWSER="firefox"
 {{- if contains "CZ00" .chezmoi.hostname }}
 export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 {{- else }}
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANPAGER='nvim +Man!'
 {{- end }}
 export MANROFFOPT="-c"
 
@@ -36,10 +36,11 @@ export NPM_CONFIG_CACHE="$XDG_CACHE_HOME"/npm
 export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR"/npm
 export CUDA_CACHE_PATH="${XDG_CACHE_HOME:-$HOME/.cache}/nv"
 export STACK_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/stack"
-export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
 export WINEPREFIX="$XDG_DATA_HOME"/wine
+export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
+export PYTHON_HISTORY="$XDG_DATA_HOME"/python/history
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 
 export __GL_SYNC_DISPLAY_DEVICE="DP-0"
@@ -67,6 +68,6 @@ export NVD_PW="{{- (keepassxc "WORK_Q/Environment/NVD_PW").Password }}"
 export XAUTHORITY="${XDG_RUNTIME_DIR:-$HOME}/Xauthority"
 
 # Start graphical server on user's current tty if not already running.
-[ "$(tty)" = "/dev/tty1" ] && ! pidof -s Hyprland >/dev/null 2>&1 && Hyprland
+[ "$(tty)" = "/dev/tty1" ] && ! pidof -s Hyprland >/dev/null 2>&1 && start-hyprland
 
 {{- end }}

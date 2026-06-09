@@ -147,7 +147,7 @@ ShellRoot {
                             symbol: ""
                             collapsed: false
                             content: Time.time
-                            onClick: Time.cycleFormat()
+                            // onClick: Time.cycleFormat()
                         }
                     }
                 }

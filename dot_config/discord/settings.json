@@ -1,0 +1,22 @@
+{
+  "BACKGROUND_COLOR": "#121214",
+  "IS_MAXIMIZED": true,
+  "IS_MINIMIZED": false,
+  "WINDOW_BOUNDS": {
+    "x": 1932,
+    "y": 42,
+    "width": 1381,
+    "height": 1026
+  },
+  "SKIP_HOST_UPDATE": true,
+  "chromiumSwitches": {},
+  "MINIMIZE_TO_TRAY": false,
+  "OPEN_ON_STARTUP": false,
+  "offloadAdmControls": true,
+  "enableHardwareAcceleration": true,
+  "asyncVideoInputDeviceInit": false,
+  "enableLibOpenH264Electron": true,
+  "openH264Enabled": true,
+  "DESKTOP_TTI_DNSTCP_WARMUP": true,
+  "DESKTOP_TTI_UPDATE_BACKOFF_MAX_MS": 20000
+}

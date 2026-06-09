@@ -33,7 +33,7 @@ handle_workspace() {
     monitor="$(hyprctl workspaces -j | jq -r --arg id "$(echo "$1" | cut --delimiter="," -f1)" '.[] | select(.id == ($id | tonumber)) | .monitor')"
     find ~/Pictures/wallpapers -regextype posix-extended -regex ".*(png|jpg|webp|jpeg)$" |
         shuf -n 1 |
-        xargs -I {} swww img --resize crop -t none --transition-duration 0.125 --transition-fps 60 {} --outputs "$monitor"
+        xargs -I {} awww img --resize crop -t none --transition-duration 0.125 --transition-fps 60 {} --outputs "$monitor"
 }
 
 ### Kills the Update News window that pops up every time steam is started

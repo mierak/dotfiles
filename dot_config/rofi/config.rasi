@@ -2,7 +2,7 @@ configuration {
 //	modes: "window,drun,run,combi,calc";
 	modi: "run,drun,window";
 	show-icons: true;
-	terminal: "alacritty";
+	terminal: "ghostty";
 	//drun-display-format: "{icon} {name}";
     window-format: "<span fgalpha='65%'>[{w:-1}] </span><b>{c:-1}</b> <span weight='light' fgalpha='65%' size='small'>{t:-1}</span>";
     drun-display-format: "<b>{name}</b>[ <span weight='light' size='small'><i>({generic})</i></span>][ <span weight='light' fgalpha='65%' size='small'>{exec}</span>]";

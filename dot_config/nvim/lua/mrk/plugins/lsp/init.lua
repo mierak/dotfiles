@@ -31,13 +31,13 @@ return {
 	},
 	{
 		"mrcjkb/rustaceanvim",
-		version = "^5",
+		version = "^9",
 		lazy = false,
 		ft = "rust",
 		init = function()
-			if not os.execute("pgrep ra-multiplex") then
-				os.execute("ra-multiplex server &")
-			end
+			-- if not os.execute("pgrep ra-multiplex") then
+			-- 	os.execute("ra-multiplex server &")
+			-- end
 			vim.g.rustaceanvim = {
 				tools = {
 					float_win_config = {
@@ -49,7 +49,11 @@ return {
 				},
 				server = {
 					default_settings = {
-						["rust-analyzer"] = {},
+						["rust-analyzer"] = {
+							cargo = {
+								targetDir = true,
+							},
+						},
 					},
 				},
 			}
@@ -98,7 +102,8 @@ return {
 				yamlls = {},
 				helm_ls = {},
 				qmlls = {},
-				["tailwindcss-language-server"] = {},
+				zls = {},
+				-- ["tailwindcss-language-server"] = {},
 				["css-lsp"] = {},
 				["astro-language-server"] = {},
 				-- eslint = {},
@@ -149,7 +154,7 @@ return {
 					},
 				},
 			})
-			vim.lsp.set_log_level("off")
+			vim.lsp.log.set_level("off")
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("custom-lsp-attach", { clear = true }),

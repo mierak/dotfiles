@@ -40,5 +40,5 @@ Singleton {
 
     // arguments for date command
     property list<string> timeFormats: ["+%a, %d/%m/%Y, %H:%M:%S", "+%d/%m/%Y, %H:%M:%S", "+%H:%M:%S"]
-    property real initialTimeFormatIdx: 1
+    property real initialTimeFormatIdx: 0
 }

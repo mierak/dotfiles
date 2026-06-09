@@ -16,6 +16,8 @@ vim.o.breakindent = true
 vim.o.wildmode = "longest,list,full"
 
 vim.o.fillchars = "eob: ,vert:│"
+vim.o.list = true
+vim.o.listchars = "trail:"
 
 vim.o.splitbelow = true
 vim.o.splitright = true
